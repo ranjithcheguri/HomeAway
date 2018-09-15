@@ -1,0 +1,47 @@
+@import url(https://fonts.googleapis.com/css?family=Pacifico|Open+Sans|Montserrat);
+.bg {
+  background: #263238;
+}
+
+h1 {
+  padding-top: 18px;
+  font-family: pacifico;
+  color: #263238;
+}
+
+.calc {
+  height: 570px;
+  width: 350px;
+  background-color: #EF5350;
+  border-radius: 20px;
+  margin: 5%;
+  box-shadow: 10px 10px 5px #212121;
+}
+
+#text_box {
+  background-color: #E0E0E0;
+  height: 60px;
+  width: 80%;
+  font-family: 'Montserrat';
+  font-size: 40px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #212121;
+}
+
+.btns {
+  background-color: #263238;
+  color: #FFFFFF;
+  width: 65px;
+  height: 60px;
+  margin: 5px;
+  border: 2px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px #212121;
+  font-family: 'Montserrat';
+  font-size: 25px;
+}
+
+.tall {
+  width: 145px;
+}
