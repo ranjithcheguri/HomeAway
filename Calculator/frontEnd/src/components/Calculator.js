@@ -12,9 +12,11 @@ class Calculator extends Component{
 
 
     handleExpression = (e)=>{
-        
-        const expression = "2+3*5";
-        axios.post('http://localhost/3001/',expression)
+        console.log("expression submitted");
+        const data = {
+            "id" : '2+3*5'
+        }
+        axios.post('http://localhost:3001/',data)
         .then(response=>{
             
         });
