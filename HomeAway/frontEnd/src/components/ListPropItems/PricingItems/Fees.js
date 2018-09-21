@@ -23,7 +23,7 @@ class Fees extends Component {
                         <label>Taxable</label>
                     </div>
                     <div>
-                        <input class="" type="radio" name="optradio" checked ></input>
+                        <input class="form-check-input" type="radio" name="optradio" checked></input>
                         <input class="" type="radio" name="optradio"></input>
                     </div>
                 </div>

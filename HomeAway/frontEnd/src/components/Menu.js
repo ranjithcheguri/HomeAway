@@ -13,6 +13,8 @@ import Photos from './ListPropItems/Photos';
 import Security from './ListPropItems/Security';
 import Payment from './ListPropItems/Payment';
 import Pricing from './ListPropItems/Pricing';
+import SignUp from './SignUp';
+
 
 class Menu extends Component {
     constructor(props){
@@ -30,6 +32,7 @@ class Menu extends Component {
                 <Route path="/navbar2" component={Navbar2} />
                 <Route path="/footer" component={Footer}/>
                 <Route path="/listProperty" component={ListProperty}/>
+                <Route path="/SignUp" component={SignUp}/>
                 {/* <Route path="/listProperty/Location" component={Location}/>
                 <Route path="/listProperty/Details" component={Details}/>
                 <Route path="/listProperty/BookingDetails" component={BookingDetails}/>
