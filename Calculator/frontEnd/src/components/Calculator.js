@@ -6,19 +6,43 @@ class Calculator extends Component{
     constructor(props){
         super(props);
         this.state={
-            expression : ""
+            expression : "",
+            answer:""
         }
     }
 
 
+    handleExp=(e)=>{
+        console.log("inside handle exp");
+
+        this.setState({
+            expression : this.state.expression + e.target.value
+        })
+       
+        console.log(this.state.expression);
+    }
+
+    handleClear = (e)=>{
+        this.setState({
+            expression:""
+        })
+    }
+
     handleExpression = (e)=>{
         console.log("expression submitted");
         const data = {
-            "id" : '2+3*5'
+            "computeExpression" : this.state.expression
         }
+        this.setState({
+            expression : ""
+        })
+        console.log(data);
         axios.post('http://localhost:3001/',data)
         .then(response=>{
-            
+            this.setState({
+                expression : response.data
+            });
+            console.log("response received : ",this.state.answer);
         });
         e.preventDefault();
     }
@@ -32,37 +56,37 @@ class Calculator extends Component{
                     <center>
                         <h1>Basic Calculator</h1>
                         <div className="row">
-                        <input type="text" id="text_box"/>
+                        <input type="text" value={this.state.expression} id="text_box"/>
                         </div>
                         <div className="row">
-                        <button className="btns" id="ac">AC</button>
-                        <button className="btns" id="ce">CE</button>
-                        <button className="btns" id="per">%</button>
-                        <button className="btns" id="div">/</button>
+                        <button onClick={this.handleClear} className="btns tall" id="ac">AC</button>
+                        {/* <button onClick={this.handleClear2}className="btns" id="ce">CE</button> */}
+                        <button onClick={this.handleExp} className="btns" value="%" id="per">%</button>
+                        <button onClick={this.handleExp} className="btns" value="/" id="div">/</button>
                         </div>
                         <div className="row">
-                        <button className="btns" id="sev">7</button>
-                        <button className="btns" id="eig">8</button>
-                        <button className="btns" id="nin">9</button>
-                        <button className="btns" id="mul">*</button>
+                        <button onClick={this.handleExp} className="btns" value="7" id="sev">7</button>
+                        <button onClick={this.handleExp} className="btns" value="8" id="eig">8</button>
+                        <button onClick={this.handleExp} className="btns" value="9" id="nin">9</button>
+                        <button onClick={this.handleExp} className="btns" value="*" id="mul">*</button>
                         </div>
                         <div className="row">
-                        <button className="btns" id="4">4</button>
-                        <button className="btns" id="5">5</button>
-                        <button className="btns" id="6">6</button>
-                        <button className="btns" id="sub">-</button>
+                        <button onClick={this.handleExp} className="btns" value="4" id="4">4</button>
+                        <button onClick={this.handleExp} className="btns" value="5" id="5">5</button>
+                        <button onClick={this.handleExp} className="btns" value="6" id="6">6</button>
+                        <button onClick={this.handleExp} className="btns" value="-" id="sub">-</button>
                         </div>
 
                         <div className="row">
-                        <button className="btns" id="one">1</button>
-                        <button className="btns" id="two">2</button>
-                        <button className="btns" id="thr">3</button>
-                        <button className="btns" id="add">+</button>
+                        <button onClick={this.handleExp} className="btns" value="1" id="one">1</button>
+                        <button onClick={this.handleExp} className="btns" value="2" id="two">2</button>
+                        <button onClick={this.handleExp} className="btns" value="3" id="thr">3</button>
+                        <button onClick={this.handleExp} className="btns" value="+" id="add">+</button>
                         </div>
                         <div className="row">
-                        <button className="btns  tall" id="xer">0</button>
-                        <button className="btns" id="dot">.</button>
-                        <button className="btns" onClick={this.handleExpression} id="equ">=</button>
+                        <button onClick={this.handleExp} className="btns  tall" value="0" id="xer">0</button>
+                        <button onClick={this.handleExp} className="btns" value="." id="dot">.</button>
+                        <button onClick={this.handleExpression} className="btns" id="equ">=</button>
                         </div>
                     </center>
                     </div>

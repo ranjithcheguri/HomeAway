@@ -3,6 +3,12 @@
   background: #263238;
 }
 
+button:focus {outline:0;}
+
+#text_box{
+  text-align:right;
+}
+
 h1 {
   padding-top: 18px;
   font-family: pacifico;

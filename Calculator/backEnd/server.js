@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var cors = require('cors');
 
+const math = require('mathjs');
+
 // if cors not used, access-cotrol-allow-origin error.
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(function(req, res, next) {
@@ -29,8 +31,19 @@ app.use(session({
 
 
 app.post('/',function(req,res){
+    var ans =0;
     console.log("Initial page");
-    console.log(req.body);
+    console.log("Expression received for evaluation : ",req.body.computeExpression);
+    try{
+        ans = parseFloat(math.eval(req.body.computeExpression)).toFixed(2); 
+        //console.log(ans);
+    }
+    catch(error){
+        ans = "Invalid input";
+    }
+    
+    res.writeHead(200);
+    res.end(ans);
 });
 
 app.listen(3001,()=>console.log("listeninng to port 3001"));
