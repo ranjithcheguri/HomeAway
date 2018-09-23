@@ -7,6 +7,10 @@ class Login extends Component{
         console.log("Inside Login");
       }
     
+      handleLogin=(e)=>{
+          console.log("Login Request Submitted");
+      }
+
     render(){
         return(
             <div class="loginPage_bg">
@@ -26,7 +30,7 @@ class Login extends Component{
                                 <input class="form-control form_element" type="password" placeholder="password"></input>
                                 <a class="float_left" href="#">Forgot Password?</a>
                                 <br></br>
-                                <button class="form_element btn_login btn btn-lg btn-block" type="submit">Log In</button>
+                                <button onClick={this.handleLogin.bind(this)} class="form_element btn_login btn btn-lg btn-block" type="submit">Log In</button>
                                 <div class="float_left">
                                     <input class="form-check-input" type="checkbox"></input>
                                     <label class="form-check-label">Keep me signed in</label>

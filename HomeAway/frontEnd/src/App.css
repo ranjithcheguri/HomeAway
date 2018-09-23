@@ -2,6 +2,89 @@
     font: inherit;
 } */
 
+
+/* LANDING PAGE 2 CSS */
+
+.bg-img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+      url("C:/Users/theev/OneDrive/Documents/273/Lab1/HomeAway/frontEnd/src/images/homeAway.jpg")
+        center center no-repeat;
+    background-size: cover;
+  }
+  .landingPageNavbar {
+    overflow: auto;
+    background: none;
+    padding: 25px 20px;
+  }
+
+  .whiteText{
+      color:white;
+  }
+
+  .landingPageBody{
+      padding:0px 10% 150px 20%;
+  }
+
+  .landingPageDesc{
+      margin:0% 0% 0% 10%
+  }
+
+  .floatRight {
+    float: right;
+  }
+
+  .listYourProperty{
+    padding:13px 40px 13px 40px;
+    border-radius: 100px;
+    font-size:14px;
+    color:#0067db;
+  }
+  .loginList{
+    padding-right:20px;
+    
+  }
+  .transparentBtn{
+    border: none;
+    background-color: transparent;
+    outline: none;
+    
+  }
+
+
+  .transparentLogo{
+    vertical-align: top;
+    width:55px;
+    height:65px;
+    padding-bottom:15px;
+  }
+  .alignTop{
+    vertical-align: top;
+  }
+
+  .searchButton{
+    margin:5px;
+    height: 55px;
+    width:130px;
+    background-color:#005dc5;
+    color: #fff;
+    border-radius: 100px;
+  }
+  .custom_HA{
+    height: 55px;
+    margin:5px;
+    
+  }
+
+  .searchForm{
+    display:inline;
+  }
+
+/* LANDING PAGE 2 CSS END */
+
+
 .logo{
     vertical-align: top;
     width:230px;
@@ -12,6 +95,72 @@
     width:55px;
     height:45px;
 }
+.ownerlogo{
+    vertical-align: top;
+    width:400px;
+    height:280px;
+}
+.profileLogo{
+    width:100px;
+    height:120px;
+}
+.profileHeader{
+    text-align: center;
+    margin : 0px 40% 0px 40%;
+    background-color: fff;
+}
+
+.profileHeader H2{
+    font-weight: 500px;
+}
+.profileContainer{
+    margin-top:-50px;
+    background-color: white;
+}
+.profileBody{
+    margin:3% 10% 0px 10%;    
+}
+
+.drawBorder{
+    padding: 20px 0px 35px 25px;
+    margin-bottom:20px;
+    border: 0.5px solid grey;
+}
+
+.saveProfile{
+    margin:25px 0px 25px 0px;
+}
+
+.saveProfile button{
+    height: 50px;
+    background-color:#0067db;
+    border-radius: 30px;
+}
+
+.profileImage{
+    height:420px;
+    width:280px;
+    text-align: center;
+}
+
+.emailImage{
+    height:460px;
+    width:330px;
+}
+
+.alignLeft{
+    text-align: left;
+}
+
+.alignRight{
+    vertical-align: center;
+    text-align: right;
+}
+.alignCenter{
+    vertical-align: center;
+    text-align: center;
+    padding-right:10%;
+}
 
 .loginPage_bg{
     background-color: #f4f4f4;
@@ -19,7 +168,7 @@
     padding-bottom: 50px;    
 }
 .navbar{
-    margin-bottom: -15px;
+    margin-bottom: 0px;
 }
 .navbarContainer{
     /* border-bottom: 0.1px solid; */
@@ -179,3 +328,12 @@ ul{
     padding: 25px 0px 25px 0px;
     border-bottom:1px solid #888888;
 }
+
+/* Carousel */
+.carouselHA{
+    padding:6% 10% 0 10%;
+
+}
+
+
+

@@ -11,8 +11,6 @@ import Fees from './ListPropItems/PricingItems/Fees';
 import Rental from './ListPropItems/PricingItems/Rental';
 import Taxes from './ListPropItems/PricingItems/Taxes';
 
-
-
 class ListProperty extends Component {
     constructor(props) {
         super(props);
@@ -29,7 +27,11 @@ class ListProperty extends Component {
         })
     }
 
-
+    componentDidMount(){
+        this.setState({
+            comp:<Location/>
+        })
+    }
 
     render() {
         return (

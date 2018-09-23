@@ -4,7 +4,7 @@ import Footer from './Footer';
 class SignUp extends Component {
     constructor(props) {
         super(props);
-        console.log("Inside Login");
+        console.log("Inside SignUp");
     }
 
     render() {
