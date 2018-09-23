@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {BrowserRouter} from 'react-router-dom';
 import Menu from './components/Menu';
+import Home from './components/Home';
 
 class App extends Component {
   constructor(props){
@@ -12,7 +13,12 @@ class App extends Component {
     return (
       <BrowserRouter>
       <div>
-        <Menu/>
+        {/* to hide navigation bar first call landingpage route is set in 
+        Home component without '/' this deafult path and remaining components have same path which are place in menu*/}
+        {/* changing the order here will initialize '/' path which is menu and in 
+      home /landingpage2 unwanted navbar will be displayed. */}
+      <Home/>
+      <Menu/>        
       </div>
       </BrowserRouter>      
     );

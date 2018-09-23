@@ -15,7 +15,6 @@ class LandingPage2 extends Component {
 
     render() {
         return (
-
             <div>
                 <div class="bg-img">
                     <div class="landingPageNavbar">
@@ -32,7 +31,7 @@ class LandingPage2 extends Component {
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <Link to='/SignUp'>Traveler Login</Link>
+                                    <Link to='/Login'>Traveler Login</Link>
                                 </li>
                                 <li>
                                     <Link to='/OwnerLogin'>Owner Login</Link>
