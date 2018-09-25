@@ -4,6 +4,11 @@ class Availability extends Component{
 constructor(props){
     super(props);
     console.log("Inside ListProperty/Pricing/Availability");
+
+    this.state={
+        startdate: "",
+            enddate: "",
+    }
 }
 
 render(){

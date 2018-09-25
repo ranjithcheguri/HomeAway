@@ -1,31 +1,117 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import CarouselHA from './CarouselHA';
+import cookie from 'react-cookies';
 
 class LandingPage2 extends Component {
     constructor(props) {
         super(props);
         console.log("inside landingPage2");
         this.state = {
-            redirectVar: false
         }
     }
 
+    componentDidMount() {
+        this.setState({
+        })
 
+    }
+
+    handleSignOut = (e) => {
+        cookie.remove('TravelerCookie', { path: '/' });
+        cookie.remove('OwnerCookie', { path: '/' });
+        this.setState({
+        })
+    }
 
     render() {
+        
+    // ******************** REDIRECT TO LIST PROP USING COOKIE ****************************
+
+        let renderListProp = null;
+        if (cookie.load('OwnerCookie')) {
+            renderListProp = (<Link to="/ListProperty">
+                <button class="btn btn-lg listYourProperty">List your property</button>
+            </Link>)
+
+        } else {
+            renderListProp = (<Link to="/OwnerLogin">
+                <button class="btn btn-lg listYourProperty">List your property</button>
+            </Link>)
+        }
+
+// ************ check cookie and handle sign in and sign out ********************
+        //if Cookie is set render Logout Button  
+
+        let loggedIn = null;
+        if (cookie.load('TravelerCookie')) {
+            console.log("Able to read cookie");
+            loggedIn = (
+                <div class="dropdown floatRight align-center loginList">
+                    <button class="btn btn-default btn-lg dropdown-toggle whiteText transparentBtn" type="button" data-toggle="dropdown">Login
+                <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <Link to='/Profile'>Profile</Link>
+                        </li>
+                        <li>
+                            <a onClick={this.handleSignOut.bind(this)}>SignOut</a>
+                        </li>
+                    </ul>
+                </div>
+            );
+        }
+        else if (cookie.load('OwnerCookie')) {
+            console.log("Able to read cookie");
+            loggedIn = (
+                <div class="dropdown floatRight align-center loginList">
+                    <button class="btn btn-default btn-lg dropdown-toggle whiteText transparentBtn" type="button" data-toggle="dropdown">Login
+                <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <Link to='/Profile'>OwnerProfile</Link>
+                        </li>
+                        <li>
+                            <a onClick={this.handleSignOut.bind(this)}>SignOut</a>
+                        </li>
+                    </ul>
+                </div>
+            );
+        } else {
+            //Else display login button
+            console.log("Not Able to read cookie");
+            loggedIn = (
+                <div class="dropdown floatRight align-center loginList">
+                    <button class="btn btn-default btn-lg dropdown-toggle whiteText transparentBtn" type="button" data-toggle="dropdown">Login
+                            <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <Link to='/Login'>Traveler Login</Link>
+                        </li>
+                        <li>
+                            <Link to='/OwnerLogin'>Owner Login</Link>
+                        </li>
+                    </ul>
+                </div>
+            )
+        }
+
         return (
             <div>
                 <div class="bg-img">
                     <div class="landingPageNavbar">
-                        <a href="#"><img class="logo" alt="logo here" src={require('../images/logo-bceheader-white.svg')}></img></a>
+                        <Link to={"/"}><a href="#"><img class="logo" alt="logo here" src={require('../images/logo-bceheader-white.svg')}></img></a></Link>
                         <div class="floatRight">
                             <a href="#"><img class="transparentLogo" alt="logo here" src={require('../images/logo_transparent.png')}></img></a>
                         </div>
                         <div class="floatRight" style={{ paddingRight: 10 + 'px' }}>
-                            <Link to="/ListProperty"><button class="btn btn-lg listYourProperty">List your property</button></Link>
+                        {renderListProp}
                         </div>
-                        <div class="dropdown floatRight align-center loginList">
+                        {loggedIn}
+                        {/* <div class="dropdown floatRight align-center loginList">
                             <button class="btn btn-default btn-lg dropdown-toggle whiteText transparentBtn" type="button" data-toggle="dropdown">Login
                             <span class="caret"></span>
                             </button>
@@ -37,7 +123,7 @@ class LandingPage2 extends Component {
                                     <Link to='/OwnerLogin'>Owner Login</Link>
                                 </li>
                             </ul>
-                        </div>
+                        </div> */}
                     </div>
                     <div class="container-fluid landingPageBody">
                         <h1 class="whiteText">Book beach houses, cabins,</h1>

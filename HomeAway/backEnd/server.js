@@ -7,6 +7,10 @@ var cors = require('cors');
 app.set('view engine', 'ejs');
 var mysql = require('mysql');
 var pool = require('./pool');
+const multer = require('multer');
+//const uuidv4 = require('uuid/v4');
+const path = require('path');
+const fs = require('fs');
 
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
@@ -34,7 +38,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-/******************* SIGN UP POST ***************************/
+/******************* TRAVELER SIGN UP POST ***************************/
 
 app.post('/signup', function (req, res) {
 
@@ -67,7 +71,7 @@ app.post('/signup', function (req, res) {
                     })
                     res.end("Invalid Credentials");
                 } else {
-                    res.cookie('cookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
+                    res.cookie('TravelerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
                     req.session.user = result;
                     res.writeHead(200, {
                         'Content-Type': 'text/plain'
@@ -79,16 +83,113 @@ app.post('/signup', function (req, res) {
     })
 });
 
-/******************* LOGIN POST ***************************/
+/******************* TRAVELER LOGIN POST ***************************/
+
 app.post('/login', function (req, res) {
 
     console.log("server side : Login Verification started");
 
 
+    var email = req.body.email;
+    var password = req.body.password;
+
+    var sql = "SELECT *  FROM travelerdata WHERE email = " + 
+    mysql.escape(email) + "and password = " + mysql.escape(password);
+
+        console.log(sql);
+
+    pool.getConnection(function (err, con) {
+        if (err) {
+            console.log("connection error");
+            res.writeHead(400, {
+                'Content-Type': 'text/plain'
+            })
+            res.end("Could Not Get Connection Object");
+        } else {
+
+            console.log("connection to db successfull");
+
+            con.query(sql, function (err, result) {
+                if (err) {
+                    console.log("******** User not found ******");
+                    console.log(err);
+                    res.writeHead(400, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end("Invalid Credentials");
+                } else {
+                    console.log(result);
+                    res.cookie('TravelerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
+                    req.session.user = result;
+                    res.writeHead(200, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end("Successful Login");
+                }
+            });
+        }
+    })
+});
+
+/******************* OWNER LOGIN POST ***************************/
+app.post('/ownerlogin', function (req, res) {
+
+    console.log("server side : Owner Login Verification started");
+
+
+    var email = req.body.email;
+    var password = req.body.password;
+
+    var sql = "SELECT *  FROM ownerdata WHERE email = " + 
+    mysql.escape(email) + "and password = " + mysql.escape(password);
+
+        console.log(sql);
+
+    pool.getConnection(function (err, con) {
+        if (err) {
+            console.log("connection error");
+            res.writeHead(400, {
+                'Content-Type': 'text/plain'
+            })
+            res.end("Could Not Get Connection Object");
+        } else {
+
+            console.log("connection to db successfull");
+
+            con.query(sql, function (err, result) {
+                if (err) {
+                    console.log("******** Owner not found ******");
+                    console.log(err);
+                    res.writeHead(400, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end("Invalid Credentials");
+                } else {
+                    console.log(result);
+                    res.cookie('OwnerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
+                    req.session.user = result;
+                    res.writeHead(200, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end("Successful Login");
+                }
+            });
+        }
+    })
+});
+
+/******************* OWNER SIGN UP POST ***************************/
+
+app.post('/ownerSignUp', function (req, res) {
+
+    console.log("server side : Inside Owner signup");
+
+    // var firstName = req.body.firstName;
+    // var lastName = req.body.lastName;
     // var email = req.body.email;
     // var password = req.body.password;
 
-    var sql = "INSERT INTO travelerdata VALUES ( " +
+    var sql = "INSERT INTO ownerdata VALUES ( " +
         mysql.escape(req.body.firstName) + " , " + mysql.escape(req.body.lastName) + " , " +
         mysql.escape(req.body.email) + " , " + mysql.escape(req.body.password) +" );";
 
@@ -110,7 +211,7 @@ app.post('/login', function (req, res) {
                     })
                     res.end("Invalid Credentials");
                 } else {
-                    res.cookie('cookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
+                    res.cookie('OwnerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
                     req.session.user = result;
                     res.writeHead(200, {
                         'Content-Type': 'text/plain'
@@ -121,6 +222,31 @@ app.post('/login', function (req, res) {
         }
     })
 });
+
+/******************* LIST PROPERTY PHOTOS UPLOAD ***************************/
+//set storage engine
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, './uploads');
+      console.log("Inside Destination");
+    },
+    filename: (req, file, cb) => {
+      //const newFilename = `image_`+Date.now()+`${(path.extname(file.originalname))}`;
+      const newFilename = file.originalname;
+      console.log("FileName : "+newFilename);
+      cb(null, newFilename);
+      
+    },
+  });
+
+  //Init Upload for multiple images
+
+  const upload = multer({ storage : storage }).array('photos',5);
+  app.post('/listProperty',upload, (req, res,next)=>{
+    console.log("Inside UploadFiles");
+    console.log("uploadFiles : ",req.files);
+  });
+
 
 /******************* LISTEN PORT ***************************/
 app.listen(3001);
