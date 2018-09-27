@@ -33,9 +33,6 @@ render(){
             <div class="">
                 <h4>Select a booking method</h4>
             </div>
-            {/* <div>
-                <span>_ </span>
-            </div> */}
             <div class="locationBody">
                 <form class="form-group">
                     <div class='bookingMethod'>

@@ -10,6 +10,7 @@ import Availability from './ListPropItems/PricingItems/Availability';
 import Fees from './ListPropItems/PricingItems/Fees';
 import Rental from './ListPropItems/PricingItems/Rental';
 import Taxes from './ListPropItems/PricingItems/Taxes';
+import axios from 'axios';
 
 class ListProperty extends Component {
     constructor(props) {
@@ -52,8 +53,6 @@ class ListProperty extends Component {
         console.log(this.state);
     }
 
-
-
     handleClick = (item, event) => {
         event.preventDefault();
         this.setState({
@@ -71,6 +70,35 @@ class ListProperty extends Component {
         e.preventDefault();
         console.log("State data right now : ",this.state);
 
+        //directly sending this.state is throwing error : converting circular structure to JSON
+       const data = {
+        country: this.state.country,
+        street: this.state.street,
+        building: this.state.building,
+        city: this.state.city,
+        state: this.state.state,
+        zipcode: this.state.zipcode,
+        headline: this.state.headline,
+        description: this.state.description,
+        type: this.state.type,
+        bedrooms: this.state.bedrooms,
+        accomodates: this.state.accomodates,
+        bathrooms: this.state.bathrooms,
+        bookingoptions: this.state.bookingoptions,
+        photos: this.state.photos,
+        startdate: this.state.startdate,
+        enddate: this.state.enddate,
+        currency: this.state.currency,
+        rent: this.state.rent,
+        tax: this.state.tax,
+        cleaningfee: this.state.cleaningfee
+        }
+
+        //sending data to server
+        axios.post("http://localhost:3001/listProperty",data)
+        .then( response =>{ 
+            console.log("res :"+response);
+        });
     }
 
     // displayData=()=>{

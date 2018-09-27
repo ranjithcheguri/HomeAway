@@ -7,8 +7,22 @@ constructor(props){
 
     this.state={
         startdate: "",
-            enddate: "",
+        enddate: "",
     }
+}
+
+getData=(e)=>{
+    e.preventDefault();
+    //console.log(e.target.name);
+        this.setState({
+            [e.target.name]:e.target.value
+        })   
+}
+
+sendDatatoParent=(e)=>{
+    e.preventDefault();
+    console.log(this.state);
+    this.props.callbackFromParent(this.state);
 }
 
 render(){
@@ -24,17 +38,17 @@ render(){
                 <div class="">
                     <div class="form_element col-lg-6">
                         <label>Start date</label>
-                        <input class="form-control" type="date"></input>
+                        <input onChange={this.getData.bind(this)} name="startdate" class="form-control" type="date"></input>
                     </div>
                     <div class="form_element col-lg-6">
                         <label>End date</label>
-                        <input class="form-control" type="date"></input>
+                        <input onChange={this.getData.bind(this)} name="enddate" class="form-control" type="date"></input>
                     </div>
                 </div>
             </div>
             <div class="">
                 <button class=" col-lg-offset-2 col-lg-2 btn btn-danger">Cancel</button>
-                <button class="col-lg-2  col-lg-offset-4 btn btn-primary">Next</button>
+                <button onClick={this.sendDatatoParent} class="col-lg-2  col-lg-offset-4 btn btn-primary">Next</button>
             </div>              
 
         </div>

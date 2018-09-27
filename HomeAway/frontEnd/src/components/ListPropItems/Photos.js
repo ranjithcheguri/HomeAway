@@ -34,8 +34,8 @@ sendDatatoParent=(e)=>{
       formData.append('photos', photos[i]);
     }
     console.log(formData);
-
-    axios.post('http://localhost:3001/listProperty', formData)
+    axios.defaults.withCredentials = true;
+    axios.post('http://localhost:3001/listPropertyPhotos', formData)
       .then((response) => {
         // access results...
         console.log(response);

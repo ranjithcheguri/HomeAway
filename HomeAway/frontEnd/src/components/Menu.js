@@ -10,6 +10,8 @@ import SignUp from './SignUp';
 import OwnerLogin from './OwnerLogin';
 import Profile from './Profile';
 import OwnerSignUp from './OwnerSignUp';
+import Details from './ListPropItems/Details';
+import BookingDetails from './ListPropItems/BookingDetails';
 
 
 class Menu extends Component {
@@ -33,6 +35,10 @@ class Menu extends Component {
                 <Route path="/OwnerLogin" component={OwnerLogin}/>
                 <Route path="/Profile" component={Profile}/>
                 <Route path="/OwnerSignUp" component={OwnerSignUp}/>
+                {/* <Route path="/ListProperty/Details" component={Details}/>
+                <Route path="/ListProperty/BookingDetails" component={BookingDetails}/> */}
+
+
                 
             </div>
         );

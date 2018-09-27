@@ -223,7 +223,11 @@ app.post('/ownerSignUp', function (req, res) {
     })
 });
 
-/******************* LIST PROPERTY PHOTOS UPLOAD ***************************/
+/******************* LIST PROPERTY POSTS ***************************/
+var photos="";
+
+/******************* PHOTOS POST ***************************/
+
 //set storage engine
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -231,21 +235,94 @@ const storage = multer.diskStorage({
       console.log("Inside Destination");
     },
     filename: (req, file, cb) => {
-      //const newFilename = `image_`+Date.now()+`${(path.extname(file.originalname))}`;
-      const newFilename = file.originalname;
+      const newFilename = `image_`+Date.now()+`${(path.extname(file.originalname))}`;
+      //this photo name to be inserted in database.
+      photos=photos+"___"+newFilename;
+      //const newFilename = file.originalname;
       console.log("FileName : "+newFilename);
       cb(null, newFilename);
-      
     },
   });
 
   //Init Upload for multiple images
-
   const upload = multer({ storage : storage }).array('photos',5);
-  app.post('/listProperty',upload, (req, res,next)=>{
+
+
+  app.post('/listPropertyPhotos',upload, (req, res,next)=>{
     console.log("Inside UploadFiles");
     console.log("uploadFiles : ",req.files);
+    console.log(photos);
   });
+
+
+
+/******************* PHOTOS POST END ***************************/
+
+/******************* OTHER DETAILS POST ***************************/
+
+app.post('/listProperty',(req, res)=>{
+    console.log("Inside Listproperty");
+    console.log("Property details : ",req.body);
+//insert image names in database.
+var sql = "INSERT INTO ownerprofile(`country`, `street`, `building`, `city`, `state`, `zipcode`, `headline`, `description`, `type`, `bedrooms`, `accomodates`, `bathrooms`, `bookingoptions`, `photos`, `startdate`, `enddate`, `currency`, `rent`, `tax`, `cleaningfee`) VALUES ("+
+mysql.escape(req.body.country) + " , "+
+mysql.escape(req.body.street) + " , "+
+mysql.escape(req.body.building) + " , "+
+mysql.escape(req.body.city) + " , "+
+mysql.escape(req.body.state) + " , "+
+mysql.escape(req.body.zipcode) + " , "+
+mysql.escape(req.body.headline) + " , "+
+mysql.escape(req.body.description) + " , "+
+mysql.escape(req.body.type) + " , "+
+mysql.escape(req.body.bedrooms) + " , "+
+mysql.escape(req.body.accomodates) + " , "+
+mysql.escape(req.body.bathrooms) + " , "+
+mysql.escape(req.body.bookingoptions) + " , "+
+mysql.escape(photos) + " , "+
+mysql.escape(req.body.startdate) + " , "+
+mysql.escape(req.body.enddate) + " , "+
+mysql.escape(req.body.currency) + " , "+
+mysql.escape(req.body.rent) + " , "+
+mysql.escape(req.body.tax) + " , "+
+mysql.escape(req.body.cleaningfee) + ");";
+
+console.log("SQL QUERY: ",sql);
+
+pool.getConnection(function (err, con) {
+    if (err) {
+        console.log("connection error");
+        res.writeHead(400, {
+            'Content-Type': 'text/plain'
+        })
+        res.end("Could Not Get Connection Object");
+    } else {
+        con.query(sql, function (err, result) {
+            if (err) {
+                console.log(err);
+                res.writeHead(400, {
+                    'Content-Type': 'text/plain'
+                })
+                res.end("Invalid Credentials");
+            } else {
+                console.log(result);
+                res.writeHead(200, {
+                    'Content-Type': 'text/plain'
+                })
+                res.end("Successful Insertion into database");
+            }
+        });
+    }
+})
+  });
+
+
+
+
+
+
+/******************* OTHER DETAILS POST END***************************/
+
+/******************* LIST PROPERTY POSTS END ***************************/
 
 
 /******************* LISTEN PORT ***************************/
