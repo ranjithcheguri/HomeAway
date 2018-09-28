@@ -19,7 +19,8 @@ class Details extends Component {
             accomodates: "",
             bathrooms: "",
         }
-        
+
+       
     }
 
     getData = (e) => {
@@ -31,7 +32,7 @@ class Details extends Component {
 
     sendDatatoParent=(e)=>{
         e.preventDefault();
-        console.log("Details state",this.state);
+        console.log("Details state ",this.state);
         this.props.callbackFromParent(this.state);  
     }
 
@@ -61,7 +62,7 @@ class Details extends Component {
                             <input class="form-control form_element" onChange={this.getData} name="bathrooms" type="Number" min="1" placeholder="Bathrooms"></input>
                             <div>
                                 <button class="col-lg-offset-2 col-lg-2 btn btn-danger">Cancel</button>
-                                <button onClick={this.sendDatatoParent.bind(this)} class="col-lg-2  col-lg-offset-4 btn btn-primary">Next</button>
+                                <button onClick={this.sendDatatoParent} class="col-lg-2  col-lg-offset-4 btn btn-primary">Next</button>
                             </div>
                         </form>
                     </div>

@@ -64,7 +64,7 @@ render(){
                             <p>or</p>
                         </div>
                         <div>
-                            <input class="btn-primary form_element" name="photos" type="file" onChange={this.getData.bind(this)} multiple ></input>
+                            <input class="btn-primary form_element" name="photos" type="file" onChange={this.getData} multiple ></input>
                         </div>
                         <div>
                             <span>0 of 5 uploaded. 2 are required. You can choose to upload more than one photo at a time.</span>
