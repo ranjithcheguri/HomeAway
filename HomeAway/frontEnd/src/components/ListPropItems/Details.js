@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 //import { Alert } from 'react-bootstrap';
 import BookingDetails from './BookingDetails';
-//import Photos from './Photos';
 
 
 
@@ -20,8 +19,9 @@ class Details extends Component {
             bathrooms: "",
         }
 
-       
-    }
+        this.sendDatatoParent = this.sendDatatoParent.bind(this);
+        this.getData = this.getData.bind(this);
+        }
 
     getData = (e) => {
         e.preventDefault();

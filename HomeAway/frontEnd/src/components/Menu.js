@@ -40,7 +40,6 @@ class Menu extends Component {
                 <Route path="/DisplayProperty" component={DisplayProperty}/>
                 <Route path="/BookingHistory" component={BookingHistory}/>
 
-
                  {/* <Route path="/ListProperty/Details" component={Details}/>
                 <Route path="/ListProperty/BookingDetails" component={BookingDetails}/>  */}                
             </div>

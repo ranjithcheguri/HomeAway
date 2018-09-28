@@ -19,7 +19,8 @@ class Location extends Component {
         })
 
         this.sendDatatoParent = this.sendDatatoParent.bind(this);
-    }
+        this.getData = this.getData.bind(this);
+        }
 
     onSelectFlag(countryCode) {
         console.log(countryCode);

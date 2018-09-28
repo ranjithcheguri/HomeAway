@@ -11,6 +11,8 @@ constructor(props){
         comp:<Availability callbackFromParent={this.myCallback}/>,
         photos: "af",
     }
+    this.sendDatatoParent = this.sendDatatoParent.bind(this);
+    this.getData = this.getData.bind(this);
 }
 
 getData=(e)=>{

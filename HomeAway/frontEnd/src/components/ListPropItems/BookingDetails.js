@@ -10,6 +10,8 @@ constructor(props){
         comp:<Photos callbackFromParent={this.myCallback}/>,
         bookingoptions: "0"
     }
+    this.sendDatatoParent = this.sendDatatoParent.bind(this);
+    this.getData = this.getData.bind(this);
 }
 
 
@@ -58,7 +60,7 @@ render(){
                     </div>                
                     <div>
                         <button class=" col-lg-offset-2 col-lg-2 btn btn-danger">Cancel</button>
-                        <button onClick={this.sendDatatoParent.bind(this)} class="col-lg-2  col-lg-offset-4 btn btn-primary">Next</button>
+                        <button onClick={this.sendDatatoParent} class="col-lg-2  col-lg-offset-4 btn btn-primary">Next</button>
                     </div>              
                 </form>
             </div>

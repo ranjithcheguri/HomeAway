@@ -11,6 +11,8 @@ constructor(props){
         startdate: "",
         enddate: "",
     }
+    this.sendDatatoParent = this.sendDatatoParent.bind(this);
+    this.getData = this.getData.bind(this);
 }
 
 getData=(e)=>{
@@ -40,11 +42,11 @@ render(){
                 <div class="">
                     <div class="form_element col-lg-6">
                         <label>Start date</label>
-                        <input onChange={this.getData.bind(this)} name="startdate" class="form-control" type="date"></input>
+                        <input onChange={this.getData} name="startdate" class="form-control" type="date"></input>
                     </div>
                     <div class="form_element col-lg-6">
                         <label>End date</label>
-                        <input onChange={this.getData.bind(this)} name="enddate" class="form-control" type="date"></input>
+                        <input onChange={this.getData} name="enddate" class="form-control" type="date"></input>
                     </div>
                 </div>
             </div>
