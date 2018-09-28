@@ -17,9 +17,8 @@ class ListProperty extends Component {
         super(props);
         console.log("Inside ListProperty");
         this.state = {
-            comp: "",
+            comp: <Location callbackFromParent={this.myCallback.bind(this)} />,
             //*********** Database Varibles *******
-
             country: "",
             street: "",
             building: "",
@@ -45,10 +44,11 @@ class ListProperty extends Component {
         }
     }
 
-    myCallback(dataFromChild) {
-        console.log("In Parent, data from child", dataFromChild);
+
+    myCallback=(stateFromChild)=> {
+        console.log("In Parent, state of child", stateFromChild);
         this.setState({
-            ...dataFromChild
+            ...stateFromChild
         })
         console.log(this.state);
     }
@@ -57,12 +57,6 @@ class ListProperty extends Component {
         event.preventDefault();
         this.setState({
             comp: item
-        })
-    }
-
-    componentDidMount() {
-        this.setState({
-            comp: <Location callbackFromParent={this.myCallback.bind(this)} />
         })
     }
 
@@ -101,10 +95,6 @@ class ListProperty extends Component {
         });
     }
 
-    // displayData=()=>{
-    //     console.log(this.state);
-
-    // }
 
     render() {
         return (
@@ -148,7 +138,6 @@ class ListProperty extends Component {
                                     <a onClick={this.handleClick.bind(this, <Fees callbackFromParent={this.myCallback.bind(this)} />)}>Fees</a>
                                 </li>
                             </ul>
-                            {/* <a onClick={this.handleClick.bind(this,<Pricing/>)} value="<Pricing/>">Pricing</a> */}
                         </li>
                     </ul>
                 </div>

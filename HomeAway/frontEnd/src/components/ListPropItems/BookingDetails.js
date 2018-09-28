@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import Photos from './Photos';
 
 class BookingDetails extends Component{
 constructor(props){
@@ -6,7 +7,8 @@ constructor(props){
     console.log("Inside ListProperty/BookingDetails");
 
     this.state={
-        bookingoptions: "0",
+        comp:<Photos callbackFromParent={this.myCallback}/>,
+        bookingoptions: "0"
     }
 }
 
@@ -37,7 +39,7 @@ render(){
                 <form class="form-group">
                     <div class='bookingMethod'>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" onChange={this.getData.bind(this)} value="0" name="bookingoptions" checked ></input>
+                            <input class="form-check-input" type="radio" onChange={this.getData} value="0" name="bookingoptions" checked ></input>
                             <label class="form-check-label">Instant Booking</label>
                             <span class="label_recom label label-warning">Recommended</span>
                         </div>
@@ -45,7 +47,7 @@ render(){
                             <span>Automatically accept booking requests from all travelers for dates you have available, and add the bookings to your calendar.</span>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" onChange={this.getData.bind(this)} type="radio" value="1" name="bookingoptions"></input>
+                            <input class="form-check-input" onChange={this.getData} type="radio" value="1" name="bookingoptions"></input>
                             <label class="form-check-label">24-hour review</label>
                         </div>
                         <div class="radioDesc">

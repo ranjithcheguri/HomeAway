@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
 import 'react-flags-select/css/react-flags-select.css';
+import Details from './Details';
+
 
 class Location extends Component {
     constructor(props) {
@@ -8,6 +10,7 @@ class Location extends Component {
         console.log("Inside ListProperty/Location");
 
         this.state = ({
+            comp:<Details callbackFromParent={this.myCallback}/>,
             country: "US",
             street: "",
             building: "",
@@ -43,7 +46,7 @@ class Location extends Component {
     sendDatatoParent = (e) => {
         e.preventDefault();
         console.log(this.state);
-        this.props.callbackFromParent(this.state);
+        this.props.callbackFromParent(this.state);  
     }
 
     render() {
@@ -57,11 +60,11 @@ class Location extends Component {
                         <div class="form_element">
                             <ReactFlagsSelect onSelect={this.onSelectFlag.bind(this)} value="US" name="country" class="form-control" defaultCountry="US" />
                         </div>
-                        <input onChange={this.getData.bind(this)} name="street" class="form-control form_element" type="text" placeholder="Street Address"></input>
-                        <input onChange={this.getData.bind(this)} name="building" class="form-control form_element" type="text" placeholder="Apt/building No. etc"></input>
-                        <input onChange={this.getData.bind(this)} name="city" class="form-control form_element" type="text" placeholder="City"></input>
-                        <input onChange={this.getData.bind(this)} name="state" class="form-control form_element" type="text" placeholder="State"></input>
-                        <input onChange={this.getData.bind(this)} name="zipcode" class="form-control form_element" type="text" placeholder="Zipcode"></input>
+                        <input onChange={this.getData} name="street" class="form-control form_element" type="text" placeholder="Street Address"></input>
+                        <input onChange={this.getData} name="building" class="form-control form_element" type="text" placeholder="Apt/building No. etc"></input>
+                        <input onChange={this.getData} name="city" class="form-control form_element" type="text" placeholder="City"></input>
+                        <input onChange={this.getData} name="state" class="form-control form_element" type="text" placeholder="State"></input>
+                        <input onChange={this.getData} name="zipcode" class="form-control form_element" type="text" placeholder="Zipcode"></input>
                         <div>
                             <button class=" col-lg-offset-2 col-lg-2 btn btn-danger">Cancel</button>
                             <button onClick={this.sendDatatoParent} class="col-lg-2  col-lg-offset-4 btn btn-primary">Next</button>

@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import axios from 'axios';
+import Availability from './PricingItems/Availability';
 
 class Photos extends Component{
 constructor(props){
@@ -7,6 +8,7 @@ constructor(props){
     console.log("Inside ListProperty/Photos");
     
     this.state={
+        comp:<Availability callbackFromParent={this.myCallback}/>,
         photos: "af",
     }
 }

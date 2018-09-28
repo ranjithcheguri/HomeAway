@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import Rental from './Rental';
 
 class Availability extends Component{
 constructor(props){
@@ -6,6 +7,7 @@ constructor(props){
     console.log("Inside ListProperty/Pricing/Availability");
 
     this.state={
+        comp : <Rental callbackFromParent={this.myCallback} />,
         startdate: "",
         enddate: "",
     }
