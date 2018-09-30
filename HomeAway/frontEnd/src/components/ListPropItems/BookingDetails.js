@@ -15,6 +15,11 @@ constructor(props){
 }
 
 
+myCallback=(stateFromChild)=> {
+    console.log("In Location, state of child", stateFromChild);
+    this.props.callbackFromParent(stateFromChild);
+}
+
 getData=(e)=>{
     e.preventDefault();
     console.log(e.target.name,e.target.value)
@@ -37,7 +42,7 @@ render(){
             <div class="">
                 <h4>Select a booking method</h4>
             </div>
-            <div class="locationBody">
+            <div class="listPropBody">
                 <form class="form-group">
                     <div class='bookingMethod'>
                         <div class="form-check">

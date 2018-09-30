@@ -15,6 +15,12 @@ constructor(props){
     this.getData = this.getData.bind(this);
 }
 
+
+myCallback=(stateFromChild)=> {
+    console.log("In Location, state of child", stateFromChild);
+    this.props.callbackFromParent(stateFromChild);
+}
+
 getData=(e)=>{
     console.log("inside get Photos")
     e.preventDefault();
@@ -52,7 +58,7 @@ render(){
             <div class="locationHeader">
                 <h4>Add up to 5 photos of your property</h4>
             </div>
-            <div class="PhotosBody">
+            <div class="listPropBody">
                 <form class="form-group">
                     <div class="form_element">
                         <p>Showcase your property’s best features (no pets or people, please). Requirements: JPEG, at least 1920 x 1080 pixels, less than 20MB file size, 2 photos minimum. Need photos? Hire a professional.</p>

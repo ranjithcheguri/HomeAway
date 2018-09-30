@@ -51,9 +51,9 @@ app.post('/signup', function (req, res) {
 
     var sql = "INSERT INTO travelerdata VALUES ( " +
         mysql.escape(req.body.firstName) + " , " + mysql.escape(req.body.lastName) + " , " +
-        mysql.escape(req.body.email) + " , " + mysql.escape(req.body.password) +" );";
+        mysql.escape(req.body.email) + " , " + mysql.escape(req.body.password) + " );";
 
-        console.log(sql);
+    console.log(sql);
 
     pool.getConnection(function (err, con) {
         if (err) {
@@ -93,10 +93,10 @@ app.post('/login', function (req, res) {
     var email = req.body.email;
     var password = req.body.password;
 
-    var sql = "SELECT *  FROM travelerdata WHERE email = " + 
-    mysql.escape(email) + "and password = " + mysql.escape(password);
+    var sql = "SELECT *  FROM travelerdata WHERE email = " +
+        mysql.escape(email) + "and password = " + mysql.escape(password);
 
-        console.log(sql);
+    console.log(sql);
 
     pool.getConnection(function (err, con) {
         if (err) {
@@ -140,10 +140,10 @@ app.post('/ownerlogin', function (req, res) {
     var email = req.body.email;
     var password = req.body.password;
 
-    var sql = "SELECT *  FROM ownerdata WHERE email = " + 
-    mysql.escape(email) + "and password = " + mysql.escape(password);
+    var sql = "SELECT *  FROM ownerdata WHERE email = " +
+        mysql.escape(email) + "and password = " + mysql.escape(password);
 
-        console.log(sql);
+    console.log(sql);
 
     pool.getConnection(function (err, con) {
         if (err) {
@@ -191,9 +191,9 @@ app.post('/ownerSignUp', function (req, res) {
 
     var sql = "INSERT INTO ownerdata VALUES ( " +
         mysql.escape(req.body.firstName) + " , " + mysql.escape(req.body.lastName) + " , " +
-        mysql.escape(req.body.email) + " , " + mysql.escape(req.body.password) +" );";
+        mysql.escape(req.body.email) + " , " + mysql.escape(req.body.password) + " );";
 
-        console.log(sql);
+    console.log(sql);
 
     pool.getConnection(function (err, con) {
         if (err) {
@@ -224,35 +224,35 @@ app.post('/ownerSignUp', function (req, res) {
 });
 
 /******************* LIST PROPERTY POSTS ***************************/
-var photos="";
+var photos = "";
 
 /******************* PHOTOS POST ***************************/
 
 //set storage engine
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, './uploads');
-      console.log("Inside Destination");
+        cb(null, './uploads');
+        console.log("Inside Destination");
     },
     filename: (req, file, cb) => {
-      const newFilename = `image_`+Date.now()+`${(path.extname(file.originalname))}`;
-      //this photo name to be inserted in database.
-      photos=photos+"___"+newFilename;
-      //const newFilename = file.originalname;
-      console.log("FileName : "+newFilename);
-      cb(null, newFilename);
+        const newFilename = `image_` + Date.now() + `${(path.extname(file.originalname))}`;
+        //this photo name to be inserted in database.
+        photos = photos + "___" + newFilename;
+        //const newFilename = file.originalname;
+        console.log("FileName : " + newFilename);
+        cb(null, newFilename);
     },
-  });
+});
 
-  //Init Upload for multiple images
-  const upload = multer({ storage : storage }).array('photos',5);
+//Init Upload for multiple images
+const upload = multer({ storage: storage }).array('photos', 5);
 
 
-  app.post('/listPropertyPhotos',upload, (req, res,next)=>{
+app.post('/listPropertyPhotos', upload, (req, res, next) => {
     console.log("Inside UploadFiles");
-    console.log("uploadFiles : ",req.files);
+    console.log("uploadFiles : ", req.files);
     console.log(photos);
-  });
+});
 
 
 
@@ -260,69 +260,189 @@ const storage = multer.diskStorage({
 
 /******************* OTHER DETAILS POST ***************************/
 
-app.post('/listProperty',(req, res)=>{
+app.post('/listProperty', (req, res) => {
     console.log("Inside Listproperty");
-    console.log("Property details : ",req.body);
-//insert image names in database.
-var sql = "INSERT INTO ownerprofile(`country`, `street`, `building`, `city`, `state`, `zipcode`, `headline`, `description`, `type`, `bedrooms`, `accomodates`, `bathrooms`, `bookingoptions`, `photos`, `startdate`, `enddate`, `currency`, `rent`, `tax`, `cleaningfee`) VALUES ("+
-mysql.escape(req.body.country) + " , "+
-mysql.escape(req.body.street) + " , "+
-mysql.escape(req.body.building) + " , "+
-mysql.escape(req.body.city) + " , "+
-mysql.escape(req.body.state) + " , "+
-mysql.escape(req.body.zipcode) + " , "+
-mysql.escape(req.body.headline) + " , "+
-mysql.escape(req.body.description) + " , "+
-mysql.escape(req.body.type) + " , "+
-mysql.escape(req.body.bedrooms) + " , "+
-mysql.escape(req.body.accomodates) + " , "+
-mysql.escape(req.body.bathrooms) + " , "+
-mysql.escape(req.body.bookingoptions) + " , "+
-mysql.escape(photos) + " , "+
-mysql.escape(req.body.startdate) + " , "+
-mysql.escape(req.body.enddate) + " , "+
-mysql.escape(req.body.currency) + " , "+
-mysql.escape(req.body.rent) + " , "+
-mysql.escape(req.body.tax) + " , "+
-mysql.escape(req.body.cleaningfee) + ");";
+    console.log("Property details : ", req.body);
+    //insert image names in database.
+    var sql = "INSERT INTO ownerprofile(`country`, `street`, `building`, `city`, `state`, `zipcode`, `headline`, `description`, `type`, `bedrooms`, `accomodates`, `bathrooms`, `bookingoptions`, `photos`, `startdate`, `enddate`, `currency`, `rent`, `tax`, `cleaningfee`) VALUES (" +
+        mysql.escape(req.body.country) + " , " +
+        mysql.escape(req.body.street) + " , " +
+        mysql.escape(req.body.building) + " , " +
+        mysql.escape(req.body.city) + " , " +
+        mysql.escape(req.body.state) + " , " +
+        mysql.escape(req.body.zipcode) + " , " +
+        mysql.escape(req.body.headline) + " , " +
+        mysql.escape(req.body.description) + " , " +
+        mysql.escape(req.body.type) + " , " +
+        mysql.escape(req.body.bedrooms) + " , " +
+        mysql.escape(req.body.accomodates) + " , " +
+        mysql.escape(req.body.bathrooms) + " , " +
+        mysql.escape(req.body.bookingoptions) + " , " +
+        mysql.escape(photos) + " , " +
+        mysql.escape(req.body.startdate) + " , " +
+        mysql.escape(req.body.enddate) + " , " +
+        mysql.escape(req.body.currency) + " , " +
+        mysql.escape(req.body.rent) + " , " +
+        mysql.escape(req.body.tax) + " , " +
+        mysql.escape(req.body.cleaningfee) + ");";
 
-console.log("SQL QUERY: ",sql);
+    console.log("SQL QUERY: ", sql);
 
-pool.getConnection(function (err, con) {
-    if (err) {
-        console.log("connection error");
-        res.writeHead(400, {
-            'Content-Type': 'text/plain'
-        })
-        res.end("Could Not Get Connection Object");
-    } else {
-        con.query(sql, function (err, result) {
-            if (err) {
-                console.log(err);
-                res.writeHead(400, {
-                    'Content-Type': 'text/plain'
-                })
-                res.end("Invalid Credentials");
-            } else {
-                console.log(result);
-                res.writeHead(200, {
-                    'Content-Type': 'text/plain'
-                })
-                res.end("Successful Insertion into database");
-            }
-        });
-    }
-})
-  });
-
-
-
-
-
+    pool.getConnection(function (err, con) {
+        if (err) {
+            console.log("connection error");
+            res.writeHead(400, {
+                'Content-Type': 'text/plain'
+            })
+            res.end("Could Not Get Connection Object");
+        } else {
+            con.query(sql, function (err, result) {
+                if (err) {
+                    console.log(err);
+                    res.writeHead(400, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end("Invalid Credentials");
+                } else {
+                    console.log(result);
+                    res.writeHead(200, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end("Successful Insertion into database");
+                }
+            });
+        }
+    })
+});
 
 /******************* OTHER DETAILS POST END***************************/
 
 /******************* LIST PROPERTY POSTS END ***************************/
+
+/******************* DISPLAY PROPERTY POST BEGIN ***************************/
+
+
+app.post('/displayProperty', (req, res) => {
+    console.log("Server side : Inside display Property");
+
+    var sql = "select * from ownerprofile";
+    pool.getConnection(function (err, con) {
+        if (err) {
+            console.log("connection error");
+            res.writeHead(400, {
+                'Content-Type': 'text/plain'
+            })
+            res.end("Could Not Get Connection Object");
+        } else {
+            con.query(sql, function (err, result) {
+                if (err) {
+                    console.log(err);
+                    res.writeHead(400, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end("Invalid Credentials");
+                } else {
+                    //console.log(result);
+                    res.writeHead(200, {
+                        'Content-Type': 'text/plain'
+                    })
+
+                    console.log("photos", result);
+                    res.end(JSON.stringify(result));
+                }
+            });
+        }
+    })
+});
+
+
+
+
+//get file name required from DB
+//   var file=["android_mountains-3840x2160.jpg","beach_4k-3840x2160.jpg"];
+//   var base64img = [];
+//     file.forEach(element=>{
+//       var fileLocation = path.join(__dirname + '/uploads',element);
+//       var img = fs.readFileSync(fileLocation);
+//       base64img.push(new Buffer(img).toString('base64'));
+//     })
+//   res.writeHead(200, {'Content-Type': 'image/jpg' });
+//    res.end(JSON.stringify(base64img));
+//    console.log("Download Completed, response sent");    
+
+
+/******************* DISPLAY PROPERTY POST END ***************************/
+
+/******************* DISPLAY PHOTOS POST BEGIN ***************************/
+
+
+app.post('/downloadPhotos', (req, res) => {
+    console.log("Inside download file");
+
+    /////////get photos//////////
+    var sql = "select photos from ownerprofile";
+
+    pool.getConnection(function (err, con) {
+        if (err) {
+            console.log("connection error");
+            res.writeHead(400, {
+                'Content-Type': 'text/plain'
+            })
+            res.end("Could Not Get Connection Object");
+        } else {
+            con.query(sql, function (err, result) {
+                if (err) {
+                    console.log(err);
+                    res.writeHead(400, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end("Invalid Credentials");
+                } else {
+                    //console.log(result);
+                    res.writeHead(200, {
+                        'Content-Type': 'text/plain'
+                    })
+                    var base64imgObj=[];
+                    console.log("photos", result);
+                    result.forEach(element1 => {
+                        var file = element1['photos'];
+                        file = file.split("___");
+                        console.log("file : :",file);
+                        file.splice( file.indexOf(''), 1 );
+                        console.log("file2 : :",file);
+                        var base64img = [];
+                        file.forEach(element2 => {
+                            var fileLocation = path.join(__dirname + '/uploads', element2);
+                            var img = fs.readFileSync(fileLocation);
+                            base64img.push(new Buffer(img).toString('base64'));
+                        })
+                        base64imgObj.push(base64img);
+                    });
+                    res.end(JSON.stringify(base64imgObj));
+                }
+            });
+        }
+    })
+    /////////get photos end//////////
+
+    //get file name required from DB
+    //   var file=["android_mountains-3840x2160.jpg","beach_4k-3840x2160.jpg"];
+    //   var base64img = [];
+    //     file.forEach(element=>{
+    //       var fileLocation = path.join(__dirname + '/uploads',element);
+    //       var img = fs.readFileSync(fileLocation);
+    //       base64img.push(new Buffer(img).toString('base64'));
+    //     })
+    //   res.writeHead(200, {'Content-Type': 'image/jpg' });
+    //    res.end(JSON.stringify(base64img));
+    //    console.log("Download Completed, response sent");    
+});
+
+/******************* DISPLAY PHOTOS POST END ***************************/
+
+
+
+
 
 
 /******************* LISTEN PORT ***************************/

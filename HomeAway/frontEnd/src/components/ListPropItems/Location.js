@@ -10,7 +10,7 @@ class Location extends Component {
         console.log("Inside ListProperty/Location");
 
         this.state = ({
-            comp:<Details callbackFromParent={this.myCallback}/>,
+            comp: <Details callbackFromParent={this.myCallback} />,
             country: "US",
             street: "",
             building: "",
@@ -20,13 +20,19 @@ class Location extends Component {
 
         this.sendDatatoParent = this.sendDatatoParent.bind(this);
         this.getData = this.getData.bind(this);
-        }
+    }
 
     onSelectFlag(countryCode) {
         console.log(countryCode);
         this.setState({
             country: countryCode
         })
+    }
+
+    //without this func details to bookingDetails component rending is not working as Location has become Details parent after rendering details comp from here.
+    myCallback = (stateFromChild) => {
+        console.log("In Location, state of child", stateFromChild);
+        this.props.callbackFromParent(stateFromChild);
     }
 
     getData = (e) => {
@@ -47,7 +53,7 @@ class Location extends Component {
     sendDatatoParent = (e) => {
         e.preventDefault();
         console.log(this.state);
-        this.props.callbackFromParent(this.state);  
+        this.props.callbackFromParent(this.state);
     }
 
     render() {
@@ -56,7 +62,7 @@ class Location extends Component {
                 <div class="locationHeader">
                     <h4>Verify the location of your rental</h4>
                 </div>
-                <div class="locationBody">
+                <div class="listPropBody">
                     <form class="form-group">
                         <div class="form_element">
                             <ReactFlagsSelect onSelect={this.onSelectFlag.bind(this)} value="US" name="country" class="form-control" defaultCountry="US" />

@@ -11,6 +11,7 @@ import Fees from './ListPropItems/PricingItems/Fees';
 import Rental from './ListPropItems/PricingItems/Rental';
 import Taxes from './ListPropItems/PricingItems/Taxes';
 import axios from 'axios';
+import Footer from './Footer';
 
 class ListProperty extends Component {
     constructor(props) {
@@ -44,8 +45,11 @@ class ListProperty extends Component {
         }
     }
 
+    myCallback1 = (newComp) => {
 
-    myCallback=(stateFromChild)=> {
+    }
+
+    myCallback = (stateFromChild) => {
         console.log("In Parent, state of child", stateFromChild);
         this.setState({
             ...stateFromChild
@@ -62,69 +66,70 @@ class ListProperty extends Component {
 
     demoBtn = (e) => {
         e.preventDefault();
-        console.log("State data right now : ",this.state);
+        console.log("State data right now : ", this.state);
 
         //directly sending this.state is throwing error : converting circular structure to JSON
-       const data = {
-        country: this.state.country,
-        street: this.state.street,
-        building: this.state.building,
-        city: this.state.city,
-        state: this.state.state,
-        zipcode: this.state.zipcode,
-        headline: this.state.headline,
-        description: this.state.description,
-        type: this.state.type,
-        bedrooms: this.state.bedrooms,
-        accomodates: this.state.accomodates,
-        bathrooms: this.state.bathrooms,
-        bookingoptions: this.state.bookingoptions,
-        photos: this.state.photos,
-        startdate: this.state.startdate,
-        enddate: this.state.enddate,
-        currency: this.state.currency,
-        rent: this.state.rent,
-        tax: this.state.tax,
-        cleaningfee: this.state.cleaningfee
+        const data = {
+            country: this.state.country,
+            street: this.state.street,
+            building: this.state.building,
+            city: this.state.city,
+            state: this.state.state,
+            zipcode: this.state.zipcode,
+            headline: this.state.headline,
+            description: this.state.description,
+            type: this.state.type,
+            bedrooms: this.state.bedrooms,
+            accomodates: this.state.accomodates,
+            bathrooms: this.state.bathrooms,
+            bookingoptions: this.state.bookingoptions,
+            photos: this.state.photos,
+            startdate: this.state.startdate,
+            enddate: this.state.enddate,
+            currency: this.state.currency,
+            rent: this.state.rent,
+            tax: this.state.tax,
+            cleaningfee: this.state.cleaningfee
         }
 
         //sending data to server
-        axios.post("http://localhost:3001/listProperty",data)
-        .then( response =>{ 
-            console.log("res :"+response);
-        });
+        axios.post("http://localhost:3001/listProperty", data)
+            .then(response => {
+                console.log("res :" + response);
+            });
     }
 
 
     render() {
         return (
-            <div class="listPropDiv container-fluid">
-                <div class="col-lg-2"></div>
-                <div class="propItems sidebar col-lg-2">
-                    <ul class="nav nav-sidebar">
-                        <li>
-                            <h3 onClick={this.demoBtn.bind(this)}>Welcome</h3>
-                        </li>
-                        <li>
-                            <a onClick={this.handleClick.bind(this, <Location callbackFromParent={this.myCallback.bind(this)} />)} value="<Location/>">Location</a>
-                        </li>
-                        <li>
-                            <a onClick={this.handleClick.bind(this, <Details callbackFromParent={this.myCallback.bind(this)} />)} value="<Details/>">Details</a>
-                        </li>
-                        <li>
-                            <a onClick={this.handleClick.bind(this, <BookingDetails callbackFromParent={this.myCallback.bind(this)} />)} value="<BookingDetails/>">Booking Options</a>
-                        </li>
-                        <li>
-                            <a onClick={this.handleClick.bind(this, <Photos callbackFromParent={this.myCallback.bind(this)} />)} value="<Photos/>">Photos</a>
-                        </li>
-                        <li>
-                            <a onClick={this.handleClick.bind(this, <Security callbackFromParent={this.myCallback.bind(this)} />)} value="<Security/>">Security</a>
-                        </li>
-                        <li>
-                            <a onClick={this.handleClick.bind(this, <Payment callbackFromParent={this.myCallback.bind(this)} />)} value="<Payment/>">Payment</a>
-                        </li>
-                        <li class="">
-                            <ul>
+            <div>
+                <div class="listPropDiv container-fluid">
+                    <div class="col-lg-12">
+                        <div class="col-lg-2"></div>
+                        <div class="propItems sidebar col-lg-2">
+                            <ul class="nav nav-sidebar">
+                                <li>
+                                    <h3 onClick={this.demoBtn.bind(this)}>Welcome</h3>
+                                </li>
+                                <li>
+                                    <a onClick={this.handleClick.bind(this, <Location callbackFromParent={this.myCallback.bind(this)} />)} value="<Location/>">Location</a>
+                                </li>
+                                <li>
+                                    <a onClick={this.handleClick.bind(this, <Details callbackFromParent={this.myCallback.bind(this)} />)} value="<Details/>">Details</a>
+                                </li>
+                                <li>
+                                    <a onClick={this.handleClick.bind(this, <BookingDetails callbackFromParent={this.myCallback.bind(this)} />)} value="<BookingDetails/>">Booking Options</a>
+                                </li>
+                                <li>
+                                    <a onClick={this.handleClick.bind(this, <Photos callbackFromParent={this.myCallback.bind(this)} />)} value="<Photos/>">Photos</a>
+                                </li>
+                                <li>
+                                    <a onClick={this.handleClick.bind(this, <Security callbackFromParent={this.myCallback.bind(this)} />)} value="<Security/>">Security</a>
+                                </li>
+                                <li>
+                                    <a onClick={this.handleClick.bind(this, <Payment callbackFromParent={this.myCallback.bind(this)} />)} value="<Payment/>">Payment</a>
+                                </li>
+
                                 <li>
                                     <a onClick={this.handleClick.bind(this, <Availability callbackFromParent={this.myCallback.bind(this)} />)}>Availability</a>
                                 </li>
@@ -138,14 +143,20 @@ class ListProperty extends Component {
                                     <a onClick={this.handleClick.bind(this, <Fees callbackFromParent={this.myCallback.bind(this)} />)}>Fees</a>
                                 </li>
                             </ul>
-                        </li>
-                    </ul>
+
+                        </div>
+                        <div class="ItemDetails col-lg-6">
+                            {this.state.comp}
+                        </div>
+                        <div class="col-lg-2"></div>
+                    </div>
+
                 </div>
-                <div class="ItemDetails col-lg-6">
-                    {this.state.comp}
+                <div class="col-lg-12 footer_listprop">
+                    <Footer />
                 </div>
-                <div class="col-lg-2"></div>
             </div>
+
         );
     }
 

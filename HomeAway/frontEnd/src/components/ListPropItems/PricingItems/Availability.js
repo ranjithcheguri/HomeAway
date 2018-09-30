@@ -15,6 +15,11 @@ constructor(props){
     this.getData = this.getData.bind(this);
 }
 
+myCallback=(stateFromChild)=> {
+    console.log("In Location, state of child", stateFromChild);
+    this.props.callbackFromParent(stateFromChild);
+}
+
 getData=(e)=>{
     e.preventDefault();
     //console.log(e.target.name);
@@ -31,13 +36,13 @@ sendDatatoParent=(e)=>{
 
 render(){
     return(
-        <div class="container-fluid">
+        <div class="container-fluid listPropBody">
             <div class="locationHeader availHeader">
                 <h3>Availability</h3>
                 <p>Already know when you would like your property to be available?</p>
                 <p>You can also make changes after publishing your listing.</p>
             </div>
-            <div>
+            <div >
                 <h4>Select a starting point for setting up your availability</h4>
                 <div class="">
                     <div class="form_element col-lg-6">
