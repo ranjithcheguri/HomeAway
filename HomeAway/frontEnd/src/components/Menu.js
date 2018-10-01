@@ -12,6 +12,7 @@ import Profile from './Profile';
 import OwnerSignUp from './OwnerSignUp';
 import DisplayProperty from './DisplayProperty';
 import BookingHistory from './BookingHistory';
+import BookProperty from './BookPropety';
 import Details from './ListPropItems/Details';
 import BookingDetails from './ListPropItems/BookingDetails';
 
@@ -38,6 +39,7 @@ class Menu extends Component {
                 <Route path="/Profile" component={Profile}/>
                 <Route path="/OwnerSignUp" component={OwnerSignUp}/>
                 <Route path="/DisplayProperty" component={DisplayProperty}/>
+                <Route path="/BookProperty" component={BookProperty}/>
                 <Route path="/BookingHistory" component={BookingHistory}/>
             </div>
         );

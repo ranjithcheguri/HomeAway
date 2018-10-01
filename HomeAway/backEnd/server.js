@@ -237,7 +237,8 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         const newFilename = `image_` + Date.now() + `${(path.extname(file.originalname))}`;
         //this photo name to be inserted in database.
-        photos = photos + "___" + newFilename;
+        //{{{ when server is countinously running, for 2nd insertion 1st insertion photos are also getting upload so...}}}
+        photos=photos+"___"+newFilename;
         //const newFilename = file.originalname;
         console.log("FileName : " + newFilename);
         cb(null, newFilename);
@@ -247,14 +248,11 @@ const storage = multer.diskStorage({
 //Init Upload for multiple images
 const upload = multer({ storage: storage }).array('photos', 5);
 
-
 app.post('/listPropertyPhotos', upload, (req, res, next) => {
     console.log("Inside UploadFiles");
     console.log("uploadFiles : ", req.files);
     console.log(photos);
 });
-
-
 
 /******************* PHOTOS POST END ***************************/
 
@@ -304,6 +302,7 @@ app.post('/listProperty', (req, res) => {
                     })
                     res.end("Invalid Credentials");
                 } else {
+                    photos="";
                     console.log(result);
                     res.writeHead(200, {
                         'Content-Type': 'text/plain'
@@ -318,6 +317,8 @@ app.post('/listProperty', (req, res) => {
 /******************* OTHER DETAILS POST END***************************/
 
 /******************* LIST PROPERTY POSTS END ***************************/
+
+
 
 /******************* DISPLAY PROPERTY POST BEGIN ***************************/
 

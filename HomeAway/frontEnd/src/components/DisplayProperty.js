@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 
 class DisplayProperty extends Component {
@@ -11,7 +12,8 @@ class DisplayProperty extends Component {
 
         this.state = {
             photosData: [],
-            propertyData: []
+            propertyData: [],
+            key:[]
         }
     }
 
@@ -46,47 +48,63 @@ class DisplayProperty extends Component {
             });
     }
 
+    returnImage = (index) => {
+
+        //return this.state.photosData[index][0];
+        //console.log("is this array ?",this.state.photosData[index]);
+        if (Array.isArray(this.state.photosData[index])) {
+            //console.log("this is array : ",this.state.photosData[index]);
+            return this.state.photosData[index][0];
+        }
+        else {
+            //console.log("this is not array",this.state.photosData[index]);
+            return this.state.photosData[index];
+        }
+    }
+
+    getFloorSize(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) ) + min;
+    }
+
+    async redirectToBookProperty(Itemkey,e){
+        //e.preventDefault();
+       await this.setState({
+            key:Itemkey
+        });
+        console.log("clicked key",this.state.key);
+        this.props.history.push('/BookProperty',this.state)
+    }
+
 
     render() {
-        var PropItems="";
-        console.log("data in renderer start",this.state.photosData);
+        var PropItems = "";
+        console.log("data in renderer start", this.state.photosData);
         if (!!this.state.photosData) {
             PropItems = this.state.propertyData.map((item, index) => {
-                //console.log(item,index);
-                //var Temp_photos = [];
-                //console.log("photosdata:" + this.state.photosData);
-                //Temp_photos = this.state.photosData[1];
-                //console.log("temp_photos : ", Temp_photos.get(1));
                 return (
-                    <div class="displayItem marginAll marginRight">
-                        <tr>
-                            <td rowSpan="7"><img class="displayPropertyImage" alt="image comes here" src={'data:image/jpeg;base64,' + this.state.photosData[index]}></img></td>
-                            <td><b><a class="itemDescription" href="">{item.description}</a></b></td>
-                        </tr>
-                        <tr>
-                            <td>"kjabf;"</td>
-                        </tr>
-                        <tr>
-                            <td>"kjabf;"</td>
-                        </tr>
-                        <tr>
-                            <td>"kjabf;"</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                        </tr>
+                    <div class="col-lg-12 displayItem marginAll marginRight">
+                        <div class="col-lg-4">
+                            <img class="displayPropertyImage" alt="No Image !" src={'data:image/jpeg;base64,' + this.returnImage(index)}></img>
+                        </div>
+                        <div class="col-lg-8">
+                            <div><a onClick={this.redirectToBookProperty.bind(this,(item.key))} class="itemDescription">{item.headline}</a></div>
+                            <div class="col-lg-12 alignLeft">
+                                <div class="col-lg-2">{item.type}</div>
+                                <div class="col-lg-2">{item.bedrooms}BR</div>
+                                <div class="col-lg-2">{item.bathrooms}BA</div>
+                                <div class="col-lg-2">Sleeps:{item.accomodates}</div>
+                                <div class="col-lg-4">{this.getFloorSize(400,1000)}Sq.ft.</div>
+                            </div>
+                            <div><div class="">&nbsp;</div></div>
+                            <div><div class="">{this.getFloorSize(20,100)/10} miles to {this.props.location.state.searchCity}</div></div>
+                            <div><div class="">{item.rent} {'$avg/night'}</div></div>
+                        </div>
                     </div>
 
                 );
             })
-        }else{
-            PropItems="NO DATA";
+        } else {
+            PropItems = "NO DATA";
         }
 
         //check state after getting all comp structures
@@ -95,11 +113,13 @@ class DisplayProperty extends Component {
         return (
             <div class="displayProperty">
                 <div class="container-fluid">
-                    <table class="displayTable table table-dark">
-                        <tbody>
+                    <div class="col-lg-12">
+                        <div class="col-lg-7">
                             {PropItems}
-                        </tbody>
-                    </table>
+                        </div>
+                        <div class="col-lg-5">
+                        </div>
+                    </div>
                 </div>
             </div>
         )
