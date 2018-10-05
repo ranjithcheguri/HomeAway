@@ -89,7 +89,8 @@ class ListProperty extends Component {
             currency: this.state.currency,
             rent: this.state.rent,
             tax: this.state.tax,
-            cleaningfee: this.state.cleaningfee
+            cleaningfee: this.state.cleaningfee,
+            ownername:sessionStorage.getItem('ownername')
         }
 
         //sending data to server
@@ -156,7 +157,6 @@ class ListProperty extends Component {
                     <Footer />
                 </div>
             </div>
-
         );
     }
 

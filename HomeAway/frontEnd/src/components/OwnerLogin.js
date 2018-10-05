@@ -28,6 +28,7 @@ class OwnerLogin extends Component {
         axios.post('http://localhost:3001/ownerlogin', this.state)
             .then(response => {
                 if (response.status === 200) {
+                    sessionStorage.setItem('ownername',this.state.email);
                     console.log("Login successful");
                     this.setState({
                         redirectVar:true

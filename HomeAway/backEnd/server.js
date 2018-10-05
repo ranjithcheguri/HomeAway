@@ -238,7 +238,7 @@ const storage = multer.diskStorage({
         const newFilename = `image_` + Date.now() + `${(path.extname(file.originalname))}`;
         //this photo name to be inserted in database.
         //{{{ when server is countinously running, for 2nd insertion 1st insertion photos are also getting upload so...}}}
-        photos=photos+"___"+newFilename;
+        photos = photos + "___" + newFilename;
         //const newFilename = file.originalname;
         console.log("FileName : " + newFilename);
         cb(null, newFilename);
@@ -262,7 +262,7 @@ app.post('/listProperty', (req, res) => {
     console.log("Inside Listproperty");
     console.log("Property details : ", req.body);
     //insert image names in database.
-    var sql = "INSERT INTO ownerprofile(`country`, `street`, `building`, `city`, `state`, `zipcode`, `headline`, `description`, `type`, `bedrooms`, `accomodates`, `bathrooms`, `bookingoptions`, `photos`, `startdate`, `enddate`, `currency`, `rent`, `tax`, `cleaningfee`) VALUES (" +
+    var sql = "INSERT INTO ownerprofile(`country`, `street`, `building`, `city`, `state`, `zipcode`, `headline`, `description`, `type`, `bedrooms`, `accomodates`, `bathrooms`, `bookingoptions`, `photos`, `startdate`, `enddate`, `currency`, `rent`, `tax`, `cleaningfee`,`ownername`) VALUES (" +
         mysql.escape(req.body.country) + " , " +
         mysql.escape(req.body.street) + " , " +
         mysql.escape(req.body.building) + " , " +
@@ -282,7 +282,8 @@ app.post('/listProperty', (req, res) => {
         mysql.escape(req.body.currency) + " , " +
         mysql.escape(req.body.rent) + " , " +
         mysql.escape(req.body.tax) + " , " +
-        mysql.escape(req.body.cleaningfee) + ");";
+        mysql.escape(req.body.cleaningfee) + " , " +
+        mysql.escape(req.body.ownername) + ");";
 
     console.log("SQL QUERY: ", sql);
 
@@ -302,7 +303,7 @@ app.post('/listProperty', (req, res) => {
                     })
                     res.end("Invalid Credentials");
                 } else {
-                    photos="";
+                    photos = "";
                     console.log(result);
                     res.writeHead(200, {
                         'Content-Type': 'text/plain'
@@ -356,22 +357,6 @@ app.post('/displayProperty', (req, res) => {
     })
 });
 
-
-
-
-//get file name required from DB
-//   var file=["android_mountains-3840x2160.jpg","beach_4k-3840x2160.jpg"];
-//   var base64img = [];
-//     file.forEach(element=>{
-//       var fileLocation = path.join(__dirname + '/uploads',element);
-//       var img = fs.readFileSync(fileLocation);
-//       base64img.push(new Buffer(img).toString('base64'));
-//     })
-//   res.writeHead(200, {'Content-Type': 'image/jpg' });
-//    res.end(JSON.stringify(base64img));
-//    console.log("Download Completed, response sent");    
-
-
 /******************* DISPLAY PROPERTY POST END ***************************/
 
 /******************* DISPLAY PHOTOS POST BEGIN ***************************/
@@ -403,14 +388,14 @@ app.post('/downloadPhotos', (req, res) => {
                     res.writeHead(200, {
                         'Content-Type': 'text/plain'
                     })
-                    var base64imgObj=[];
+                    var base64imgObj = [];
                     console.log("photos", result);
                     result.forEach(element1 => {
                         var file = element1['photos'];
                         file = file.split("___");
-                        console.log("file : :",file);
-                        file.splice( file.indexOf(''), 1 );
-                        console.log("file2 : :",file);
+                        console.log("file : :", file);
+                        file.splice(file.indexOf(''), 1);
+                        console.log("file2 : :", file);
                         var base64img = [];
                         file.forEach(element2 => {
                             var fileLocation = path.join(__dirname + '/uploads', element2);
@@ -424,26 +409,137 @@ app.post('/downloadPhotos', (req, res) => {
             });
         }
     })
-    /////////get photos end//////////
 
-    //get file name required from DB
-    //   var file=["android_mountains-3840x2160.jpg","beach_4k-3840x2160.jpg"];
-    //   var base64img = [];
-    //     file.forEach(element=>{
-    //       var fileLocation = path.join(__dirname + '/uploads',element);
-    //       var img = fs.readFileSync(fileLocation);
-    //       base64img.push(new Buffer(img).toString('base64'));
-    //     })
-    //   res.writeHead(200, {'Content-Type': 'image/jpg' });
-    //    res.end(JSON.stringify(base64img));
-    //    console.log("Download Completed, response sent");    
 });
 
 /******************* DISPLAY PHOTOS POST END ***************************/
 
+/******************* BOOKING HOME/PROPERTY BEGIN ***************************/
 
+app.post('/bookProperty', (req, res) => {
 
+    console.log("Inside Booking Property");
+    //booking dates can be included as well here.
+    var sql = "UPDATE ownerprofile SET `booked` = "+ mysql.escape(1) + ", `bookedBy` = " + mysql.escape(req.body.bookedUser) + " WHERE `key` = " + parseInt(mysql.escape(req.body.bookedKey))+";";
+    //var sql = 'UPDATE ownerprofile SET booked = 1, bookedBy = \'rky@123.com\' WHERE key = 11';
+    console.log(sql);
 
+    pool.getConnection(function (err, con) {
+        if (err) {
+            console.log("connection error");
+            res.writeHead(400, {
+                'Content-Type': 'text/plain'
+            })
+            res.end("Could Not Get Connection Object");
+        } else {
+            console.log("connection to db successfull");
+            con.query(sql, function (err, result) {
+                if (err) {
+                    console.log("******** Error in bookingProperty ******");
+                    console.log(err);
+                    res.writeHead(400, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end("Invalid Credentials");
+                } else {
+                    console.log(result);
+                    //play with result here.
+                    res.writeHead(200, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end("Successfully Booked Property");
+                }
+            });
+        }
+    })
+});
+
+/******************* BOOKING HOME/PROPERTY END ***************************/
+
+/******************* BOOKING HISTORY BEGIN ***************************/
+
+    app.post('/bookingHistory',(req,res)=>{
+        
+    console.log("Inside Booking History");
+
+    var sql = "SELECT `key`,`headline`,`city`,`type`,`startdate`,`enddate`,`rent` from `ownerprofile` WHERE `bookedBy` = "+mysql.escape(req.body.username)+";";
+
+    console.log(sql);
+
+    pool.getConnection(function (err, con) {
+        if (err) {
+            console.log("connection error");
+            res.writeHead(400, {
+                'Content-Type': 'text/plain'
+            })
+            //res.send("Could Not Get Connection Object");
+        } else {
+            console.log("connection to db successfull");
+            con.query(sql, function (err, result) {
+                if (err) {
+                    console.log("******** Error in Booking History ******");
+                    console.log(err);
+                    res.writeHead(400, {
+                        'Content-Type': 'text/plain'
+                    })
+                    //res.send("Invalid Credentials");
+                } else {
+                    console.log(result);
+                    //send result
+                    res.writeHead(200, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end(JSON.stringify(result)); //error here 
+
+                }
+            });
+        }
+    })
+    })
+
+/******************* BOOKING HISTORY END ***************************/
+/******************* OWNER DASHBOARD BEGIN ***************************/
+
+app.post('/ownerDashboard',(req,res)=>{
+        
+    console.log("Inside ownerDashboard");
+
+    var sql = "SELECT `key`,`headline`,`city`,`type`,`startdate`,`enddate`,`rent` from `ownerprofile` WHERE `ownername` = "+mysql.escape(req.body.ownername)+";";
+
+    console.log(sql);
+
+    pool.getConnection(function (err, con) {
+        if (err) {
+            console.log("connection error");
+            res.writeHead(400, {
+                'Content-Type': 'text/plain'
+            })
+            //res.send("Could Not Get Connection Object");
+        } else {
+            console.log("connection to db successfull");
+            con.query(sql, function (err, result) {
+                if (err) {
+                    console.log("******** Error in ownerDashboard ******");
+                    console.log(err);
+                    res.writeHead(400, {
+                        'Content-Type': 'text/plain'
+                    })
+                    //res.send("Invalid Credentials");
+                } else {
+                    console.log(result);
+                    //send result
+                    res.writeHead(200, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end(JSON.stringify(result)); //error here 
+
+                }
+            });
+        }
+    })
+    })
+
+/******************* OWNER DASHBOARD END ***************************/
 
 
 /******************* LISTEN PORT ***************************/

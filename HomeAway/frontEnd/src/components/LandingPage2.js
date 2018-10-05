@@ -40,6 +40,8 @@ class LandingPage2 extends Component {
 
     render() {
 
+        
+
         // ******************** REDIRECT TO LIST PROP USING COOKIE ****************************
 
         let renderListProp = null;
@@ -70,6 +72,9 @@ class LandingPage2 extends Component {
                             <Link to='/Profile'>Profile</Link>
                         </li>
                         <li>
+                            <Link to='/BookingHistory'>Booking History</Link>
+                        </li>
+                        <li>
                             <a onClick={this.handleSignOut.bind(this)}>SignOut</a>
                         </li>
                     </ul>
@@ -86,6 +91,9 @@ class LandingPage2 extends Component {
                     <ul class="dropdown-menu">
                         <li>
                             <Link to='/Profile'>OwnerProfile</Link>
+                        </li>
+                        <li>
+                            <Link to='/OwnerDashboard'>Owner Dashboard</Link>
                         </li>
                         <li>
                             <a onClick={this.handleSignOut.bind(this)}>SignOut</a>
@@ -174,7 +182,7 @@ class LandingPage2 extends Component {
 
         return (
             //main return statement.
-            <div>
+            <div class="hideNavBar">
                 {displayPropertyToggle}
             </div>
         );

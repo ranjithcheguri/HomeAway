@@ -28,6 +28,7 @@ class Login extends Component {
       axios.post('http://localhost:3001/login',this.state)
       .then(response=>{
         if(response.status === 200){
+            sessionStorage.setItem('username',this.state.email);
             console.log("Login successful");
             this.setState({
                 redirectVar:true

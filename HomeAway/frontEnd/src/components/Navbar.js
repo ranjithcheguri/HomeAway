@@ -11,7 +11,6 @@ class Navbar extends Component{
         render(){
         return(
             <div class="navbarContainer">
-              
                 <nav class="navbar">
                     <div class="container-fluid">
                         <div class="navbar-header">

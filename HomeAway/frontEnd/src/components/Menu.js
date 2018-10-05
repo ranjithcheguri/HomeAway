@@ -15,6 +15,7 @@ import BookingHistory from './BookingHistory';
 import BookProperty from './BookPropety';
 import Details from './ListPropItems/Details';
 import BookingDetails from './ListPropItems/BookingDetails';
+import OwnerDashboard from './OwnerDashboard';
 
 
 class Menu extends Component {
@@ -41,6 +42,8 @@ class Menu extends Component {
                 <Route path="/DisplayProperty" component={DisplayProperty}/>
                 <Route path="/BookProperty" component={BookProperty}/>
                 <Route path="/BookingHistory" component={BookingHistory}/>
+                <Route path="/OwnerDashboard" component={OwnerDashboard}/>
+
             </div>
         );
     }

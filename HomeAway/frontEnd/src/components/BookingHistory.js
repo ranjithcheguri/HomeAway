@@ -1,49 +1,91 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
+import cookie from 'react-cookies';
+import {Redirect} from 'react-router-dom';
 
-class BookingHistory extends Component{
+class BookingHistory extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         console.log("Inside Booking History");
+        this.state = {
+            username: sessionStorage.getItem('username'),
+            propertyData: "",
+            isEmpty: true
+        }
     }
 
-   
-    render() {
-        var photos=[]
-        console.log(this.state.photosData[this.state.key].length);
-        photos.push(
-            <div class="item active container-img">
-            here2352
-        </div>
-        )
-        for(var i=1;i<4;i++){
-            photos.push(
-                <div class="item container-img">
-                here
-            </div>
-            )
+
+    async componentDidMount() {
+        const data = {
+            username: this.state.username,
         }
-        console.log(photos);
+        await axios.post('http://localhost:3001/bookingHistory/', data)
+            .then(response => {
+                if (response.data.length > 0) {
+                    this.setState({
+                        propertyData: response.data,
+                        isEmpty: false
+                    })
+                }
+                console.log(response);
+            });
+    }
+
+    render() {
+
+        var details = "";
+        var pageLayout = "";
+        if (!this.state.isEmpty) {
+            details = this.state.propertyData.map((property, index) => {
+                return (
+                    <tr>
+                        <td>{index + 1}</td>
+                        <td>{property.headline}</td>
+                        <td>{property.city}</td>
+                        <td>{property.startdate.substring(0,10)}</td>
+                        <td>{property.enddate.substring(0,10)}</td>
+                        <td>{property.rent}</td>
+                        <td><button class="btn btn btn-danger">CANCEL</button></td>
+                    </tr>
+                )
+            })
+        } else {
+            return (<div>Booking data not found</div>)
+        }
+
+        if (cookie.load('TravelerCookie')) {
+            pageLayout = ( <div class="bookPropertyContainer">
+            <div class="container-fluid shadowBg">
+                <center><h2 class="">My Booking History</h2></center>
+                <table class="table table-bordered ">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Property Name</th>
+                            <th>City</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Rent</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/*Display the Tbale row based on data recieved*/}
+                        {details}
+                    </tbody>
+                </table>
+            </div>
+            </div>)
+
+        }else{
+            this.props.history.push('/Login');
+        }
 
         return (
-            <div>
-                <div class="container col-lg-8">
-                    <div id="myCarousel" class="carousel slide " data-ride="carousel">
-                        <div class="carousel-inner">
-                            {photos}
-                        </div>
-                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <div>{pageLayout}</div>
         )
+
     }
 }
 export default BookingHistory;

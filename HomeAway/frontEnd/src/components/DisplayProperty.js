@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 class DisplayProperty extends Component {
@@ -13,7 +13,7 @@ class DisplayProperty extends Component {
         this.state = {
             photosData: [],
             propertyData: [],
-            key:[]
+            key: []
         }
     }
 
@@ -63,16 +63,16 @@ class DisplayProperty extends Component {
     }
 
     getFloorSize(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) ) + min;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    async redirectToBookProperty(Itemkey,e){
+    async redirectToBookProperty(Itemkey, e) {
         //e.preventDefault();
-       await this.setState({
-            key:Itemkey
+        await this.setState({
+            key: Itemkey
         });
-        console.log("clicked key",this.state.key);
-        this.props.history.push('/BookProperty',this.state)
+        console.log("clicked key", this.state.key);
+        this.props.history.push('/BookProperty', this.state)
     }
 
 
@@ -87,16 +87,18 @@ class DisplayProperty extends Component {
                             <img class="displayPropertyImage" alt="No Image !" src={'data:image/jpeg;base64,' + this.returnImage(index)}></img>
                         </div>
                         <div class="col-lg-8">
-                            <div><a onClick={this.redirectToBookProperty.bind(this,(item.key))} class="itemDescription">{item.headline}</a></div>
+                            <div><a onClick={this.redirectToBookProperty.bind(this, (item.key))} class="itemDescription">{item.headline}</a></div>
                             <div class="col-lg-12 alignLeft">
-                                <div class="col-lg-2">{item.type}</div>
-                                <div class="col-lg-2">{item.bedrooms}BR</div>
-                                <div class="col-lg-2">{item.bathrooms}BA</div>
-                                <div class="col-lg-2">Sleeps:{item.accomodates}</div>
-                                <div class="col-lg-4">{this.getFloorSize(400,1000)}Sq.ft.</div>
+                                <div class="col-lg-2">
+                                    <i class="fa fa-home">&nbsp;{item.type}</i>
+                                </div>
+                                <div class="col-lg-2"><i class="fa fa-bed">&nbsp;{item.bedrooms}&nbsp;BR</i></div>
+                                <div class="col-lg-2"><i class="fa fa-bath">&nbsp;{item.bathrooms}&nbsp;BA</i></div>
+                                <div class="col-lg-2"><i class="fa fa-users">&nbsp;Sleeps:&nbsp;{item.accomodates}</i></div>
+                                <div class="col-lg-4"><i class="fa fa-window-maximize">&nbsp;{this.getFloorSize(400, 1000)}&nbsp;Sq.ft.</i></div>
                             </div>
                             <div><div class="">&nbsp;</div></div>
-                            <div><div class="">{this.getFloorSize(20,100)/10} miles to {this.props.location.state.searchCity}</div></div>
+                            <div><div class="">{this.getFloorSize(20, 100) / 10} miles to {this.props.location.state.searchCity}</div></div>
                             <div><div class="">{item.rent} {'$avg/night'}</div></div>
                         </div>
                     </div>
