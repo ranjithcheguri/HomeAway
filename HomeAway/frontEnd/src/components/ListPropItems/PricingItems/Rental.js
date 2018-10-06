@@ -1,40 +1,67 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
+import Taxes from './Taxes';
 
-class Rental extends Component{
-constructor(props){
-    super(props);
-    console.log("Inside ListProperty/Pricing/Rental");
-}
+class Rental extends Component {
+    constructor(props) {
+        super(props);
+        console.log("Inside ListProperty/Pricing/Rental");
+        this.state={
+            currency:"",
+            rent:"",
+            tax:"",
+            cleaningfee:""
+        }
+    }
 
-render(){
-    return(
-        <div class="container-fluid">
-            <div class="locationHeader availHeader">
-                <h3>Rental</h3>
-                <p>Already know when you would like your property to be available?</p>
-                <p>You can also make changes after publishing your listing.</p>
-            </div>
-            <div>
-                <h4>Select a starting point for setting up your availability</h4>
-                <div class="">
-                    <div class="form_element col-lg-6">
-                        <label>Start date</label>
-                        <input class="form-control" type="date"></input>
-                    </div>
-                    <div class="form_element col-lg-6">
-                        <label>End date</label>
-                        <input class="form-control" type="date"></input>
-                    </div>
+    myCallback = (stateFromChild) => {
+        console.log("In Details, state of child", stateFromChild);
+        this.props.callbackFromParent(stateFromChild);
+    }
+
+    getData = (e) => {
+        e.preventDefault();
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    sendDatatoParent = (e) => {
+        e.preventDefault();
+        console.log("Details state ", this.state);
+        this.props.callbackFromParent(this.state);
+    }
+
+
+    render() {
+        return (
+            <div class="container-fluid">
+                <div class="locationHeader">
+                    <h3>How much do you want to charge?</h3>
+                </div>
+                <div class="listPropBody">
+                    <form class="form-group">
+                        <p class="form_element">We recommend starting with a low price to get a few bookings and earn some initial guest reviews. You can update your rates at any time.
+</p>
+
+                        <select name="currency" onChange={this.getData} class="form-control">
+                            <option>Select Currency</option>
+                            <option>USD</option>
+                            <option>AUD</option>
+                            <option>CAD</option>
+                            <option>INR</option>
+                        </select>
+                        <input class="form-control form_element" onChange={this.getData} name="rent" type="text" placeholder="Enter Rent"></input>
+                        <input class="form-control form_element" onChange={this.getData} name="tax" type="text" placeholder="Enter Tax"></input>
+                        <input class="form-control form_element" onChange={this.getData} name="cleaningfee" type="text" placeholder="Enter Cleaning fee"></input>
+                        <div>
+                            <button class="col-lg-offset-2 col-lg-2 btn btn-danger">Cancel</button>
+                            <button onClick={this.sendDatatoParent} class="col-lg-2  col-lg-offset-4 btn btn-success">Submit</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="">
-                <button class=" col-lg-offset-2 col-lg-2 btn btn-danger">Cancel</button>
-                <button class="col-lg-2  col-lg-offset-4 btn btn-primary">Next</button>
-            </div>              
-
-        </div>
-    );
-}
+        );
+    }
 }
 
 export default Rental;

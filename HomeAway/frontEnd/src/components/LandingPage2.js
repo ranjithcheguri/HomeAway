@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Redirect, Route, Link } from 'react-router-dom'
 import CarouselHA from './CarouselHA';
 import cookie from 'react-cookies';
+import Footer2 from './Footer2';
+import Carousel2 from './Carousel2';
+import Carousel3 from './Carousel3';
 
 class LandingPage2 extends Component {
     constructor(props) {
@@ -40,7 +43,7 @@ class LandingPage2 extends Component {
 
     render() {
 
-        
+
 
         // ******************** REDIRECT TO LIST PROP USING COOKIE ****************************
 
@@ -124,7 +127,7 @@ class LandingPage2 extends Component {
 
         let displayPropertyToggle = "";
 
-         if (this.state.redirectVar) {
+        if (this.state.redirectVar) {
             console.log("inside if case redirectVar is true")
             //this.props.history.push('/DisplayProperty',this.state);
             // instead of just redirecting, state needs to be passed so using history.push
@@ -173,17 +176,19 @@ class LandingPage2 extends Component {
 
                         </div>
                     </div>
-                    <CarouselHA />
+                    <Carousel3/>
+                    <Carousel2/>
                 </div>
-
             )
         }
 
 
         return (
             //main return statement.
-            <div class="hideNavBar">
+            <div class="hideNavbar">
                 {displayPropertyToggle}
+                <Link to='/ListProperty'><img class="dummyListProperty" src={require('../images/dummyListProperty.PNG')} /></Link>
+                <Footer2 />
             </div>
         );
     }

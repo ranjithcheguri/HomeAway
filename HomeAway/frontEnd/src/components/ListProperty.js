@@ -49,23 +49,26 @@ class ListProperty extends Component {
 
     }
 
-    myCallback = (stateFromChild) => {
-        console.log("In Parent, state of child", stateFromChild);
-        this.setState({
+    myCallback = async (stateFromChild) => {
+        //console.log("In Parent, state of child", stateFromChild);
+        await this.setState({
             ...stateFromChild
         })
-        console.log(this.state);
+        console.log("state after callback",this.state);
+        if(this.state.rent){
+            this.submitDataCallback();
+        }
     }
 
-    handleClick = (item, event) => {
+    handleClick = async(item, event) => {
         event.preventDefault();
-        this.setState({
+        await this.setState({
             comp: item
         })
     }
 
-    demoBtn = (e) => {
-        e.preventDefault();
+    submitDataCallback = async() => {
+        //e.preventDefault();
         console.log("State data right now : ", this.state);
 
         //directly sending this.state is throwing error : converting circular structure to JSON
@@ -94,10 +97,14 @@ class ListProperty extends Component {
         }
 
         //sending data to server
-        axios.post("http://localhost:3001/listProperty", data)
+       await axios.post("http://localhost:3001/listProperty", data)
             .then(response => {
                 console.log("res :" + response);
             });
+    
+        //after data is sent to server, redirect to ownerDashboard
+        this.props.history.push('/OwnerDashboard');
+
     }
 
 
@@ -110,7 +117,7 @@ class ListProperty extends Component {
                         <div class="propItems sidebar col-lg-2">
                             <ul class="nav nav-sidebar">
                                 <li>
-                                    <h3 onClick={this.demoBtn.bind(this)}>Welcome</h3>
+                                    <h3>Welcome</h3>
                                 </li>
                                 <li>
                                     <a onClick={this.handleClick.bind(this, <Location callbackFromParent={this.myCallback.bind(this)} />)} value="<Location/>">Location</a>
@@ -137,12 +144,7 @@ class ListProperty extends Component {
                                 <li>
                                     <a onClick={this.handleClick.bind(this, <Rental callbackFromParent={this.myCallback.bind(this)} />)}>Rental</a>
                                 </li>
-                                <li>
-                                    <a onClick={this.handleClick.bind(this, <Taxes callbackFromParent={this.myCallback.bind(this)} />)}>Taxes</a>
-                                </li>
-                                <li>
-                                    <a onClick={this.handleClick.bind(this, <Fees callbackFromParent={this.myCallback.bind(this)} />)}>Fees</a>
-                                </li>
+                               
                             </ul>
 
                         </div>

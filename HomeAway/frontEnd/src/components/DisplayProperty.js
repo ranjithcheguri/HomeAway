@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Footer2 from './Footer2';
 
 
 class DisplayProperty extends Component {
@@ -113,17 +114,23 @@ class DisplayProperty extends Component {
         console.log("final state after images download", this.state);
 
         return (
-            <div class="displayProperty">
-                <div class="container-fluid">
-                    <div class="col-lg-12">
-                        <div class="col-lg-7">
-                            {PropItems}
-                        </div>
-                        <div class="col-lg-5">
+            <div>
+                <div class="displayProperty">
+                    <div class="container-fluid">
+                        <div class="col-lg-12">
+                            <div class="col-lg-7">
+                                {PropItems}
+                            </div>
+                            <div class="col-lg-5">
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div>
+                    <Footer2 />
+                </div>
             </div>
+
         )
     }
 }
