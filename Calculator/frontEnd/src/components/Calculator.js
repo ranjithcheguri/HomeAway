@@ -37,7 +37,7 @@ class Calculator extends Component{
             expression : ""
         })
         console.log(data);
-        axios.post('http://localhost:3001/',data)
+        axios.post('http://localhost:3001/compute',data)
         .then(response=>{
             this.setState({
                 expression : response.data

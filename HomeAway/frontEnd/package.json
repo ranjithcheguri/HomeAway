@@ -22,7 +22,8 @@
     "react-responsive-carousel": "^3.1.42",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
-    "react-validate-form": "^1.0.6"
+    "react-validate-form": "^1.0.6",
+    "reactstrap": "^6.5.0"
   },
   "scripts": {
     "start": "react-scripts start",

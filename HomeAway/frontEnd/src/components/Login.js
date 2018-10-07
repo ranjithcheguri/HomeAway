@@ -2,53 +2,49 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from './Footer';
 import axios from 'axios';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 class Login extends Component {
     constructor(props) {
         super(props);
         console.log("Inside Login");
-        this.state={
-            email:"",
-            password:"",
-            redirectVar:false
+        this.state = {
+            email: "",
+            password: "",
+            redirectVar: false
         }
     }
 
     renderRedirect = () => {
         if (this.state.redirectVar) {
-          return <Redirect to='/' />
+            return <Redirect to='/' />
         }
-      }
+    }
 
     handleLogin = (e) => {
-
-        console.log("Login Request Submitted");
-      axios.defaults.withCredentials = true;
-      axios.post('http://localhost:3001/login',this.state)
-      .then(response=>{
-        if(response.status === 200){
-            sessionStorage.setItem('username',this.state.email);
-            console.log("Login successful");
-            this.setState({
-                redirectVar:true
-            })
-        }else{
-            console.log("Invalid Login Credentials");
-            this.setState({
-            })
-        }
-      })
-      //redirecting to home page
-      //this.props.router.push("/");
-      
         e.preventDefault();
+        console.log("Login Request Submitted");
+        axios.defaults.withCredentials = true;
+        const data = this.state;
+        axios.post('http://localhost:3001/login', data)
+            .then(response => {
+                if (response.status === 200) {
+                    sessionStorage.setItem('username', this.state.email);
+                    console.log("Login successful");
+                    this.setState({
+                        redirectVar: true
+                    })
+                } else {
+                    console.log("Invalid Login Credentials");
+                }
+            })
+
     }
 
     handleChange = (e) => {
         this.setState({
             //square brackets must
-            [e.target.name] : e.target.value
+            [e.target.name]: e.target.value
         })
     }
 
@@ -56,11 +52,11 @@ class Login extends Component {
     render() {
         return (
             <div class="loginPage_bg">
-            {this.renderRedirect()}
+                {this.renderRedirect()}
                 <div class="container">
                     <center>
                         <div class="loginHeader">
-                        {/* <Alert bsStyle="warning"></Alert> */}
+                            {/* <Alert bsStyle="warning"></Alert> */}
 
                             <h2>Log in to HomeAway</h2>
                             <p>Need an account? <a href="#"><Link to="/SignUp"><span>Sign Up</span></Link></a></p>

@@ -1,10 +1,60 @@
 import React, { Component } from 'react';
 import Footer from './Footer';
+import {Link} from 'react-router-dom';
+import axios from 'axios';
+import Footer2 from './Footer2';
 
 class Profile extends Component {
     constructor(props) {
         super(props);
         console.log("Inside Profile");
+        this.state={
+            firstName:"",
+            lastName:"",
+            aboutMe:"",
+            city:"",
+            company:"",
+            school:"",
+            hometown:"",
+            languages:"",
+            gender:"",
+            phoneNumber:"",
+            email:""
+        }
+    }
+
+    handleOnChange=(e)=>{
+        if(sessionStorage.getItem('username')){
+            this.setState({
+                email:sessionStorage.getItem('username')
+            })
+        }else{
+            this.setState({
+                email:sessionStorage.getItem('ownername')
+            })
+        }
+        this.setState({
+            [e.target.name]:e.target.value
+        })
+    }
+
+    uploadData=(e)=>{
+        e.preventDefault();
+
+        const data = {
+            ...this.state
+        }
+        console.log(data);
+
+        axios.post('http://localhost:3001/Profile',data)
+        .then((response)=>{
+            if (response.status === 200) {
+                console.log("Profile updated successfully!");
+                this.props.history.push('/ViewProfile');
+            }else{
+                console.log("Pofile not updated");
+            }
+        })
     }
 
     render() {
@@ -25,39 +75,39 @@ class Profile extends Component {
                             <form class="form-group">
                                 <div class="col-lg-6">
                                     <div class="">
-                                        <input class="form-control form_element" type="text" placeholder="First name"></input>
+                                        <input class="form-control form_element" onChange={this.handleOnChange} type="text" name="firstName" placeholder="First name"></input>
                                     </div>
                                     <div class="">
-                                        <input class="form-control form_element" type="text" placeholder="Last name or initial"></input>
+                                        <input class="form-control form_element" type="text" name="lastName" onChange={this.handleOnChange} placeholder="Last name or initial"></input>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="">
-                                        <textarea class="form-control form_element" type="text" placeholder="About me"></textarea>
+                                        <textarea class="form-control form_element" type="text" name="aboutMe" onChange={this.handleOnChange} placeholder="About me"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="">
-                                        <input class="form-control form_element" type="text" placeholder="My CIty,My COuntry"></input>
+                                        <input class="form-control form_element" type="text" name="city" onChange={this.handleOnChange} placeholder="My CIty,My Country"></input>
                                     </div>
                                     <div class="">
-                                        <input class="form-control form_element" type="text" placeholder="Company"></input>
+                                        <input class="form-control form_element" onChange={this.handleOnChange} type="text" name="company" placeholder="Company"></input>
                                     </div>
                                     <div class="">
-                                        <input class="form-control form_element" type="text" placeholder="School"></input>
+                                        <input class="form-control form_element" type="text" name="school" onChange={this.handleOnChange} placeholder="School"></input>
                                     </div>
                                     <div class="">
-                                        <input class="form-control form_element" type="text" placeholder="Hometown"></input>
+                                        <input class="form-control form_element" type="text" onChange={this.handleOnChange} name="hometown" placeholder="Hometown"></input>
                                     </div>
                                     <div class="">
-                                        <input class="form-control form_element" type="text" placeholder="Languages"></input>
+                                        <input class="form-control form_element" type="text" name="languages" onChange={this.handleOnChange} placeholder="Languages"></input>
                                     </div>
                                     <div class="">
-                                        <select class="form-control ">
+                                        <select class="form-control" onChange={this.handleOnChange} name="gender">
                                             <option selected>Gender</option>
-                                            <option value="Male">One</option>
-                                            <option value="Female">Two</option>
-                                            <option value="Other">Three</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
                                         </select>
                                     </div>
                                 </div>
@@ -72,12 +122,12 @@ class Profile extends Component {
                                 {/* dummy div */}
                                 <div class="col-lg-12"></div>
                                 <div class="col-lg-6">
-                                    <input type="text" placeholder="PhoneNumber" class="form-control form_element"></input>
+                                    <input type="text" placeholder="PhoneNumber" name="phoneNumber" onChange={this.handleOnChange} class="form-control form_element"></input>
                                 </div>
                                 {/* dummy div */}
                                 <div class="col-lg-12"></div>
                                 <div class="col-lg-2 align-self-start saveProfile">
-                                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                                    <button class="btn btn-primary" onClick={this.uploadData} type="submit">Save Changes</button>
                                 </div>
                             </form>
                             {/* dummy div */}
@@ -88,7 +138,7 @@ class Profile extends Component {
                                 <img class="emailImage" alt="logo here" src={require('../images/profile_email.PNG')}></img>
                             </div>
                             <div class="drawBorder alignCenter">
-                                <button class="btn btn-lg btn-primary-outline" type="">View Profile</button>
+                                <Link to="/ViewProfile"><button class="btn btn-lg btn-primary-outline" type="">View Profile</button></Link>
                             </div>
                             <div class="drawBorder alignCenter">
                                 <img class="profileImage" alt="logo here" src={require('../images/profile_image.PNG')}></img>
@@ -99,7 +149,7 @@ class Profile extends Component {
 
                     </div>
                 </div>
-                <Footer />
+                <Footer2 />
             </div>
 
         );

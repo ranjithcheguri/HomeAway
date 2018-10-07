@@ -470,3 +470,33 @@ padding:5% 5% 0px 5%;
     border-radius: 5px;
     transform: scale(1.05); /*zoom in */
 }
+
+/* view profile CSS */
+.profileIcon{
+    float:right;
+    height: 60%;
+    width: 60%;
+    border-radius: 50%; 
+}
+
+.borderMe{
+    border:1px solid black;
+}
+
+.floatCenter{
+    text-align:right;
+    padding:50px 11% 0px 0px;
+    font-size: 30px;
+}
+
+.paddingAbt{
+    font-size: 25px;
+    padding:22% 0% 0% 0%;
+}
+.paddingAb{
+    font-size: 18px;
+    padding:7% 0% 0% 0%;
+}
+.viewProfileContainer{
+    margin:0px 0px 8% 0px;
+}

@@ -66,13 +66,15 @@ class Carousel2 extends Component {
                                 <a href="#7">
                                     <img src="https://odis.homeaway.com/odis/destination/93c6235b-8531-4459-8913-aabb47fa7bb5.hw6.jpg" class="img-responsive"></img>
                                 </a>
-                                <h3>Villas</h3>
+                                <h3>Gatlinburg</h3>
+                                <p>Tennesse</p>
                             </div>
                             <div class="col-xs-3">
                                 <a href="#8">
                                     <img src="https://odis.homeaway.com/odis/destination/d87e4c30-b5f1-4a30-bb12-7883a29cabbc.hw6.jpg" class="img-responsive"></img>
                                 </a>
-                                <h3>Condos</h3>
+                                <h3>Destin</h3>
+                                <p>Florida</p>
                             </div>
                         </div>
                         {/* ITEMS HERE */}

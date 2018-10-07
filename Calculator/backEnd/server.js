@@ -30,20 +30,17 @@ app.use(session({
 }));
 
 
-app.post('/',function(req,res){
+app.post('/compute',function(req,res){
     var ans =0;
     console.log("Initial page");
     console.log("Expression received for evaluation : ",req.body.computeExpression);
     try{
-        ans = parseFloat(math.eval(req.body.computeExpression)).toFixed(2); 
-        //console.log(ans);
+        res.writeHead(200);
+        res.end(parseFloat(math.eval(req.body.computeExpression)).toFixed(2)); 
     }
     catch(error){
-        ans = "Invalid input";
+        res.end("invalid input");
     }
-    
-    res.writeHead(200);
-    res.end(ans);
 });
 
 app.listen(3001,()=>console.log("listeninng to port 3001"));

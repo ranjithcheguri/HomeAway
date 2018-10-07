@@ -86,15 +86,13 @@ app.post('/signup', function (req, res) {
 /******************* TRAVELER LOGIN POST ***************************/
 
 app.post('/login', function (req, res) {
-
     console.log("server side : Login Verification started");
-
-
+    console.log("request-body", req.body);
     var email = req.body.email;
     var password = req.body.password;
 
     var sql = "SELECT *  FROM travelerdata WHERE email = " +
-        mysql.escape(email) + "and password = " + mysql.escape(password);
+        mysql.escape(email) + " and password = " + mysql.escape(password);
 
     console.log(sql);
 
@@ -106,9 +104,7 @@ app.post('/login', function (req, res) {
             })
             res.end("Could Not Get Connection Object");
         } else {
-
-            console.log("connection to db successfull");
-
+            //console.log("connection to db successfull");
             con.query(sql, function (err, result) {
                 if (err) {
                     console.log("******** User not found ******");
@@ -116,15 +112,23 @@ app.post('/login', function (req, res) {
                     res.writeHead(400, {
                         'Content-Type': 'text/plain'
                     })
-                    res.end("Invalid Credentials");
+                    res.end("Invalid SQL statement (nothing to do with username/password)");
                 } else {
-                    console.log(result);
-                    res.cookie('TravelerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
-                    req.session.user = result;
-                    res.writeHead(200, {
-                        'Content-Type': 'text/plain'
-                    })
-                    res.end("Successful Login");
+                    if (result.length > 0) {
+                        console.log("login successful");
+                        res.cookie('TravelerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
+                        req.session.user = result;
+                        res.writeHead(200, {
+                            'Content-Type': 'text/plain'
+                        })
+                        res.end("login successful");
+                    } else {
+                        res.writeHead(400, {
+                            'Content-Type': 'text/plain'
+                        })
+                        console.log("Invalid Username/Password");
+                        res.end("Invalid Username/Password");
+                    }
                 }
             });
         }
@@ -165,13 +169,21 @@ app.post('/ownerlogin', function (req, res) {
                     })
                     res.end("Invalid Credentials");
                 } else {
-                    console.log(result);
-                    res.cookie('OwnerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
-                    req.session.user = result;
-                    res.writeHead(200, {
-                        'Content-Type': 'text/plain'
-                    })
-                    res.end("Successful Login");
+                    if (result.length > 0) {
+                        console.log(result);
+                        res.cookie('OwnerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
+                        req.session.user = result;
+                        res.writeHead(200, {
+                            'Content-Type': 'text/plain'
+                        })
+                        res.end("Successful Login");
+                    } else {
+                        res.writeHead(400, {
+                            'Content-Type': 'text/plain'
+                        })
+                        console.log("Invalid Username/Password");
+                        res.end("Invalid Username/Password");
+                    }
                 }
             });
         }
@@ -420,7 +432,7 @@ app.post('/bookProperty', (req, res) => {
 
     console.log("Inside Booking Property");
     //booking dates can be included as well here.
-    var sql = "UPDATE ownerprofile SET `booked` = "+ mysql.escape(1) + ", `bookedBy` = " + mysql.escape(req.body.bookedUser) + " WHERE `key` = " + parseInt(mysql.escape(req.body.bookedKey))+";";
+    var sql = "UPDATE ownerprofile SET `booked` = " + mysql.escape(1) + ", `bookedBy` = " + mysql.escape(req.body.bookedUser) + " WHERE `key` = " + parseInt(mysql.escape(req.body.bookedKey)) + ";";
     //var sql = 'UPDATE ownerprofile SET booked = 1, bookedBy = \'rky@123.com\' WHERE key = 11';
     console.log(sql);
 
@@ -458,11 +470,11 @@ app.post('/bookProperty', (req, res) => {
 
 /******************* BOOKING HISTORY BEGIN ***************************/
 
-    app.post('/bookingHistory',(req,res)=>{
-        
+app.post('/bookingHistory', (req, res) => {
+
     console.log("Inside Booking History");
 
-    var sql = "SELECT `key`,`headline`,`city`,`type`,`startdate`,`enddate`,`rent` from `ownerprofile` WHERE `bookedBy` = "+mysql.escape(req.body.username)+";";
+    var sql = "SELECT `key`,`headline`,`city`,`type`,`startdate`,`enddate`,`rent` from `ownerprofile` WHERE `bookedBy` = " + mysql.escape(req.body.username) + ";";
 
     console.log(sql);
 
@@ -495,16 +507,16 @@ app.post('/bookProperty', (req, res) => {
             });
         }
     })
-    })
+})
 
 /******************* BOOKING HISTORY END ***************************/
 /******************* OWNER DASHBOARD BEGIN ***************************/
 
-app.post('/ownerDashboard',(req,res)=>{
-        
+app.post('/ownerDashboard', (req, res) => {
+
     console.log("Inside ownerDashboard");
 
-    var sql = "SELECT `key`,`headline`,`city`,`type`,`startdate`,`enddate`,`rent` from `ownerprofile` WHERE `ownername` = "+mysql.escape(req.body.ownername)+";";
+    var sql = "SELECT `key`,`headline`,`city`,`type`,`startdate`,`enddate`,`rent` from `ownerprofile` WHERE `ownername` = " + mysql.escape(req.body.ownername) + ";";
 
     console.log(sql);
 
@@ -537,9 +549,93 @@ app.post('/ownerDashboard',(req,res)=>{
             });
         }
     })
-    })
+})
 
 /******************* OWNER DASHBOARD END ***************************/
+/******************* UPDATE PROFILE BEGIN ***************************/
+
+app.post('/Profile', (req, res) => {
+    console.log(req.body);
+    var sql = "INSERT INTO viewprofile(`firstname`, `lastname`, `aboutme`, `city`, `company`, `school`, `hometown`, `languages`, `gender`, `phonenumber`, `email`) VALUES (" +
+        mysql.escape(req.body.firstName) + " , " +
+        mysql.escape(req.body.lastName) + " , " +
+        mysql.escape(req.body.aboutMe) + " , " +
+        mysql.escape(req.body.city) + " , " +
+        mysql.escape(req.body.company) + " , " +
+        mysql.escape(req.body.school) + " , " +
+        mysql.escape(req.body.hometown) + " , " +
+        mysql.escape(req.body.languages) + " , " +
+        mysql.escape(req.body.gender) + " , " +
+        mysql.escape(req.body.phoneNumber) + " , " +
+        mysql.escape(req.body.email) + ");";
+
+    console.log("SQL QUERY: ", sql);
+
+    pool.getConnection(function (err, con) {
+        if (err) {
+            console.log("connection error");
+            res.writeHead(400, {
+                'Content-Type': 'text/plain'
+            })
+            res.send("Could Not Get Connection Object");
+        } else {
+            con.query(sql, function (err, result) {
+                if (err) {
+                    console.log(err);
+                    res.writeHead(400, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.send("SQL Error");
+                } else {
+                    console.log(result);
+                    // res.writeHead(200, {
+                    //     'Content-Type': 'text/plain'
+                    // })
+                    res.send(result);
+                }
+            });
+        }
+    })
+})
+
+/******************* UPDATE PROFILE END ***************************/
+
+
+/******************* VIEW PROFILE BEGIN ***************************/
+
+
+app.post('/ViewProfile', (req, res) => {
+    console.log("Request Body", req.body);
+    var sql = "SELECT * FROM viewprofile WHERE email=" + mysql.escape(req.body.email);
+    console.log("SQL QUERY: ", sql);
+
+    pool.getConnection(function (err, con) {
+        if (err) {
+            console.log("connection error");
+            res.writeHead(400, {
+                'Content-Type': 'text/plain'
+            })
+            res.send("Could Not Get Connection Object");
+        } else {
+            con.query(sql, function (err, result) {
+                if (err) {
+                    console.log(err);
+                    res.writeHead(400, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.send("SQL Error");
+                } else {
+                    console.log(result);
+                    res.send(result);
+                }
+            });
+        }
+    })
+})
+
+
+/******************* VIEW PROFILE END ***************************/
+
 
 
 /******************* LISTEN PORT ***************************/
