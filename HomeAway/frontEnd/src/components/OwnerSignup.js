@@ -32,10 +32,11 @@ class OwnerSignUp extends Component {
         }else{
             console.log("Email already exists");
             this.setState({
-               
             })
         }
       })
+      alert("sign up successfull !")
+      this.props.history.push('/OwnerLogin');
         e.preventDefault();
     }
 

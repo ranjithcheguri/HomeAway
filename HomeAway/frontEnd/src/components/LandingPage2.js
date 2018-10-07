@@ -67,7 +67,7 @@ class LandingPage2 extends Component {
             console.log("Able to read cookie");
             loggedIn = (
                 <div class="dropdown floatRight align-center loginList">
-                    <button class="btn btn-default btn-lg dropdown-toggle whiteText transparentBtn" type="button" data-toggle="dropdown">Login
+                    <button class="btn btn-default btn-lg dropdown-toggle whiteText transparentBtn" type="button" data-toggle="dropdown">{sessionStorage.getItem('username')}
                 <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
@@ -88,7 +88,7 @@ class LandingPage2 extends Component {
             console.log("Able to read cookie");
             loggedIn = (
                 <div class="dropdown floatRight align-center loginList">
-                    <button class="btn btn-default btn-lg dropdown-toggle whiteText transparentBtn" type="button" data-toggle="dropdown">Login
+                    <button class="btn btn-default btn-lg dropdown-toggle whiteText transparentBtn" type="button" data-toggle="dropdown">{sessionStorage.getItem('ownername')}
                 <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">

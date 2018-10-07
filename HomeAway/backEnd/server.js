@@ -11,6 +11,8 @@ const multer = require('multer');
 //const uuidv4 = require('uuid/v4');
 const path = require('path');
 const fs = require('fs');
+var bcrypt = require('bcryptjs');
+
 
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
@@ -42,16 +44,15 @@ app.use(function (req, res, next) {
 
 app.post('/signup', function (req, res) {
 
-    console.log("server side : Inside /signup");
+    var salt = bcrypt.genSaltSync(10);
+    // Hash the password with the salt
+    var hash = bcrypt.hashSync(req.body.password, salt);
 
-    // var firstName = req.body.firstName;
-    // var lastName = req.body.lastName;
-    // var email = req.body.email;
-    // var password = req.body.password;
+    console.log("server side : Inside /signup");
 
     var sql = "INSERT INTO travelerdata VALUES ( " +
         mysql.escape(req.body.firstName) + " , " + mysql.escape(req.body.lastName) + " , " +
-        mysql.escape(req.body.email) + " , " + mysql.escape(req.body.password) + " );";
+        mysql.escape(req.body.email) + " , " + mysql.escape(hash) + " );";
 
     console.log(sql);
 
@@ -76,7 +77,7 @@ app.post('/signup', function (req, res) {
                     res.writeHead(200, {
                         'Content-Type': 'text/plain'
                     })
-                    res.end("Successful Login");
+                    res.end("Successful SIgnup");
                 }
             });
         }
@@ -86,13 +87,14 @@ app.post('/signup', function (req, res) {
 /******************* TRAVELER LOGIN POST ***************************/
 
 app.post('/login', function (req, res) {
+
     console.log("server side : Login Verification started");
     console.log("request-body", req.body);
     var email = req.body.email;
     var password = req.body.password;
 
     var sql = "SELECT *  FROM travelerdata WHERE email = " +
-        mysql.escape(email) + " and password = " + mysql.escape(password);
+        mysql.escape(email);
 
     console.log(sql);
 
@@ -114,21 +116,26 @@ app.post('/login', function (req, res) {
                     })
                     res.end("Invalid SQL statement (nothing to do with username/password)");
                 } else {
-                    if (result.length > 0) {
-                        console.log("login successful");
-                        res.cookie('TravelerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
-                        req.session.user = result;
-                        res.writeHead(200, {
-                            'Content-Type': 'text/plain'
-                        })
-                        res.end("login successful");
-                    } else {
-                        res.writeHead(400, {
-                            'Content-Type': 'text/plain'
-                        })
-                        console.log("Invalid Username/Password");
-                        res.end("Invalid Username/Password");
+                    console.log(result);
+                    if (bcrypt.compareSync(req.body.password, result[0].password)) {
+                        console.log("inside bcrypt");
+                        if (result.length > 0) {
+                            console.log("login successful");
+                            res.cookie('TravelerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
+                            req.session.user = result;
+                            res.writeHead(200, {
+                                'Content-Type': 'text/plain'
+                            })
+                            res.end("login successful");
+                        } else {
+                            res.writeHead(400, {
+                                'Content-Type': 'text/plain'
+                            })
+                            console.log("Invalid Username/Password");
+                            res.end("Invalid Username/Password");
+                        }
                     }
+
                 }
             });
         }
@@ -139,13 +146,11 @@ app.post('/login', function (req, res) {
 app.post('/ownerlogin', function (req, res) {
 
     console.log("server side : Owner Login Verification started");
-
-
     var email = req.body.email;
     var password = req.body.password;
 
     var sql = "SELECT *  FROM ownerdata WHERE email = " +
-        mysql.escape(email) + "and password = " + mysql.escape(password);
+        mysql.escape(email);
 
     console.log(sql);
 
@@ -169,21 +174,26 @@ app.post('/ownerlogin', function (req, res) {
                     })
                     res.end("Invalid Credentials");
                 } else {
-                    if (result.length > 0) {
-                        console.log(result);
-                        res.cookie('OwnerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
-                        req.session.user = result;
-                        res.writeHead(200, {
-                            'Content-Type': 'text/plain'
-                        })
-                        res.end("Successful Login");
-                    } else {
-                        res.writeHead(400, {
-                            'Content-Type': 'text/plain'
-                        })
-                        console.log("Invalid Username/Password");
-                        res.end("Invalid Username/Password");
+                    console.log("inside owner login", result);
+                    if (bcrypt.compareSync(req.body.password, result[0].password)) {
+                        console.log("inside bcrypt");
+                        if (result.length > 0) {
+                            console.log(result);
+                            res.cookie('OwnerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
+                            req.session.user = result;
+                            res.writeHead(200, {
+                                'Content-Type': 'text/plain'
+                            })
+                            res.end("Successful Login");
+                        } else {
+                            res.writeHead(400, {
+                                'Content-Type': 'text/plain'
+                            })
+                            console.log("Invalid Username/Password");
+                            res.end("Invalid Username/Password");
+                        }
                     }
+
                 }
             });
         }
@@ -194,16 +204,15 @@ app.post('/ownerlogin', function (req, res) {
 
 app.post('/ownerSignUp', function (req, res) {
 
-    console.log("server side : Inside Owner signup");
+    var salt = bcrypt.genSaltSync(10);
+    // Hash the password with the salt & bcrypt
+    var hash = bcrypt.hashSync(req.body.password, salt);
 
-    // var firstName = req.body.firstName;
-    // var lastName = req.body.lastName;
-    // var email = req.body.email;
-    // var password = req.body.password;
+    console.log("server side : Inside Owner signup");
 
     var sql = "INSERT INTO ownerdata VALUES ( " +
         mysql.escape(req.body.firstName) + " , " + mysql.escape(req.body.lastName) + " , " +
-        mysql.escape(req.body.email) + " , " + mysql.escape(req.body.password) + " );";
+        mysql.escape(req.body.email) + " , " + mysql.escape(hash) + " );";
 
     console.log(sql);
 
@@ -228,7 +237,7 @@ app.post('/ownerSignUp', function (req, res) {
                     res.writeHead(200, {
                         'Content-Type': 'text/plain'
                     })
-                    res.end("Successful Login");
+                    res.end("Successful Signup of owner");
                 }
             });
         }

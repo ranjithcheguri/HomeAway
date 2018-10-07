@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Footer from './Footer';
 import { Link } from 'react-router-dom';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
 class OwnerLogin extends Component {
@@ -11,15 +11,15 @@ class OwnerLogin extends Component {
         this.state = {
             email: "",
             password: "",
-            redirectVar:false
+            redirectVar: false
         }
     }
 
     renderRedirect = () => {
         if (this.state.redirectVar) {
-          return <Redirect to='/' />
+            return <Redirect to='/' />
         }
-      }
+    }
 
     handleLogin = (e) => {
 
@@ -28,24 +28,24 @@ class OwnerLogin extends Component {
         axios.post('http://localhost:3001/ownerlogin', this.state)
             .then(response => {
                 if (response.status === 200) {
-                    sessionStorage.setItem('ownername',this.state.email);
+                    sessionStorage.setItem('ownername', this.state.email);
                     console.log("Login successful");
                     this.setState({
-                        redirectVar:true
+                        redirectVar: true
                     })
-                    
+
                 } else {
                     console.log("Invalid Login Credentials");
                     this.setState({
-                        
+
                     })
-                   
+
                 }
             })
-        //redirecting to home page
-        //this.props.router.push("/");
-        //this.context.router.push('/')
-
+            .catch(error=>{
+                console.log("Invalid credentials");
+                alert("invalid credentials");
+            })
         e.preventDefault();
     }
 
@@ -60,7 +60,7 @@ class OwnerLogin extends Component {
     render() {
         return (
             <div class="loginPage_bg">
-            {this.renderRedirect()}
+                {this.renderRedirect()}
                 <div class="container">
                     <center>
                         <div class="col-lg-offset-2 col-lg-4">
@@ -77,7 +77,7 @@ class OwnerLogin extends Component {
                                     <input onChange={this.handleChange.bind(this)} class="form-control form_element" name="password" type="password" placeholder="password"></input>
                                     <a class="float_left" href="#">Forgot Password?</a>
                                     <br></br>
-                                    <button onClick={this.handleLogin.bind(this)} class="form_element btn_login btn btn-lg btn-block"type="submit">Log In</button>
+                                    <button onClick={this.handleLogin.bind(this)} class="form_element btn_login btn btn-lg btn-block" type="submit">Log In</button>
                                     <div class="float_left">
                                         <input class="form-check-input" type="checkbox"></input>
                                         <label class="form-check-label">Keep me signed in</label>

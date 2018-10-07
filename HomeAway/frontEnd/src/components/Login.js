@@ -38,7 +38,10 @@ class Login extends Component {
                     console.log("Invalid Login Credentials");
                 }
             })
-
+            .catch(error=>{
+                console.log("Invalid credentials");
+                alert("invalid credentials");
+            })
     }
 
     handleChange = (e) => {

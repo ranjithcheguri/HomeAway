@@ -17,17 +17,15 @@ class SignUp extends Component {
     }
 
     handleClick = (e) => {
-        
       console.log(this.state);
       const data=this.state;
-
       axios.defaults.withCredentials = true;
       axios.post('http://localhost:3001/signup',data)
       .then(response=>{
         if(response.status === 200){
+            alert("sign up successfull !");
             console.log("sign up successful, data inserted");
             this.setState({
-                
             })
         }else{
             console.log("username / Email already exists");
@@ -36,6 +34,7 @@ class SignUp extends Component {
             })
         }
       })
+      this.props.history.push('/Login');
         e.preventDefault();
     }
 
