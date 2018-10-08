@@ -35,6 +35,7 @@ app.post('/compute',function(req,res){
     console.log("Initial page");
     console.log("Expression received for evaluation : ",req.body.computeExpression);
     try{
+        console.log(parseFloat(math.eval(req.body.computeExpression)).toFixed(2));
         res.writeHead(200);
         res.end(parseFloat(math.eval(req.body.computeExpression)).toFixed(2)); 
     }

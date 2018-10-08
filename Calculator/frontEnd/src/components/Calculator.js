@@ -28,7 +28,7 @@ class Calculator extends Component{
         })
     }
 
-    handleExpression = (e)=>{
+     handleExpression = async(e)=>{
         console.log("expression submitted");
         const data = {
             "computeExpression" : this.state.expression
@@ -37,12 +37,12 @@ class Calculator extends Component{
             expression : ""
         })
         console.log(data);
-        axios.post('http://localhost:3001/compute',data)
+       await axios.post('http://localhost:3001/compute',data)
         .then(response=>{
             this.setState({
                 expression : response.data
             });
-            console.log("response received : ",this.state.answer);
+            console.log("response received : ",response.data);
         });
         e.preventDefault();
     }

@@ -184,6 +184,7 @@ app.post('/ownerlogin', function (req, res) {
                             res.writeHead(200, {
                                 'Content-Type': 'text/plain'
                             })
+                            console.log("Successful login");
                             res.end("Successful Login");
                         } else {
                             res.writeHead(400, {
@@ -348,7 +349,9 @@ app.post('/listProperty', (req, res) => {
 app.post('/displayProperty', (req, res) => {
     console.log("Server side : Inside display Property");
 
+    //var sql = "SELECT * from ownerprofile where startdate<=" + mysql.escape(req.body.searchdate) + " and enddate>=" + mysql.escape(req.body.enddate) + " and accomodates>=" + mysql.escape(req.body.accomodates);
     var sql = "select * from ownerprofile";
+    console.log(sql);
     pool.getConnection(function (err, con) {
         if (err) {
             console.log("connection error");
@@ -365,7 +368,7 @@ app.post('/displayProperty', (req, res) => {
                     })
                     res.end("Invalid Credentials");
                 } else {
-                    //console.log(result);
+                    console.log(result);
                     res.writeHead(200, {
                         'Content-Type': 'text/plain'
                     })
