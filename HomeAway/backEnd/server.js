@@ -349,7 +349,7 @@ app.post('/listProperty', (req, res) => {
 app.post('/displayProperty', (req, res) => {
     console.log("Server side : Inside display Property");
 
-    //var sql = "SELECT * from ownerprofile where startdate<=" + mysql.escape(req.body.searchdate) + " and enddate>=" + mysql.escape(req.body.enddate) + " and accomodates>=" + mysql.escape(req.body.accomodates);
+    //var sql = "SELECT * from ownerprofile where startdate<=" + mysql.escape(req.body.sea) + " and enddate>=" + mysql.escape(req.body.enddate) + " and accomodates>=" + mysql.escape(req.body.accomodates);
     var sql = "select * from ownerprofile";
     console.log(sql);
     pool.getConnection(function (err, con) {
@@ -647,7 +647,6 @@ app.post('/ViewProfile', (req, res) => {
 
 
 /******************* VIEW PROFILE END ***************************/
-
 
 
 /******************* LISTEN PORT ***************************/
