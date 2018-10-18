@@ -6,6 +6,11 @@ import Footer2 from './Footer2';
 import Carousel2 from './Carousel2';
 import Carousel3 from './Carousel3';
 
+//REDUX
+import { connect } from 'react-redux';
+import { travelerSignout } from '../actions/loginActions';
+import { ownerSignout } from '../actions/ownerLoginActions';
+
 class LandingPage2 extends Component {
     constructor(props) {
         super(props);
@@ -23,7 +28,6 @@ class LandingPage2 extends Component {
         this.setState({
             [e.target.name]: e.target.value
         })
-
     }
 
     redirectToDisplayProperty = (e) => {
@@ -34,11 +38,27 @@ class LandingPage2 extends Component {
         })
     }
 
+    // componentWillReceiveProps(nextProps) {
+    //     console.log("update props");
+    //     if (this.props.loginState.redirectVar !== nextProps.loginState.redirectVar) {
+    //         console.log("update props");
+    //         this.setState({
+    //             redirectVar: nextProps.loginState.redirectVar,
+    //         });
+    //     }
+    // }
+
     handleSignOut = (e) => {
-        cookie.remove('TravelerCookie', { path: '/' });
-        cookie.remove('OwnerCookie', { path: '/' });
-        this.setState({
-        })
+        e.preventDefault();
+        if (cookie.load('OwnerCookie')) {
+            sessionStorage.removeItem('ownername');
+            cookie.remove('OwnerCookie', { path: '/' });
+            this.props.ownerSignout();
+        } else {
+            cookie.remove('TravelerCookie', { path: '/' });
+            sessionStorage.removeItem('username');
+            this.props.travelerSignout();
+        }
     }
 
     render() {
@@ -68,7 +88,7 @@ class LandingPage2 extends Component {
             loggedIn = (
                 <div class="dropdown floatRight align-center loginList">
                     <button class="btn btn-default btn-lg dropdown-toggle whiteText transparentBtn" type="button" data-toggle="dropdown">{sessionStorage.getItem('username')}
-                <span class="caret"></span>
+                        <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <li>
@@ -85,11 +105,11 @@ class LandingPage2 extends Component {
             );
         }
         else if (cookie.load('OwnerCookie')) {
-            console.log("Able to read cookie");
+            console.log("Owner Cookie exists");
             loggedIn = (
                 <div class="dropdown floatRight align-center loginList">
                     <button class="btn btn-default btn-lg dropdown-toggle whiteText transparentBtn" type="button" data-toggle="dropdown">{sessionStorage.getItem('ownername')}
-                <span class="caret"></span>
+                        <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <li>
@@ -176,8 +196,8 @@ class LandingPage2 extends Component {
 
                         </div>
                     </div>
-                    <Carousel3/>
-                    <Carousel2/>
+                    <Carousel3 />
+                    <Carousel2 />
                 </div>
             )
         }
@@ -194,4 +214,12 @@ class LandingPage2 extends Component {
     }
 }
 
-export default LandingPage2;
+
+//subscribe to Redux store updates.
+const mapStateToProps = (state) => ({
+    // variables below are subscribed to changes in loginState variables (redirectVar,Response) and can be used with props.
+    redirectVar: state.loginState.redirectVar,
+    redirectVar: state.ownerLoginState.redirectVar,
+})
+
+export default connect(mapStateToProps, { travelerSignout, ownerSignout })(LandingPage2);

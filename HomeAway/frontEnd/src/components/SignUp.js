@@ -17,31 +17,28 @@ class SignUp extends Component {
     }
 
     handleClick = (e) => {
-      console.log(this.state);
-      const data=this.state;
-      axios.defaults.withCredentials = true;
-      axios.post('http://localhost:3001/signup',data)
-      .then(response=>{
-        if(response.status === 200){
-            alert("sign up successfull !");
-            console.log("sign up successful, data inserted");
-            this.setState({
-            })
-        }else{
-            console.log("username / Email already exists");
-            this.setState({
-               
-            })
-        }
-      })
-      this.props.history.push('/Login');
         e.preventDefault();
+        console.log(this.state);
+        const data = this.state;
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3002/travelerSignup', data)
+            .then(response => {
+                if (response.status === 200) {
+                    alert("sign up successfull !");
+                    console.log("sign up successful, data inserted");
+                    this.props.history.push('/Login');
+                }
+            })
+            .catch((error) => {
+                alert("Email already exists");
+                console.log("Response status : ", error.response.status, "Response : ", error.response.data);
+            })
     }
-
+    
     handleChange = (e) => {
         this.setState({
             //square brackets must
-            [e.target.name] : e.target.value
+            [e.target.name]: e.target.value
         })
     }
 

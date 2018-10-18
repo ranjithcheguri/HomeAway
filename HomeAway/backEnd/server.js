@@ -85,7 +85,6 @@ app.post('/signup', function (req, res) {
 });
 
 /******************* TRAVELER LOGIN POST ***************************/
-
 app.post('/login', function (req, res) {
 
     console.log("server side : Login Verification started");
@@ -131,9 +130,15 @@ app.post('/login', function (req, res) {
                             res.writeHead(400, {
                                 'Content-Type': 'text/plain'
                             })
-                            console.log("Invalid Username/Password");
-                            res.end("Invalid Username/Password");
+                            console.log("No details found");
+                            res.end("No details found");
                         }
+                    } else {
+                        res.writeHead(400, {
+                            'Content-Type': 'text/plain'
+                        })
+                        console.log("Invalid Username/Password");
+                        res.end("Invalid Username/Password");
                     }
 
                 }
