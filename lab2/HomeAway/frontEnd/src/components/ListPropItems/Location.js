@@ -3,6 +3,12 @@ import ReactFlagsSelect from 'react-flags-select';
 import 'react-flags-select/css/react-flags-select.css';
 import Details from './Details';
 
+/* REDUX IMPORTS BEGIN */
+import { connect } from 'react-redux';
+import { submitLocation } from '../../actions/listPropertyActions';
+import { stat } from 'fs';
+import cookie from 'react-cookies';
+/* REDUX IMPORTS END */
 
 class Location extends Component {
     constructor(props) {
@@ -15,7 +21,8 @@ class Location extends Component {
             street: "",
             building: "",
             city: "",
-            zipcode: ""
+            zipcode: "",
+            state: ""
         })
 
         this.sendDatatoParent = this.sendDatatoParent.bind(this);
@@ -54,6 +61,9 @@ class Location extends Component {
         e.preventDefault();
         console.log(this.state);
         this.props.callbackFromParent(this.state);
+        //const {country,street,building,city,zipcode}=this.state;
+        //REDUX STORE
+        this.props.submitLocation(this.state);
     }
 
     render() {
@@ -84,4 +94,11 @@ class Location extends Component {
     }
 }
 
-export default Location;
+//subscribe to Redux store updates.
+const mapStateToProps = (state) => ({
+    ...state.listPropertyState.propertyData,
+    // variables below are subscribed to changes in loginState variables (redirectVar,Response) and can be used with props.
+    propertyData: state.listPropertyState.propertyData,
+})
+
+export default connect(mapStateToProps, { submitLocation })(Location);

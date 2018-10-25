@@ -12,7 +12,7 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-      url("C:/Users/theev/OneDrive/Documents/273/Lab1/HomeAway/frontEnd/src/images/homeAway.jpg")
+      url("C:/Users/theev/OneDrive/Documents/273/Labs/Lab2/HomeAway/frontEnd/src/images/homeAway.jpg")
         center center no-repeat;
     background-size: cover;
     /*margin-top:-80px;*/
@@ -27,7 +27,6 @@
         width: 100%;
         padding:5% 0px 5% 0px;
     }
-
 
   .landingPageNavbar {
     overflow: auto;

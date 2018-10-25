@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import Taxes from './Taxes';
 
+/* REDUX IMPORTS BEGIN */
+import { connect } from 'react-redux';
+import { submitRental } from '../../../actions/listPropertyActions';
+import { submitAllDetails } from '../../../actions/listPropertyActions';
+import { stat } from 'fs';
+import cookie from 'react-cookies';
+/* REDUX IMPORTS END */
+
 class Rental extends Component {
     constructor(props) {
         super(props);
         console.log("Inside ListProperty/Pricing/Rental");
-        this.state={
-            currency:"",
-            rent:"",
-            tax:"",
-            cleaningfee:""
+        this.state = {
+            currency: "",
+            rent: "",
+            tax: "",
+            cleaningfee: ""
         }
     }
 
@@ -29,6 +37,18 @@ class Rental extends Component {
         e.preventDefault();
         console.log("Details state ", this.state);
         this.props.callbackFromParent(this.state);
+        //REDUX STORE
+        //all the data in store needs to pushed, so
+        const data = {
+            ...this.props.propertyData,
+            ...this.state,
+        }
+        this.props.submitRental(this.state);
+
+        setTimeout(() => {
+            this.props.submitAllDetails(this.props.propertyData);
+        }, 500);
+        //push all data to database.
     }
 
 
@@ -64,4 +84,11 @@ class Rental extends Component {
     }
 }
 
-export default Rental;
+
+//subscribe to Redux store updates.
+const mapStateToProps = (state) => ({
+    // variables below are subscribed to changes in loginState variables (redirectVar,Response) and can be used with props.
+    propertyData: state.listPropertyState.propertyData,
+})
+
+export default connect(mapStateToProps, { submitRental, submitAllDetails })(Rental);

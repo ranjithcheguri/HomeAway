@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 //import { Alert } from 'react-bootstrap';
 import BookingDetails from './BookingDetails';
 
-
+/* REDUX IMPORTS BEGIN */
+import { connect } from 'react-redux';
+import { submitDetails } from '../../actions/listPropertyActions';
+import { stat } from 'fs';
+import cookie from 'react-cookies';
+/* REDUX IMPORTS END */
 
 class Details extends Component {
     constructor(props) {
@@ -39,6 +44,8 @@ class Details extends Component {
         e.preventDefault();
         console.log("Details state ", this.state);
         this.props.callbackFromParent(this.state);
+        // REDUX STORE
+        this.props.submitDetails(this.state);
     }
 
     render() {
@@ -76,4 +83,12 @@ class Details extends Component {
 
 }
 
-export default Details;
+
+//subscribe to Redux store updates.
+const mapStateToProps = (state) => ({
+    ...state.listPropertyState.propertyData,
+    // variables below are subscribed to changes in loginState variables (redirectVar,Response) and can be used with props.
+    propertyData: state.listPropertyState.propertyData,
+})
+
+export default connect(mapStateToProps, { submitDetails })(Details);

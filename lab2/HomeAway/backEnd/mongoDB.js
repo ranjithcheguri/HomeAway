@@ -227,5 +227,47 @@ app.post('/ownerlogin', function (req, res) {
 ///////////////////////// OWNER LOGIN END /////////////////////////// 
 
 
+
+///////////////////////// listProperty BEGIN /////////////////////////////
+
+app.post('/listProperty', function (req, res) {
+    console.log("inside location");
+    mongoClient.connect('mongodb://localhost:27017', (err, client) => {
+        if (err) {
+            console.log("error connecting to mongodb");
+        } else {
+            console.log("connection successful");
+            const db = client.db('homeaway');
+            db.collection('listPropertyData').insertOne({
+                propertyData: req.body,
+            }, (err, result) => {
+                if (err) {
+                    console.log("query error, may be unique key already exists.", err);
+                    res.writeHead(400, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end("Email already exists");
+                } else {
+                    console.log("query success");
+                    res.writeHead(200, {
+                        'Content-Type': 'text/plain'
+                    })
+                    res.end("updated location details successfully !");
+                }
+            })
+            client.close();
+        }
+    })
+});
+///////////////////////// listProperty END /////////////////////////////
+
+
+///////////////////////// PHOTOS BEGIN /////////////////////////// 
+
+
+
+///////////////////////// PHOTOS END ///////////////////////////// 
+
+
 app.listen(3002);
 console.log("Server running on port 3002");
