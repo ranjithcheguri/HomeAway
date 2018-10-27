@@ -50,15 +50,14 @@ class Photos extends Component {
             formData.append('photos', photos[i]);
         }
         console.log(formData);
-        this.props.submitPhotos(this.state);
+        //this.props.submitPhotos(this.state);
 
-        // axios.defaults.withCredentials = true;
-        // axios.post('http://localhost:3001/listPropertyPhotos', formData)
-        //     .then((response) => {
-        //         // access results...
-        //         console.log(response);
-        //     });
-            
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3002/listPropertyPhotos', formData)
+             .then((response) => {
+                 // access results...
+                 console.log(response);
+             });
     }
 
     render() {

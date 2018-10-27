@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Footer2 from './Footer2';
 
-
+var propertiesss = [];
 class DisplayProperty extends Component {
     constructor(props) {
         super(props);
@@ -12,54 +12,51 @@ class DisplayProperty extends Component {
         console.log("search properties from landingPage", this.props.location.state);
 
         this.state = {
-            photosData: [],
+            pageNo: 1,
+            id: 1,
             propertyData: [],
-            key: []
+            _id: ""
         }
     }
 
-    async componentDidMount() {
-        console.log("Downloading property details...");
+    downloadOneProperty = async (i) => {
+        console.log("Downloading  property and photos id: " + this.state.id);
         const data = {
+            id: i,
             city: this.props.location.state.searchCity,
             searchdate: this.props.location.state.searchStartdate,
             enddate: this.props.location.state.searchEnddate,
             accomodates: this.props.location.state.searchAccomodates,
         }
         console.log("filters to query SQL", data);
-        await axios.post('http://localhost:3001/displayProperty/', data)
+        //removed await for the below
+        axios.post('http://localhost:3002/displayProperty/', data)
             .then(response => {
-                console.log("response from server", response.data);
-
+                propertiesss.push(response.data);
                 this.setState({
-                    propertyData: response.data
+                    propertyData: propertiesss
                 })
-                console.log("property data in state updated just now : ", this.state);
-            });
-
-        //get multiple photo base64values and replace in photos
-        await axios.post('http://localhost:3001/downloadPhotos/', "")
-            .then(response => {
-                console.log("response from server", response.data);
-
-                this.setState({
-                    photosData: response.data
-                })
-                console.log("photos downloaded", this.state.photosData);
-            });
+            })
+            .catch((error) => {
+                console.log("Error caught", error.response.status);
+            })
     }
 
-    returnImage = (index) => {
+    async componentDidMount() {
+        for (var i = 1; i <= 10; i++) {
+            console.log("iterating through images", i)
+            //removed await for the below statement
+            this.downloadOneProperty(i);
+        }
+        console.log("after downloading all properties...", this.state.propertyData)
+    }
 
-        //return this.state.photosData[index][0];
-        //console.log("is this array ?",this.state.photosData[index]);
-        if (Array.isArray(this.state.photosData[index])) {
-            //console.log("this is array : ",this.state.photosData[index]);
-            return this.state.photosData[index][0];
+    returnItem = (index) => {
+        if (Array.isArray(this.state.propertyData[index])) {
+            return this.state.propertyData[index][0];
         }
         else {
-            //console.log("this is not array",this.state.photosData[index]);
-            return this.state.photosData[index];
+            return this.state.propertyData[index];
         }
     }
 
@@ -67,28 +64,31 @@ class DisplayProperty extends Component {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    async redirectToBookProperty(Itemkey, e) {
+    async redirectToBookProperty(i, e) {
         //e.preventDefault();
         await this.setState({
-            key: Itemkey
+            _id: i
         });
-        console.log("clicked key", this.state.key);
+        console.log("clicked key", this.state._id);
         this.props.history.push('/BookProperty', this.state)
     }
 
-
     render() {
         var PropItems = "";
-        console.log("data in renderer start", this.state.photosData);
-        if (!!this.state.photosData) {
+        console.log("propertyData, this data will be rendered now...", this.state.propertyData);
+        if (!!this.state.propertyData) {
             PropItems = this.state.propertyData.map((item, index) => {
+                //return only one item after checking array // issue learned
+                item = this.returnItem(index);
+                console.log("item", item);
                 return (
                     <div class="col-lg-12 displayItem marginAll marginRight">
                         <div class="col-lg-4">
-                            <img class="displayPropertyImage" alt="No Image !" src={'data:image/jpeg;base64,' + this.returnImage(index)}></img>
+                            {/* <img class="displayPropertyImage" alt="No Image !" src={'data:image/jpeg;base64,' + this.returnImage(index)}></img> */}
+                            <img class="displayPropertyImage" alt="No Image !" src={'data:image/jpeg;base64,' + item.photos[0]}></img>
                         </div>
                         <div class="col-lg-8">
-                            <div><a onClick={this.redirectToBookProperty.bind(this, (item.key))} class="itemDescription">{item.headline}</a></div>
+                            <div><a onClick={this.redirectToBookProperty.bind(this, (index+1))} class="itemDescription">{item.headline}</a></div>
                             <div class="col-lg-12 alignLeft">
                                 <div class="col-lg-2">
                                     <i class="fa fa-home">&nbsp;{item.type}</i>
@@ -103,7 +103,6 @@ class DisplayProperty extends Component {
                             <div><div class="">{item.rent} {'$avg/night'}</div></div>
                         </div>
                     </div>
-
                 );
             })
         } else {
@@ -130,34 +129,8 @@ class DisplayProperty extends Component {
                     <Footer2 />
                 </div>
             </div>
-
         )
     }
 }
 export default DisplayProperty;
-//console.log("item index",i,item);
-            //console.log("data in render :", item.photos);
-            //var images = item.photos.split("___");
-            //console.log("image 0", images[1]);
-            //var imagePreview = [];
-            //imagePreview.push('data:image/jpg;base64, ' + images[1]);
-            //  item.photos.map(element => {
-            //     imagePreview.push('data:image/jpg;base64, ' + element);
-            // })
-            //console.log(imagePreview.length);
 
-
-
-        // request for images
-        // axios.post('http://localhost:3001/displayProperty/', data)
-        //   .then(response => {
-        //     console.log("Imgae Res length : ", response.data.length);
-        //     var imagePreview=[];
-        //     response.data.forEach(element=>{
-        //       imagePreview.push('data:image/jpg;base64, ' + element);
-        //     })
-        //     this.setState({
-        //       imageView: imagePreview
-        //     })
-        //     // console.log("STATE IMAGES : ",this.state.imageView, imagePreview);
-        //   });

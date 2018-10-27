@@ -41,7 +41,6 @@ class Availability extends Component {
         this.props.callbackFromParent(this.state);
         //REDUX STORE
         this.props.submitAvailability(this.state);
-
     }
 
     render() {

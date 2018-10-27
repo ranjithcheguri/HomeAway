@@ -54,20 +54,20 @@ class ListProperty extends Component {
         await this.setState({
             ...stateFromChild
         })
-        console.log("state after callback",this.state);
-        if(this.state.rent){
+        console.log("state after callback", this.state);
+        if (this.state.rent) {
             this.submitDataCallback();
         }
     }
 
-    handleClick = async(item, event) => {
+    handleClick = async (item, event) => {
         event.preventDefault();
         await this.setState({
             comp: item
         })
     }
 
-    submitDataCallback = async() => {
+    submitDataCallback = async () => {
         //e.preventDefault();
         console.log("State data right now : ", this.state);
 
@@ -93,15 +93,15 @@ class ListProperty extends Component {
             rent: this.state.rent,
             tax: this.state.tax,
             cleaningfee: this.state.cleaningfee,
-            ownername:sessionStorage.getItem('ownername')
+            ownername: sessionStorage.getItem('ownername')
         }
 
         //sending data to server
-       await axios.post("http://localhost:3001/listProperty", data)
+        await axios.post("http://localhost:3002/listProperty", data)
             .then(response => {
                 console.log("res :" + response);
             });
-    
+
         //after data is sent to server, redirect to ownerDashboard
         this.props.history.push('/OwnerDashboard');
 
@@ -144,7 +144,7 @@ class ListProperty extends Component {
                                 <li>
                                     <a onClick={this.handleClick.bind(this, <Rental callbackFromParent={this.myCallback.bind(this)} />)}>Rental</a>
                                 </li>
-                               
+
                             </ul>
 
                         </div>

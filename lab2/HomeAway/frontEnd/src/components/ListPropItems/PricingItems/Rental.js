@@ -45,10 +45,10 @@ class Rental extends Component {
         }
         this.props.submitRental(this.state);
 
-        setTimeout(() => {
-            this.props.submitAllDetails(this.props.propertyData);
-        }, 500);
         //push all data to database.
+        // setTimeout(() => {
+        //     this.props.submitAllDetails(this.props.propertyData);
+        // }, 500);
     }
 
 
