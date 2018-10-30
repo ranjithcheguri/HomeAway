@@ -4,11 +4,14 @@ import 'react-flags-select/css/react-flags-select.css';
 import Details from './Details';
 
 /* REDUX IMPORTS BEGIN */
+import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { submitLocation } from '../../actions/listPropertyActions';
 import { stat } from 'fs';
 import cookie from 'react-cookies';
 /* REDUX IMPORTS END */
+
+
 
 class Location extends Component {
     constructor(props) {
@@ -55,7 +58,6 @@ class Location extends Component {
                 [e.target.name]: e.target.value
             })
         }
-
     }
     sendDatatoParent = (e) => {
         e.preventDefault();

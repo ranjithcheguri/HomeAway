@@ -2,17 +2,20 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Footer2 from './Footer2';
+import pagination from '../css/pagination.css';
 
 var propertiesss = [];
+var incVal = 5;
 class DisplayProperty extends Component {
     constructor(props) {
         super(props);
         console.log("Inside Display Properties");
         //retrieving data from pushed history.
         console.log("search properties from landingPage", this.props.location.state);
-
         this.state = {
             pageNo: 1,
+            start: 1,
+            end: incVal,
             id: 1,
             propertyData: [],
             _id: ""
@@ -31,7 +34,7 @@ class DisplayProperty extends Component {
         console.log("filters to query SQL", data);
         //removed await for the below
         axios.post('http://localhost:3002/displayProperty/', data)
-            .then(response => {
+            .then((response) => {
                 propertiesss.push(response.data);
                 this.setState({
                     propertyData: propertiesss
@@ -42,8 +45,17 @@ class DisplayProperty extends Component {
             })
     }
 
-    async componentDidMount() {
-        for (var i = 1; i <= 10; i++) {
+    componentDidMount() {
+        this.downloadTenProperties();
+        this.getTotalPropertyCount();
+    }
+
+    async getTotalPropertyCount() {
+
+    }
+
+    async downloadTenProperties() {
+        for (var i = this.state.start; i <= this.state.end; i++) {
             console.log("iterating through images", i)
             //removed await for the below statement
             this.downloadOneProperty(i);
@@ -64,6 +76,31 @@ class DisplayProperty extends Component {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    handleNext = async (e) => {
+        //if(this.state.end>=1){
+        //await for this.setState as it is not updating state immediately and it is downloading properties all i.e from 1 to end.
+        await this.setState({
+            start: this.state.start + incVal,
+            end: this.state.end + incVal,
+            pageNo: this.state.pageNo + 1
+        })
+        propertiesss = [];
+        //}
+        this.downloadTenProperties();
+    }
+    handlePrev = async (e) => {
+        console.log("next clicked");
+        if (this.state.start >= 1) {
+            await this.setState({
+                start: this.state.start - incVal,
+                end: this.state.end - incVal,
+                pageNo: this.state.pageNo - 1
+            })
+            propertiesss = [];
+        }
+        this.downloadTenProperties();
+    }
+
     async redirectToBookProperty(i, e) {
         //e.preventDefault();
         await this.setState({
@@ -74,6 +111,10 @@ class DisplayProperty extends Component {
     }
 
     render() {
+        const Pagination =
+            (<div class="pagination">
+                <span><i class="fa fa-3x">{this.state.pageNo}</i></span>
+            </div>)
         var PropItems = "";
         console.log("propertyData, this data will be rendered now...", this.state.propertyData);
         if (!!this.state.propertyData) {
@@ -88,7 +129,7 @@ class DisplayProperty extends Component {
                             <img class="displayPropertyImage" alt="No Image !" src={'data:image/jpeg;base64,' + item.photos[0]}></img>
                         </div>
                         <div class="col-lg-8">
-                            <div><a onClick={this.redirectToBookProperty.bind(this, (index+1))} class="itemDescription">{item.headline}</a></div>
+                            <div><a onClick={this.redirectToBookProperty.bind(this, (index + 1))} class="itemDescription">{item.headline}</a></div>
                             <div class="col-lg-12 alignLeft">
                                 <div class="col-lg-2">
                                     <i class="fa fa-home">&nbsp;{item.type}</i>
@@ -109,6 +150,7 @@ class DisplayProperty extends Component {
             PropItems = "NO DATA";
         }
 
+
         //check state after getting all comp structures
         console.log("final state after images download", this.state);
 
@@ -116,19 +158,37 @@ class DisplayProperty extends Component {
             <div>
                 <div class="displayProperty">
                     <div class="container-fluid">
-                        <div class="col-lg-12">
+                        <div class="col-lg-12 col-md-12">
                             <div class="col-lg-7">
                                 {PropItems}
                             </div>
-                            <div class="col-lg-5">
+                            <div class="col-lg-5 col-md-5">
+                            </div>
+                        </div>
+                        <div class="container-fluid ">
+                            <div class="col-lg-12 marginTopAndBottom">
+                                <div class="col-lg-2">
+                                </div>
+                                <div class="col-lg-1">
+                                    <span><i onClick={this.handlePrev} class="fa fa-3x fa-chevron-circle-left"></i></span>
+                                </div>
+                                <div class="col-lg-1">
+                                    {Pagination}
+                                </div>
+                                <div class="col-lg-1">
+                                    <span><i onClick={this.handleNext} class="fa fa-3x fa-chevron-circle-right"></i></span>
+                                </div>
+                                <div class="col-lg-8i">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div>
                     <Footer2 />
                 </div>
-            </div>
+            </div >
         )
     }
 }
