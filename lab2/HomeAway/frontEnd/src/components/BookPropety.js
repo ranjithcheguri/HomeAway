@@ -25,6 +25,10 @@ class BookProperty extends Component {
         return this.state.propertyData;
     }
 
+    sendMessage = (e)=>{
+        e.preventDefault();
+    }
+
     bookHomeBtn = async (e) => {
         e.preventDefault();
         const data = {
@@ -106,7 +110,6 @@ class BookProperty extends Component {
                         <div class="paddingAll col-lg-12">
                             <div class="col-lg-6 ">
                                 <input type="date" onChange={this.handleChange} name="checkInDate" class="form-control  form_element" placeholder="Check In"></input>
-
                             </div>
                             <div class="col-lg-6 ">
                                 <input type="date" onChange={this.handleChange} name="checkOutDate" class="form-control form_element" placeholder="Check Out"></input>
@@ -117,6 +120,9 @@ class BookProperty extends Component {
                         </div>
                         <div class="paddingAll">
                             <button class="btn btn-lg btn-primary blueButton" onClick={this.bookHomeBtn.bind(this)} type="submit">Request to Book</button>
+                        </div>
+                        <div class="paddingAll">
+                            <Link  to='/Messages'><button class="btn btn-lg btn-primary blueButton" onClick={this.sendMessage.bind(this)} type="submit">send message to Owner</button></Link>
                         </div>
                     </div>
                 </div>

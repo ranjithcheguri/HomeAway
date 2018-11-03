@@ -11,6 +11,24 @@ const path = require('path');
 const fs = require('fs');
 var bcrypt = require('bcryptjs');
 
+/********* KAFKA ********/
+var kafka = require('./kafka/client');
+
+/********* PASSPORT ********/
+var config = require('./config/settings');
+var jwt = require('jsonwebtoken');
+var morgan = require('morgan');
+var passport = require('passport');
+// Set up middleware
+var requireAuth = passport.authenticate('jwt', { session: false });
+// Bring in defined Passport Strategy
+require('./config/passport')(passport);
+// Log requests to console
+app.use(morgan('dev'));
+app.use(passport.initialize());
+/********* PASSPORT END ********/
+
+
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 app.use(session({
@@ -40,190 +58,30 @@ app.use(function (req, res, next) {
 const mongoClient = require('mongodb').MongoClient;
 
 ///////////////////////// TRAVELER SIGNUP BEGIN ///////////////////////////
+var travelerSignUp = require('./apis/travelerSignUp.js');
+app.use('/', travelerSignUp);
 
-app.post('/travelerSignUp', function (req, res) {
-    console.log("Creating new Traveler");
-    var salt = bcrypt.genSaltSync(10);
-    // Hash the password with the salt
-    var hash = bcrypt.hashSync(req.body.password, salt);
-
-    mongoClient.connect('mongodb://localhost:27017/homeaway', { useNewUrlParser: true }, (err, client) => {
-        if (err) {
-            console.log("error connecting to mongodb");
-        } else {
-            console.log("connection successful");
-            const db = client.db('homeaway');
-            db.collection('travelerLoginData').createIndex({ "email": 1 }, { unique: true });
-            db.collection('travelerLoginData').insertOne({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                password: hash
-            }, (err, result) => {
-                if (err) {
-                    console.log("query error, may be unique key already exists.");
-                    res.writeHead(400, {
-                        'Content-Type': 'text/plain'
-                    })
-                    res.end("Email already exists");
-                } else {
-                    console.log("query success");
-                    res.cookie('TravelerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
-                    req.session.user = result;
-                    res.writeHead(200, {
-                        'Content-Type': 'text/plain'
-                    })
-                    res.end("Successful Signup of Traveler");
-                }
-            })
-            client.close();
-        }
-    })
-});
 ///////////////////////// TRAVELER SIGNUP END///////////////////////////
 
 
 ///////////////////////// TRAVELER LOGIN BEGIN ///////////////////////////
-app.post('/travelerLogin', function (req, res) {
-    console.log("Validating Traveler Login");
-    mongoClient.connect('mongodb://localhost:27017', (err, client) => {
-        if (err) {
-            console.log("error connecting to mongodb");
-        } else {
-            console.log("connection successful");
-            const db = client.db('homeaway');
-            db.collection('travelerLoginData').find({
-                email: req.body.email,
-            })
-                .toArray()
-                .then((result) => {
-                    //JSON.stringify(result, undefined, 2)
-                    //console.log("Document fetched :", result[0].password);
-                    if (bcrypt.compareSync(req.body.password, result[0].password)) {
-                        console.log("Validatiing bcrypt... ");
-                        if (result.length > 0) {
-                            console.log("login successful");
-                            res.cookie('TravelerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
-                            req.session.user = result;
-                            res.writeHead(200, {
-                                'Content-Type': 'text/plain'
-                            })
-                            res.end("login successful");
-                        } else {
-                            res.writeHead(400, {
-                                'Content-Type': 'text/plain'
-                            })
-                            console.log("No details found");
-                            res.end("No details found");
-                        }
-                    } else {
-                        res.writeHead(400, {
-                            'Content-Type': 'text/plain'
-                        })
-                        console.log("Invalid Username/Password");
-                        res.end("Invalid Username/Password");
-                    }
-                }), (err) => {
-                    console.log("Unable to fetch Documents");
-                }
-            client.close();
-        }
-    })
-});
+
+var travelerLogin = require('./apis/travelerLogin');
+app.use('/',travelerLogin);
+
 ///////////////////////// TRAVELER LOGIN END ///////////////////////////
 
 ///////////////////////// OWNER SIGNUP BEGIN ///////////////////////////
 
-app.post('/ownerSignUp', function (req, res) {
-    console.log("Creating new Owner");
-    var salt = bcrypt.genSaltSync(10);
-    // Hash the password with the salt
-    var hash = bcrypt.hashSync(req.body.password, salt);
-    console.log("server side : Inside Owner signup");
+var ownerSignUp = require('./apis/ownerSignUp');
+app.use('/',ownerSignUp);
 
-    mongoClient.connect('mongodb://localhost:27017/homeaway', { useNewUrlParser: true }, (err, client) => {
-        if (err) {
-            console.log("error connecting to mongodb");
-        } else {
-            console.log("connection successful");
-            const db = client.db('homeaway');
-            db.collection('ownerLoginData').createIndex({ "email": 1 }, { unique: true });
-            db.collection('ownerLoginData').insertOne({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                password: hash
-            }, (err, result) => {
-                if (err) {
-                    console.log("query error, may be unique key already exists.");
-                    res.writeHead(400, {
-                        'Content-Type': 'text/plain'
-                    })
-                    res.end("Email already exists");
-                } else {
-                    console.log("query success");
-                    res.cookie('OwnerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
-                    req.session.user = result;
-                    res.writeHead(200, {
-                        'Content-Type': 'text/plain'
-                    })
-                    res.end("Successful Signup of Owner");
-                }
-            })
-            client.close();
-        }
-    })
-});
 ///////////////////////// OWNER SIGNUP END///////////////////////////
 
 
 ///////////////////////// OWNER LOGIN BEGIN ///////////////////////////
-app.post('/ownerlogin', function (req, res) {
-    console.log("Validating Owner Login");
-    mongoClient.connect('mongodb://localhost:27017', (err, client) => {
-        if (err) {
-            console.log("error connecting to mongodb");
-        } else {
-            console.log("connection successful");
-            const db = client.db('homeaway');
-            db.collection('ownerLoginData').find({
-                email: req.body.email,
-            })
-                .toArray()
-                .then((result) => {
-                    //JSON.stringify(result, undefined, 2)
-                    //console.log("Document fetched :", result[0].password);
-                    if (bcrypt.compareSync(req.body.password, result[0].password)) {
-                        console.log("Validatiing bcrypt... ");
-                        if (result.length > 0) {
-                            console.log("login successful");
-                            res.cookie('OwnerCookie', req.body.email, { maxAge: 900000, httpOnly: false, path: '/' });
-                            req.session.user = result;
-                            res.writeHead(200, {
-                                'Content-Type': 'text/plain'
-                            })
-                            res.end("login successful");
-                        } else {
-                            res.writeHead(400, {
-                                'Content-Type': 'text/plain'
-                            })
-                            console.log("No details found");
-                            res.end("No details found");
-                        }
-                    } else {
-                        res.writeHead(400, {
-                            'Content-Type': 'text/plain'
-                        })
-                        console.log("Invalid Username/Password");
-                        res.end("Invalid Username/Password");
-                    }
-                }), (err) => {
-                    console.log("Unable to fetch Documents");
-                }
-            client.close();
-        }
-    })
-});
+var ownerLogin = require('./apis/ownerLogin');
+app.use('/', ownerLogin);
 ///////////////////////// OWNER LOGIN END /////////////////////////// 
 
 
@@ -346,7 +204,7 @@ app.post('/displayProperty', function (req, res) {
             })
                 .toArray()
                 .then((result) => {
-                    console.log(result);
+                    console.log("property downloaded", result);
                     //JSON.stringify(result, undefined, 2)
                     console.log("downloading display properties... ");
                     if (result.length > 0) {
@@ -431,6 +289,30 @@ app.post('/bookProperty', (req, res) => {
 });
 
 /******************* BOOKING HOME/PROPERTY END ***************************/
+
+/******************* MESSAGES BEGIN ***************************/
+
+app.post('/message', (req, res) => {
+    console.log(req.body);
+    kafka.make_request('post_message', req.body, function (err, results) {
+        console.log("mongoDB.js", 'in result');
+        console.log(results);
+        if (err) {
+            console.log("mongoDB.js", "Inside err");
+            res.json({
+                status: "error",
+                msg: "System Error, Try Again."
+            })
+        } else {
+            console.log("mongoDB.js", "Inside else");
+            // res.json({
+            //     updatedList: results
+            // });
+            res.end(results);
+        }
+    });
+})
+/******************* MESSAGES END***************************/
 
 
 

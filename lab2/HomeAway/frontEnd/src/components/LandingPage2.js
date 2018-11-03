@@ -5,6 +5,7 @@ import cookie from 'react-cookies';
 import Footer2 from './Footer2';
 import Carousel2 from './Carousel2';
 import Carousel3 from './Carousel3';
+import axios from 'axios';
 
 //REDUX
 import { connect } from 'react-redux';
@@ -22,6 +23,12 @@ class LandingPage2 extends Component {
             searchAccomodates: "",
             redirectVar: false
         }
+    }
+
+    componentDidMount() {
+        //Passport.js
+        axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken')
+        //alert(localStorage.getItem('jwtToken'))
     }
 
     handleChange = (e) => {
@@ -67,8 +74,6 @@ class LandingPage2 extends Component {
 
     render() {
 
-
-
         // ******************** REDIRECT TO LIST PROP USING COOKIE ****************************
 
         let renderListProp = null;
@@ -99,6 +104,9 @@ class LandingPage2 extends Component {
                             <Link to='/Profile'>Profile</Link>
                         </li>
                         <li>
+                            <Link to='/Messages'>Messages</Link>
+                        </li>
+                        <li>
                             <Link to='/BookingHistory'>Booking History</Link>
                         </li>
                         <li>
@@ -118,6 +126,9 @@ class LandingPage2 extends Component {
                     <ul class="dropdown-menu">
                         <li>
                             <Link to='/Profile'>OwnerProfile</Link>
+                        </li>
+                        <li>
+                            <Link to='/Messages'>Messages</Link>
                         </li>
                         <li>
                             <Link to='/OwnerDashboard'>Owner Dashboard</Link>

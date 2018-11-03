@@ -21,4 +21,8 @@ export const SUBMIT_RENTAL = 'SUBMIT_RENTAL';
 /******************** LIST PROPERTY SUBMIT ALL **************************/
 export const SUBMIT_ALL_LIST_PROPERTIES = 'SUBMIT_ALL_LIST_PROPERTIES';
 
+/******************** MESSAGES **************************/
+export const SUBMIT_MESSAGE = 'SUBMIT_MESSAGE';
+
+
 

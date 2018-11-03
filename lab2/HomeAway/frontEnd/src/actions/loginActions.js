@@ -17,6 +17,8 @@ export const submitLogin = (email, password) => dispatch => {
     /********************TRAVELER LOGIN **************************/
     axios.post('http://localhost:3002/travelerLogin', data)
         .then(response => {
+            console.log("response received after login :",response.data);
+            localStorage.setItem('jwtToken',response.data.token);
             dispatch({
                 type: SUBMIT_LOGIN,
                 payload: response.status
