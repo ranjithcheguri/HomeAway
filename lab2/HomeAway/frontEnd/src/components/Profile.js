@@ -46,7 +46,7 @@ class Profile extends Component {
         }
         console.log(data);
 
-        axios.post('http://localhost:3001/Profile',data)
+        axios.post('http://localhost:3002/profile',data)
         .then((response)=>{
             if (response.status === 200) {
                 console.log("Profile updated successfully!");

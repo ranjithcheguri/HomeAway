@@ -619,8 +619,6 @@ app.post('/Profile', (req, res) => {
 
 
 /******************* VIEW PROFILE BEGIN ***************************/
-
-
 app.post('/ViewProfile', (req, res) => {
     console.log("Request Body", req.body);
     var sql = "SELECT * FROM viewprofile WHERE email=" + mysql.escape(req.body.email);

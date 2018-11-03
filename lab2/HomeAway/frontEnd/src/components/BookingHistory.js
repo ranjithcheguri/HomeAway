@@ -20,7 +20,7 @@ class BookingHistory extends Component {
         const data = {
             username: this.state.username,
         }
-        await axios.post('http://localhost:3001/bookingHistory/', data)
+        await axios.post('http://localhost:3002/bookingHistory/', data)
             .then(response => {
                 if (response.data.length > 0) {
                     this.setState({

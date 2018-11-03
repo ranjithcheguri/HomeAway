@@ -25,7 +25,7 @@ class BookProperty extends Component {
         return this.state.propertyData;
     }
 
-    sendMessage = (e)=>{
+    sendMessage = (e) => {
         e.preventDefault();
     }
 
@@ -42,7 +42,6 @@ class BookProperty extends Component {
             .then(response => {
                 console.log(response);
             });
-
         this.props.history.push('/BookingHistory');
     }
 
@@ -122,7 +121,7 @@ class BookProperty extends Component {
                             <button class="btn btn-lg btn-primary blueButton" onClick={this.bookHomeBtn.bind(this)} type="submit">Request to Book</button>
                         </div>
                         <div class="paddingAll">
-                            <Link  to='/Messages'><button class="btn btn-lg btn-primary blueButton" onClick={this.sendMessage.bind(this)} type="submit">send message to Owner</button></Link>
+                            <Link to='/Messages'><button class="btn btn-lg btn-primary blueButton" onClick={this.sendMessage.bind(this)} type="submit">send message to Owner</button></Link>
                         </div>
                     </div>
                 </div>

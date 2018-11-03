@@ -28,7 +28,7 @@ class ViewProfile extends Component {
         }
 
         console.log("data", data);
-        axios.post('http://localhost:3001/ViewProfile/', data)
+        axios.post('http://localhost:3002/ViewProfile/', data)
             .then((response) => {
                 console.log(response);
                 this.setState({
@@ -56,7 +56,7 @@ class ViewProfile extends Component {
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <h2>Hi, I'm {this.state.response[len - 1].firstname}</h2>
+                            <h2>Hi, I'm {this.state.response[len - 1].firstName}</h2>
                             <h4>member since 2018</h4>
                             <div class="paddingAbt">
                                 <b>About Me</b>

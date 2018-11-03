@@ -19,7 +19,7 @@ class OwnerDashboard extends Component {
         const data = {
             ownername: this.state.ownername
         }
-        await axios.post('http://localhost:3001/ownerDashboard/', data)
+        await axios.post('http://localhost:3002/ownerDashboard/', data)
             .then(response => {
                 if (response.data.length > 0) {
                     this.setState({

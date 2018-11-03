@@ -4,39 +4,31 @@ const mongoClient = require('mongodb').MongoClient;
 
 
 router.post('/bookProperty', (req, res) => {
-
-    console.log("Inside Booking Property");
-    //booking dates can be included as well here.
-    var sql = "UPDATE ownerprofile SET `booked` = " + mysql.escape(1) + ", `bookedBy` = " + mysql.escape(req.body.bookedUser) + " WHERE `key` = " + parseInt(mysql.escape(req.body.bookedKey)) + ";";
-    //var sql = 'UPDATE ownerprofile SET booked = 1, bookedBy = \'rky@123.com\' WHERE key = 11';
-    console.log(sql);
-
-    pool.getConnection(function (err, con) {
+    console.log("inside book property", req.body)
+    mongoClient.connect('mongodb://localhost:27017/homeaway', { useNewUrlParser: true }, (err, client) => {
         if (err) {
-            console.log("connection error");
-            res.writeHead(400, {
-                'Content-Type': 'text/plain'
-            })
-            res.end("Could Not Get Connection Object");
+            console.log("error connecting to mongodb");
         } else {
-            console.log("connection to db successfull");
-            con.query(sql, function (err, result) {
-                if (err) {
-                    console.log("******** Error in bookingProperty ******");
-                    console.log(err);
-                    res.writeHead(400, {
-                        'Content-Type': 'text/plain'
-                    })
-                    res.end("Invalid Credentials");
-                } else {
-                    console.log(result);
-                    //play with result here.
-                    res.writeHead(200, {
-                        'Content-Type': 'text/plain'
-                    })
-                    res.end("Successfully Booked Property");
-                }
-            });
+            console.log("connection successful");
+            const db = client.db('homeaway');
+            db.collection('listPropertyData').updateOne(
+                { "_id": req.body._id },
+                { $set: { 'bookedUser': req.body.bookedUser } }, (err, result) => {
+                    if (err) {
+                        console.log("query error, may be unique key already exists.");
+                        res.writeHead(400, {
+                            'Content-Type': 'text/plain'
+                        })
+                        res.end("Query update error");
+                    } else {
+                        console.log("query success");
+                        res.writeHead(200, {
+                            'Content-Type': 'text/plain'
+                        })
+                        res.end("Successfully booked the property");
+                    }
+                })
+            client.close();
         }
     })
 });

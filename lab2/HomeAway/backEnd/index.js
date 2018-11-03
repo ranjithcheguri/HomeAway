@@ -13,6 +13,10 @@ var ownerLogin = require('./apis/ownerLogin');
 var displayProperty = require('./apis/displayProperty.js');
 var bookProperty = require('./apis/bookProperty.js');
 var messages = require('./apis/messages.js');
+var profile = require('./apis/profile.js');
+var viewProfile = require('./apis/viewProfile.js');
+var ownerDashboard = require('./apis/ownerDashboard.js');
+var bookingHistory = require('./apis/bookingHistory.js');
 
 // Log requests to console
 app.use(morgan('dev'));
@@ -26,7 +30,6 @@ app.use(session({
     duration: 60 * 60 * 1000,    // Overall duration of Session : 30 minutes : 1800 seconds
     activeDuration: 5 * 60 * 1000
 }));
-
 
 app.use(bodyParser.json());
 
@@ -47,6 +50,10 @@ app.use('/', ownerLogin);
 app.use('/', displayProperty);
 app.use('/', bookProperty);
 app.use('/', messages);
+app.use('/', profile);
+app.use('/', viewProfile);
+app.use('/', ownerDashboard);
+app.use('/', bookingHistory);
 
 app.listen(3002);
 console.log("Server running on port 3002");
