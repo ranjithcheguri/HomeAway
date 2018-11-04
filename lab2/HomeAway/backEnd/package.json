@@ -26,7 +26,6 @@
     "nodemon": "^1.18.4",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "redux-form": "^7.4.2",
     "request": "^2.88.0"
   }
 }
