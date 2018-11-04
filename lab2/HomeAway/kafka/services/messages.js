@@ -1,4 +1,3 @@
-
 var returnMessage = [];
 
 function handle_request(msg, callback) {

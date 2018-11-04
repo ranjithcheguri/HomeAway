@@ -15,7 +15,7 @@ var photos = "";
 //set storage engine
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, '../uploads');
+        cb(null, './uploads');
         console.log("Inside Destination");
     },
     filename: (req, file, cb) => {

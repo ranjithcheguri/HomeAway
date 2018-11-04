@@ -3,6 +3,7 @@ import cookie from 'react-cookies';
 import '../css/Messages.css';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
+
 /* REDUX IMPORTS BEGIN */
 import { connect } from 'react-redux';
 import { submitMessage } from '../actions/messageActions';
@@ -12,13 +13,28 @@ import { stat } from 'fs';
 class Messages extends Component {
     constructor(props) {
         super(props);
+        console.log(this.props.location.state);
         this.state = {
-            message: ""
+            message: "please login"
         }
+        if (cookie.load('TravelerCookie')) {
+            this.state = {
+                from: cookie.load('TravelerCookie'),
+                to: this.props.location.state,
+            }
+        } else if (cookie.load('OwnerCookie')) {
+            this.state = {
+                from: cookie.load('OwnerCookie'),
+                to: this.props.location.state,
+            }
+        }
+        console.log(this.state);
+
     }
 
     sendMessage = (e) => {
         e.preventDefault();
+        console.log(this.state);
         this.props.submitMessage(this.state);
     }
 
@@ -36,15 +52,23 @@ class Messages extends Component {
     }
 
     render() {
-
         if (this.props.message[0]) {
             var messagesFromKafka = this.props.message.map(item => {
-                return (
-                    <div class="container col-lg-12">
-                        <div class="col-lg-3"><p>Name</p></div>
-                        <div class="col-lg-9"><p>{JSON.stringify(item['message'])}</p></div>
-                    </div>
-                )
+                console.log("checking from and to details :");
+                console.log("from : in state :", this.state.from);
+                console.log("from : from kafka : ", item['from']);
+                console.log("to : in state : ", this.state.to);
+                console.log("to : from kafka : ", item['to']);
+                if (this.state.from === item['to']) {
+                    return (
+                        <div class="container col-lg-12">
+                            <div class="">
+                                <div class="col-lg-3"><p>{JSON.stringify(item['to'])}</p></div>
+                                <div class="col-lg-9"><p>{JSON.stringify(item['message'])}</p></div>
+                            </div>
+                        </div>
+                    )
+                }
             })
         } else {
             var messagesFromKafka = (
@@ -56,7 +80,7 @@ class Messages extends Component {
         }
 
 
-        if (cookie.load('TravelerCookie')) {
+        if (cookie.load('TravelerCookie') || cookie.load('OwnerCookie')) {
             return (
                 <div class="messagePage container-fluid">
                     <div className="container messageContainer">

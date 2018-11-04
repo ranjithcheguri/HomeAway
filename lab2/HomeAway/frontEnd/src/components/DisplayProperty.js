@@ -33,7 +33,7 @@ class DisplayProperty extends Component {
         }
         console.log("filters to query SQL", data);
         //removed await for the below
-        axios.post('http://localhost:3002/displayProperty/', data)
+        await axios.post('http://localhost:3002/displayProperty/', data)
             .then((response) => {
                 propertiesss.push(response.data);
                 this.setState({
@@ -57,8 +57,8 @@ class DisplayProperty extends Component {
     async downloadTenProperties() {
         for (var i = this.state.start; i <= this.state.end; i++) {
             console.log("iterating through images", i)
-            //removed await for the below statement
-            this.downloadOneProperty(i);
+            //removed await for the below statement as its fetching slowly
+            await this.downloadOneProperty(i);
         }
         console.log("after downloading all properties...", this.state.propertyData)
     }

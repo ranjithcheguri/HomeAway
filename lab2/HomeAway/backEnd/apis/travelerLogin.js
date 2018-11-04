@@ -29,7 +29,8 @@ router.post('/travelerLogin', function (req, res) {
             })
                 .toArray()
                 .then((result) => {
-                    if (bcrypt.compareSync(req.body.password, result[0].password)) {
+                    //console.log(result);
+                    if (result && bcrypt.compareSync(req.body.password, result[0].password)) {
                         console.log("Validatiing bcrypt... ");
                         if (result.length > 0) {
 

@@ -6,12 +6,12 @@ import Footer2 from './Footer2';
 class BookProperty extends Component {
     constructor(props) {
         super(props);
-        console.log("Inside Book property", this.props.location.state);
+        //console.log("Inside Book property", this.props.location.state);
         this.state = {
             _id: this.props.location.state._id,
             propertyData: this.props.location.state.propertyData[this.props.location.state._id - 1][0]
         }
-        console.log("Inside Book property updated state", this.state.propertyData);
+        console.log("Property data of current clicked property : ", this.state.propertyData);
     }
 
     returnImage(index) {
@@ -27,6 +27,12 @@ class BookProperty extends Component {
 
     sendMessage = (e) => {
         e.preventDefault();
+        this.props.history.push('/Messages',this.state.propertyData.ownername)
+    }
+
+
+    getOwner(){
+
     }
 
     bookHomeBtn = async (e) => {
