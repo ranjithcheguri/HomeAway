@@ -1,44 +1,46 @@
 import React, { Component } from 'react';
 import Footer from './Footer';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Footer2 from './Footer2';
+import { IP_backEnd, IP_NODE_PORT } from '../config/config';
+import { connect } from 'react-redux';
 
 class Profile extends Component {
     constructor(props) {
         super(props);
         console.log("Inside Profile");
-        this.state={
-            firstName:"",
-            lastName:"",
-            aboutMe:"",
-            city:"",
-            company:"",
-            school:"",
-            hometown:"",
-            languages:"",
-            gender:"",
-            phoneNumber:"",
-            email:""
+        this.state = {
+            firstName: "",
+            lastName: "",
+            aboutMe: "",
+            city: "",
+            company: "",
+            school: "",
+            hometown: "",
+            languages: "",
+            gender: "",
+            phoneNumber: "",
+            email: ""
         }
     }
 
-    handleOnChange=(e)=>{
-        if(sessionStorage.getItem('username')){
+    handleOnChange = (e) => {
+        if (this.props.Travelercookie) {
             this.setState({
-                email:sessionStorage.getItem('username')
+                email: this.props.Travelercookie
             })
-        }else{
+        } else if (this.props.Ownercookie) {
             this.setState({
-                email:sessionStorage.getItem('ownername')
+                email: this.props.Ownercookie
             })
         }
         this.setState({
-            [e.target.name]:e.target.value
+            [e.target.name]: e.target.value
         })
     }
 
-    uploadData=(e)=>{
+    uploadData = (e) => {
         e.preventDefault();
 
         const data = {
@@ -46,15 +48,15 @@ class Profile extends Component {
         }
         console.log(data);
 
-        axios.post('http://localhost:3002/profile',data)
-        .then((response)=>{
-            if (response.status === 200) {
-                console.log("Profile updated successfully!");
-                this.props.history.push('/ViewProfile');
-            }else{
-                console.log("Pofile not updated");
-            }
-        })
+        axios.post(IP_backEnd + IP_NODE_PORT + '/profile', data)
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log("Profile updated successfully!");
+                    this.props.history.push('/ViewProfile');
+                } else {
+                    console.log("Pofile not updated");
+                }
+            })
     }
 
     render() {
@@ -157,5 +159,11 @@ class Profile extends Component {
 
 }
 
-export default Profile;
+//subscribe to Redux store updates.
+const mapStateToProps = (state) => ({
+    // variables below are subscribed to changes in loginState variables (redirectVar,Response) and can be used with props.
+    Travelercookie: state.loginState.Travelercookie,
+    Ownercookie: state.ownerLoginState.Ownercookie
+})
 
+export default connect(mapStateToProps, {})(Profile);

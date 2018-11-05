@@ -3,7 +3,8 @@ import { OWNER_SUBMIT_LOGIN, OWNER_SIGNOUT } from '../actions/types';
 
 const initialState = {
     redirectVar: false,
-    response: ""
+    response: "",
+    cookie: ""
 };
 
 export default function (state = initialState, action) {
@@ -14,23 +15,25 @@ export default function (state = initialState, action) {
                 return {
                     ...state,
                     redirectVar: true,
-                    response: action.payload
+                    response: action.payload,
+                    Ownercookie: action.Ownercookie
                 }
             } else {
                 console.log("Reducer : login Failed !");
                 return {
                     ...state,
                     redirectVar: false,
-                    response: action.payload
+                    response: action.payload,
+                    Ownercookie: action.Ownercookie
                 }
             }
-
         case OWNER_SIGNOUT:
-            console.log("Reducer : Owner Signout successful !",action.payload);
+            console.log("Reducer : Owner Signout successful !", action.payload);
             return {
                 ...state,
                 response: "",
-                redirectVar: action.payload
+                redirectVar: action.payload,
+                Ownercookie: action.Ownercookie
             }
         default:
             return state;

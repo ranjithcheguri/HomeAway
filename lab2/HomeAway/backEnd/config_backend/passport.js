@@ -6,6 +6,8 @@ const mongoClient = require('mongodb').MongoClient;
 //var { Users } = require('../models/user');
 var config = require('./settings');
 console.log("In passport.js");
+var ENV_VAR = require('./config');
+
 
 // Setup work and export for the JWT passport strategy
 module.exports = function (passport) {
@@ -18,7 +20,7 @@ module.exports = function (passport) {
     passport.use(new JwtStrategy(opts, function (jwt_payload, callback) {
         console.log(jwt_payload)
         console.log("Validating Traveler Login");
-        mongoClient.connect('mongodb://localhost:27017', (err, client) => {
+        mongoClient.connect(ENV_VAR.IP_MONGODB + ENV_VAR.IP_PORT_MONGO, (err, client) => {
             if (err) {
                 console.log("error connecting to mongodb");
             } else {

@@ -1,11 +1,13 @@
 var express = require('express');
 var router = express.Router(); // capital R
 const mongoClient = require('mongodb').MongoClient;
+var ENV_VAR = require('../config_backend/config');
+
 
 router.post('/ownerDashboard', (req, res) => {
     console.log("Inside ownerDashboard", req.body);
     //booking dates can be included as well here.
-    mongoClient.connect('mongodb://localhost:27017', (err, client) => {
+    mongoClient.connect(ENV_VAR.IP_MONGODB + ENV_VAR.IP_PORT_MONGO, (err, client) => {
         if (err) {
             console.log("error connecting to mongodb");
         } else {
@@ -33,7 +35,7 @@ router.post('/ownerDashboard', (req, res) => {
                 }), (err) => {
                     console.log("Unable to fetch Documents");
                 }
-            client.close(); 
+            client.close();
         }
     })
 });

@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
 import Footer2 from './Footer2';
+import { IP_NODE_PORT, IP_backEnd } from '../config/config.js'
+import { connect } from 'react-redux';
+
 
 class BookProperty extends Component {
     constructor(props) {
         super(props);
-        //console.log("Inside Book property", this.props.location.state);
+        console.log("Inside Book property", this.props.location.state);
         this.state = {
             _id: this.props.location.state._id,
-            propertyData: this.props.location.state.propertyData[this.props.location.state._id - 1][0]
+            propertyData: this.props.location.state.propertyData[this.props.location.state._id - ((this.props.location.state.pageNo - 1) * 5) - 1][0]
         }
         console.log("Property data of current clicked property : ", this.state.propertyData);
     }
@@ -27,24 +30,24 @@ class BookProperty extends Component {
 
     sendMessage = (e) => {
         e.preventDefault();
-        this.props.history.push('/Messages',this.state.propertyData.ownername)
+        this.props.history.push('/Messages', this.state.propertyData.ownername)
     }
 
 
-    getOwner(){
+    getOwner() {
 
     }
 
     bookHomeBtn = async (e) => {
         e.preventDefault();
-        const data = {
+        const data = await {
             //only key not key-1
             _id: this.state._id,
-            bookedUser: sessionStorage.getItem('username')
+            bookedUser: this.props.Travelercookie
         }
-        console.log(data);
+        console.log(data, "traveler cookie", this.props.Travelercookie);
 
-        await axios.post('http://localhost:3002/bookProperty', data)
+        await axios.post(IP_backEnd + IP_NODE_PORT + '/bookProperty', data)
             .then(response => {
                 console.log(response);
             });
@@ -139,4 +142,12 @@ class BookProperty extends Component {
         )
     }
 }
-export default BookProperty;
+
+//subscribe to Redux store updates.
+const mapStateToProps = (state) => ({
+    // variables below are subscribed to changes in loginState variables (redirectVar,Response) and can be used with props.
+    Travelercookie: state.loginState.Travelercookie,
+    Ownercookie: state.ownerLoginState.Ownercookie
+})
+
+export default connect(mapStateToProps, {})(BookProperty);

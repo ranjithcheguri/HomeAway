@@ -6,7 +6,6 @@ import Photos from './Photos';
 import { connect } from 'react-redux';
 import { submitBookingOptions } from '../../actions/listPropertyActions';
 import { stat } from 'fs';
-import cookie from 'react-cookies';
 /* REDUX IMPORTS END */
 
 class BookingDetails extends Component {

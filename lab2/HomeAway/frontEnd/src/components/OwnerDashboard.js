@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import cookie from 'react-cookies';
+import { connect } from 'react-redux';
+import { IP_backEnd, IP_NODE_PORT } from '../config/config';
 
 class OwnerDashboard extends Component {
 
@@ -8,18 +10,17 @@ class OwnerDashboard extends Component {
         super(props);
         console.log("Inside OwnerDashboard");
         this.state = {
-            ownername: sessionStorage.getItem('ownername'),
+            ownername: this.props.Ownercookie,
             propertyData: "",
             isEmpty: true
         }
     }
 
-
     async componentDidMount() {
         const data = {
             ownername: this.state.ownername
         }
-        await axios.post('http://localhost:3002/ownerDashboard/', data)
+        await axios.post(IP_backEnd + IP_NODE_PORT + '/ownerDashboard/', data)
             .then(response => {
                 if (response.data.length > 0) {
                     this.setState({
@@ -32,7 +33,6 @@ class OwnerDashboard extends Component {
     }
 
     render() {
-
         var details = "";
         var pageLayout = "";
 
@@ -54,7 +54,7 @@ class OwnerDashboard extends Component {
             return (<div>No Properties Listed</div>)
         }
 
-        if (cookie.load('OwnerCookie')) {
+        if (this.props.Ownercookie) {
             pageLayout = (
                 <div class="bookPropertyContainer">
                     <div class="container-fluid shadowBg">
@@ -77,18 +77,40 @@ class OwnerDashboard extends Component {
                             </tbody>
                         </table>
                     </div>
+                    <div class="container-fluid ">
+                        <div class="col-lg-12 marginTopAndBottom">
+                            <div class="col-lg-4">
+                            </div>
+                            <div class="col-lg-1">
+                                <span><i class="fa fa-3x fa-chevron-circle-left"></i></span>
+                            </div>
+                            <div class="col-lg-1">
+                                <span><i class="fa fa-3x">1</i></span>
+                            </div>
+                            <div class="col-lg-1">
+                                <span><i class="fa fa-3x fa-chevron-circle-right"></i></span>
+                            </div>
+                            <div class="col-lg-6">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )
         } else {
             this.props.history.push('/OwnerLogin');
         }
 
-
         return (
-
             <div>{pageLayout}</div>
         )
 
     }
 }
-export default OwnerDashboard;
+//subscribe to Redux store updates.
+const mapStateToProps = (state) => ({
+    // variables below are subscribed to changes in loginState variables (redirectVar,Response) and can be used with props.
+    Travelercookie: state.loginState.Travelercookie,
+    Ownercookie: state.ownerLoginState.Ownercookie
+})
+
+export default connect(mapStateToProps, {})(OwnerDashboard);

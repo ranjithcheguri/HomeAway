@@ -1,6 +1,8 @@
 var router = require('express').Router();
 var bcrypt = require('bcryptjs');
 const mongoClient = require('mongodb').MongoClient;
+var ENV_VAR = require('../config_backend/config');
+
 
 router.post('/ownerSignUp', function (req, res) {
     console.log("Creating new Owner");
@@ -9,7 +11,7 @@ router.post('/ownerSignUp', function (req, res) {
     var hash = bcrypt.hashSync(req.body.password, salt);
     console.log("server side : Inside Owner signup");
 
-    mongoClient.connect('mongodb://localhost:27017/homeaway', { useNewUrlParser: true }, (err, client) => {
+    mongoClient.connect(ENV_VAR.IP_MONGODB + ENV_VAR.IP_PORT_MONGO , { useNewUrlParser: true }, (err, client) => {
         if (err) {
             console.log("error connecting to mongodb");
         } else {

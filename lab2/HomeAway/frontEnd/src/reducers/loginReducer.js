@@ -3,7 +3,8 @@ import { SUBMIT_LOGIN, LOGIN_SUCCESS, LOGIN_ERROR, TRAVELER_SIGNOUT } from '../a
 
 const initialState = {
   redirectVar: false,
-  response: ""
+  response: "",
+  cookie: ""
 };
 
 export default function (state = initialState, action) {
@@ -14,14 +15,16 @@ export default function (state = initialState, action) {
         return {
           ...state,
           redirectVar: true,
-          response: action.payload
+          response: action.payload,
+          Travelercookie: action.Travelercookie
         }
       } else {
         console.log("Reducer : Traveler login Failed !");
         return {
           ...state,
           redirectVar: false,
-          response: action.payload
+          response: action.payload,
+          Travelercookie: action.Travelercookie
         }
       }
 
@@ -30,7 +33,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         response: "",
-        redirectVar: action.payload
+        redirectVar: action.payload,
+        Travelercookie: action.Travelercookie
       }
     default:
       return state;

@@ -6,8 +6,7 @@ const multer = require('multer');
 //const uuidv4 = require('uuid/v4');
 const path = require('path');
 const fs = require('fs');
-
-
+var ENV_VAR = require('../config_backend/config');
 
 //ALL ABOUT LIST PROPERTY, PHOTOS and DISPLAY PROPERTY.
 
@@ -42,7 +41,6 @@ router.post('/listPropertyPhotos', upload, (req, res, next) => {
 
 
 ///////////////////////// listProperty BEGIN /////////////////////////////
-
 getNextSequenceValue = async (db, sequenceName) => {
     //make sure to sure async and await.
     var sequenceDocument = await db.collection('counters').findOneAndUpdate(
@@ -57,7 +55,7 @@ getNextSequenceValue = async (db, sequenceName) => {
 router.post('/listProperty', function (req, res) {
     console.log("inside List Property mongo...");
     //console.log(req.body);
-    mongoClient.connect('mongodb://localhost:27017', async (err, client) => {
+    mongoClient.connect(ENV_VAR.IP_MONGODB + ENV_VAR.IP_PORT_MONGO, async (err, client) => {
         if (err) {
             console.log("error connecting to mongodb");
         } else {
@@ -114,7 +112,7 @@ router.post('/listProperty', function (req, res) {
 router.post('/displayProperty', function (req, res) {
     console.log("MongoDB : fetching display Properties...");
     console.log(req.body);
-    mongoClient.connect('mongodb://localhost:27017', (err, client) => {
+    mongoClient.connect(ENV_VAR.IP_MONGODB + ENV_VAR.IP_PORT_MONGO, (err, client) => {
         if (err) {
             console.log("error connecting to mongodb");
         } else {

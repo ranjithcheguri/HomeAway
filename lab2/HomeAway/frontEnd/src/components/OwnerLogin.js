@@ -8,7 +8,6 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { ownerSubmitLogin } from '../actions/ownerLoginActions';
 import { stat } from 'fs';
-import cookie from 'react-cookies';
 /* REDUX IMPORTS END */
 
 

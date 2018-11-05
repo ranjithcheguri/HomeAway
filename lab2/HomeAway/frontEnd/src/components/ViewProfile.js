@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Footer2 from './Footer2';
+import { IP_backEnd, IP_NODE_PORT } from '../config/config';
+import { connect } from 'react-redux';
 
 class ViewProfile extends Component {
     constructor(props) {
@@ -11,24 +13,23 @@ class ViewProfile extends Component {
             email: ""
         }
     }
-
     async componentDidMount() {
         var data = "";
-        console.log(sessionStorage.getItem('username'));
-        if (sessionStorage.getItem('username')) {
+        console.log(this.props.Travelercookie);
+        if (this.props.Travelercookie) {
             console.log("1")
             data = {
-                email: sessionStorage.getItem('username')
+                email: this.props.Travelercookie
             }
         } else {
             console.log("2")
             data = {
-                email: sessionStorage.getItem('ownername')
+                email: this.props.Ownercookie
             }
         }
 
         console.log("data", data);
-        axios.post('http://localhost:3002/ViewProfile/', data)
+        axios.post(IP_backEnd + IP_NODE_PORT + '/viewProfile/', data)
             .then((response) => {
                 console.log(response);
                 this.setState({
@@ -92,4 +93,11 @@ class ViewProfile extends Component {
     }
 }
 
-export default ViewProfile;
+//subscribe to Redux store updates.
+const mapStateToProps = (state) => ({
+    // variables below are subscribed to changes in loginState variables (redirectVar,Response) and can be used with props.
+    Travelercookie: state.loginState.Travelercookie,
+    Ownercookie: state.ownerLoginState.Ownercookie
+})
+
+export default connect(mapStateToProps, {})(ViewProfile);

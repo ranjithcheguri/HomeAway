@@ -8,7 +8,6 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { submitLogin } from '../actions/loginActions';
 import { stat } from 'fs';
-import cookie from 'react-cookies';
 /* REDUX IMPORTS END */
 
 

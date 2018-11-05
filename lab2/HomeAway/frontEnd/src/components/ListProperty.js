@@ -12,6 +12,7 @@ import Rental from './ListPropItems/PricingItems/Rental';
 import Taxes from './ListPropItems/PricingItems/Taxes';
 import axios from 'axios';
 import Footer from './Footer';
+import { IP_backEnd, IP_NODE_PORT } from '../config/config';
 
 class ListProperty extends Component {
     constructor(props) {
@@ -97,7 +98,7 @@ class ListProperty extends Component {
         }
 
         //sending data to server
-        await axios.post("http://localhost:3002/listProperty", data)
+        await axios.post(IP_backEnd+IP_NODE_PORT+"/listProperty", data)
             .then(response => {
                 console.log("res :" + response);
             });

@@ -1,6 +1,7 @@
 import { SUBMIT_LOCATION, SUBMIT_DETAILS, SUBMIT_BOOKINGOPTIONS, SUBMIT_PHOTOS, SUBMIT_SECURITY, SUBMIT_PAYMENT, SUBMIT_AVAILABILITY, SUBMIT_RENTAL } from './types';
 import { SUBMIT_ALL_LIST_PROPERTIES } from './types';
 import axios from "axios";
+import { IP_NODE_PORT, IP_backEnd } from '../config/config.js'
 
 export const submitLocation = (data) => dispatch => {
     console.log("Actions : updating location details in store...");
@@ -69,7 +70,7 @@ export const submitRental = (data) => dispatch => {
 
 export const submitAllDetails = (data) => dispatch => {
     console.log("Actions : Submit all details...", data);
-    axios.post('http://localhost:3002/listProperty', data)
+    axios.post(IP_NODE_PORT + IP_backEnd + '/listProperty', data)
         .then(response => {
             dispatch({
                 type: SUBMIT_ALL_LIST_PROPERTIES,

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Route, Link } from 'react-router-dom'
 import CarouselHA from './CarouselHA';
-import cookie from 'react-cookies';
 import Footer2 from './Footer2';
 import Carousel2 from './Carousel2';
 import Carousel3 from './Carousel3';
@@ -26,6 +25,7 @@ class LandingPage2 extends Component {
     }
 
     componentDidMount() {
+
         //Passport.js
         axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken')
         //alert(localStorage.getItem('jwtToken'))
@@ -57,15 +57,15 @@ class LandingPage2 extends Component {
 
     handleSignOut = (e) => {
         //e.preventDefault();
-        if (cookie.load('OwnerCookie')) {
+        if (this.props.Ownercookie) {
             sessionStorage.removeItem('ownername');
-            cookie.remove('OwnerCookie', { path: '/' });
+            //cookie.remove('OwnerCookie', { path: '/' });
             //not required but pushed as  signout screen is getting updated.
             this.props.history.push('/');
             this.props.ownerSignout();
-        } else if (cookie.load('TravelerCookie')) {
+        } else if (this.props.Travelercookie) {
             sessionStorage.removeItem('username');
-            cookie.remove('TravelerCookie', { path: '/' });
+            //cookie.remove('TravelerCookie', { path: '/' });
             //not required but pushed as  signout screen is getting updated.
             this.props.history.push('/');
             this.props.travelerSignout();
@@ -77,7 +77,8 @@ class LandingPage2 extends Component {
         // ******************** REDIRECT TO LIST PROP USING COOKIE ****************************
 
         let renderListProp = null;
-        if (cookie.load('OwnerCookie')) {
+        console.log(this.props);
+        if (this.props.Ownercookie) {
             renderListProp = (<Link to="/ListProperty">
                 <button class="btn btn-lg listYourProperty">List your property</button>
             </Link>)
@@ -92,7 +93,8 @@ class LandingPage2 extends Component {
         //if Cookie is set render Logout Button  
 
         let loggedIn = null;
-        if (cookie.load('TravelerCookie')) {
+        //if (cookie.load('TravelerCookie')) {
+        if (this.props.Travelercookie) {
             console.log("Able to read cookie");
             loggedIn = (
                 <div class="dropdown floatRight align-center loginList">
@@ -116,7 +118,8 @@ class LandingPage2 extends Component {
                 </div>
             );
         }
-        else if (cookie.load('OwnerCookie')) {
+        //else if (cookie.load('OwnerCookie')) {
+        else if (this.props.Ownercookie) {
             console.log("Owner Cookie exists");
             loggedIn = (
                 <div class="dropdown floatRight align-center loginList">
@@ -235,6 +238,8 @@ const mapStateToProps = (state) => ({
     // variables below are subscribed to changes in loginState variables (redirectVar,Response) and can be used with props.
     redirectVar: state.loginState.redirectVar,
     redirectVar: state.ownerLoginState.redirectVar,
+    Travelercookie: state.loginState.Travelercookie,
+    Ownercookie: state.ownerLoginState.Ownercookie
 })
 
 // const mapDispatchToProps = (dispatch) => {

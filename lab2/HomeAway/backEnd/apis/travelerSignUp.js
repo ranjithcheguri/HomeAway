@@ -1,6 +1,8 @@
 var router = require('express').Router();
 var bcrypt = require('bcryptjs');
 const mongoClient = require('mongodb').MongoClient;
+var ENV_VAR = require('../config_backend/config');
+
 
 router.post('/travelerSignUp', function (req, res) {
     console.log("Creating new Traveler");
@@ -8,7 +10,7 @@ router.post('/travelerSignUp', function (req, res) {
     // Hash the password with the salt
     var hash = bcrypt.hashSync(req.body.password, salt);
 
-    mongoClient.connect('mongodb://localhost:27017/homeaway', { useNewUrlParser: true }, (err, client) => {
+    mongoClient.connect(ENV_VAR.IP_MONGODB + ENV_VAR.IP_PORT_MONGO , { useNewUrlParser: true }, (err, client) => {
         if (err) {
             console.log("error connecting to mongodb");
         } else {

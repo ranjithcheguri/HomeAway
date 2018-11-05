@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Footer2 from './Footer2';
 import pagination from '../css/pagination.css';
+import { IP_backEnd, IP_NODE_PORT } from '../config/config';
 
 var propertiesss = [];
 var incVal = 5;
@@ -33,7 +34,7 @@ class DisplayProperty extends Component {
         }
         console.log("filters to query SQL", data);
         //removed await for the below
-        await axios.post('http://localhost:3002/displayProperty/', data)
+        await axios.post(IP_backEnd + IP_NODE_PORT + '/displayProperty/', data)
             .then((response) => {
                 propertiesss.push(response.data);
                 this.setState({
@@ -129,7 +130,7 @@ class DisplayProperty extends Component {
                             <img class="displayPropertyImage" alt="No Image !" src={'data:image/jpeg;base64,' + item.photos[0]}></img>
                         </div>
                         <div class="col-lg-8">
-                            <div><a onClick={this.redirectToBookProperty.bind(this, (index + 1))} class="itemDescription">{item.headline}</a></div>
+                            <div><a onClick={this.redirectToBookProperty.bind(this, (((this.state.pageNo - 1) * 5 + index + 1)))} class="itemDescription">{item.headline}</a></div>
                             <div class="col-lg-12 alignLeft">
                                 <div class="col-lg-2">
                                     <i class="fa fa-home">&nbsp;{item.type}</i>

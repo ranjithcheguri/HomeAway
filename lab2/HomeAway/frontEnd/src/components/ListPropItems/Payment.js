@@ -4,7 +4,6 @@ import React,{Component} from 'react';
 import { connect } from 'react-redux';
 import { submitPayment } from '../../actions/listPropertyActions';
 import { stat } from 'fs';
-import cookie from 'react-cookies';
 /* REDUX IMPORTS END */
 
 class Payment extends Component{

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Footer from './Footer';
+import { IP_backEnd, IP_NODE_PORT } from '../config/config';
 
 class OwnerSignUp extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ class OwnerSignUp extends Component {
         const data = this.state;
 
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3002/ownerSignUp', data)
+        axios.post(IP_backEnd + IP_NODE_PORT + '/ownerSignUp', data)
             .then(response => {
                 if (response.status === 200) {
                     alert("sign up successfull !");

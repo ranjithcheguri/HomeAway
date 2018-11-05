@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { submitRental } from '../../../actions/listPropertyActions';
 import { submitAllDetails } from '../../../actions/listPropertyActions';
 import { stat } from 'fs';
-import cookie from 'react-cookies';
 /* REDUX IMPORTS END */
 
 class Rental extends Component {

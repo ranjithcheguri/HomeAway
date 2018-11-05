@@ -1,8 +1,9 @@
 // All Login actions should be done, variables must be imported from types.js
 import { OWNER_SUBMIT_LOGIN, OWNER_SIGNOUT } from './types';
 import axios from "axios";
+import { IP_NODE_PORT, IP_backEnd } from '../config/config.js'
 
-const ROOT_URL = "http://localhost:3001";
+//const ROOT_URL = "http://localhost:3001";
 
 export const ownerSubmitLogin = (email, password) => dispatch => {
     //code here
@@ -15,11 +16,13 @@ export const ownerSubmitLogin = (email, password) => dispatch => {
     console.log(data);
 
     /********************TRAVELER LOGIN **************************/
-    axios.post('http://localhost:3002/ownerlogin', data)
+    axios.post(IP_backEnd + IP_NODE_PORT + '/ownerlogin', data)
         .then(response => {
+            console.log("response received after successful login :", response.data);
             dispatch({
                 type: OWNER_SUBMIT_LOGIN,
-                payload: response.status
+                payload: response.status,
+                Ownercookie : response.data.cookie
             })
         })
         .catch((error) => {
@@ -27,7 +30,8 @@ export const ownerSubmitLogin = (email, password) => dispatch => {
             dispatch({
                 //ERROR 400 status
                 type: OWNER_SUBMIT_LOGIN,
-                payload: error.response.status
+                payload: error.response.status,
+                Ownercookie:""
             })
         })
 
@@ -37,6 +41,7 @@ export const ownerSignout = () => dispatch => {
     console.log("Actions : signing out owner...");
     dispatch({
         type: OWNER_SIGNOUT,
-        payload: false
+        payload: false,
+        Ownercookie:""
     })
 } 

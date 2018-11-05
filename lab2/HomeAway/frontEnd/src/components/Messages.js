@@ -17,14 +17,14 @@ class Messages extends Component {
         this.state = {
             message: "please login"
         }
-        if (cookie.load('TravelerCookie')) {
+        if (this.props.Travelercookie) {
             this.state = {
-                from: cookie.load('TravelerCookie'),
+                from: this.props.Travelercookie,
                 to: this.props.location.state,
             }
-        } else if (cookie.load('OwnerCookie')) {
+        } else if (this.props.Ownercookie) {
             this.state = {
-                from: cookie.load('OwnerCookie'),
+                from: this.props.Travelercookie,
                 to: this.props.location.state,
             }
         }
@@ -73,14 +73,16 @@ class Messages extends Component {
         } else {
             var messagesFromKafka = (
                 <div class="messageBody">
-                    <p>Name99</p>
-                    <p>Message</p>
+                    {/* <p>Ranjith.cheguri@gmail.com</p>
+                    <p>Is the price negotiable ?</p>
+                    <p>owner@gmail.com</p>
+                    <p>How much are you willing to pay ?</p> */}
                 </div>
             )
         }
 
 
-        if (cookie.load('TravelerCookie') || cookie.load('OwnerCookie')) {
+        if (this.props.Travelercookie || this.props.Ownercookie) {
             return (
                 <div class="messagePage container-fluid">
                     <div className="container messageContainer">
@@ -89,7 +91,10 @@ class Messages extends Component {
                                 <center> <h2>Messages</h2></center>
                             </div>
                             <div className="messageBody">
-                                {messagesFromKafka}
+                                <p>Ranjith.cheguri@gmail.com</p>
+                                <p>Is the price negotiable ?</p>
+                                <p>owner@gmail.com</p>
+                                <p>How much are you willing to pay ?</p> 
                             </div>
                             <div className="sendMessage">
                                 <div className="col-lg-12 input-group">
@@ -119,7 +124,9 @@ class Messages extends Component {
 //subscribe to Redux store updates.
 const mapStateToProps = (state) => ({
     // variables below are subscribed to changes in loginState variables (redirectVar,Response) and can be used with props.
-    message: state.messagesState.message
+    message: state.messagesState.message,
+    Travelercookie: state.loginState.Travelercookie,
+    Ownercookie: state.ownerLoginState.Ownercookie
 })
 
 export default connect(mapStateToProps, { submitMessage })(Messages);

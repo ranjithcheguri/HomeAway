@@ -45,44 +45,44 @@ app.use(function (req, res, next) {
 var con = mysql.createConnection({
     host: "localhost",
     user: "admin",
-    database : "homeaway"
+    database: "homeaway"
 });
 
 // WITHOUT CONNECTION POOLING
 
 /******************* DISPLAY PROPERTY POST BEGIN ***************************/
 
-app.post('/DisplayProperty',function(req,res){
-    
+app.post('/DisplayProperty', function (req, res) {
+
     console.log("Inside Login Post Request");
-   
-     
-        
-        console.log("Connected!");
-        var sql = "select * from ownerprofile";
-        con.query(sql,function(err,result){
-        
-
-            if (err) {
-                console.log(err);
-                res.writeHead(400, {
-                    'Content-Type': 'text/plain'
-                })
-                res.end("Invalid Credentials");
-            } else {
-                console.log(result);
-                res.writeHead(200, {
-                    'Content-Type': 'text/plain'
-                })
-
-                console.log("photos", result);
-                res.end(JSON.stringify(result));
-            }
 
 
-    
+
+    console.log("Connected!");
+    var sql = "select * from ownerprofile";
+    con.query(sql, function (err, result) {
+
+
+        if (err) {
+            console.log(err);
+            res.writeHead(400, {
+                'Content-Type': 'text/plain'
+            })
+            res.end("Invalid Credentials");
+        } else {
+            console.log(result);
+            res.writeHead(200, {
+                'Content-Type': 'text/plain'
+            })
+
+            console.log("photos", result);
+            res.end(JSON.stringify(result));
+        }
+
+
+
     });
-    
+
 });
 
 

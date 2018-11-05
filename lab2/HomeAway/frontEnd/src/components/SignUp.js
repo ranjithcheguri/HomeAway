@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Footer from './Footer';
+import { IP_backEnd, IP_NODE_PORT } from '../config/config';
 
 class SignUp extends Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class SignUp extends Component {
         console.log(this.state);
         const data = this.state;
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3002/travelerSignup', data)
+        axios.post(IP_backEnd + IP_NODE_PORT + '/travelerSignup', data)
             .then(response => {
                 if (response.status === 200) {
                     alert("sign up successfull !");
@@ -34,7 +35,7 @@ class SignUp extends Component {
                 console.log("Response status : ", error.response.status, "Response : ", error.response.data);
             })
     }
-    
+
     handleChange = (e) => {
         this.setState({
             //square brackets must

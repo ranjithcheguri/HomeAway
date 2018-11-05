@@ -6,7 +6,7 @@ import Availability from './PricingItems/Availability';
 import { connect } from 'react-redux';
 import { submitPhotos } from '../../actions/listPropertyActions';
 import { stat } from 'fs';
-import cookie from 'react-cookies';
+import { IP_NODE_PORT, IP_backEnd } from '../../config/config';
 /* REDUX IMPORTS END */
 
 class Photos extends Component {
@@ -53,11 +53,11 @@ class Photos extends Component {
         //this.props.submitPhotos(this.state);
 
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:3002/listPropertyPhotos', formData)
-             .then((response) => {
-                 // access results...
-                 console.log(response);
-             });
+        axios.post(IP_backEnd + IP_NODE_PORT + '/listPropertyPhotos', formData)
+            .then((response) => {
+                // access results...
+                console.log(response);
+            });
     }
 
     render() {

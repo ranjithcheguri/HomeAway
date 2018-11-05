@@ -8,7 +8,6 @@ import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { submitLocation } from '../../actions/listPropertyActions';
 import { stat } from 'fs';
-import cookie from 'react-cookies';
 /* REDUX IMPORTS END */
 
 

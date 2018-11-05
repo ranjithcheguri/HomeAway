@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router(); // capital R
 const mongoClient = require('mongodb').MongoClient;
+var ENV_VAR = require('../config_backend/config');
+
 
 router.post('/Profile', (req, res) => {
     console.log("inside profile", req.body);
-    mongoClient.connect('mongodb://localhost:27017', (err, client) => {
+    mongoClient.connect(ENV_VAR.IP_MONGODB + ENV_VAR.IP_PORT_MONGO, (err, client) => {
         if (err) {
             console.log("error connecting to mongodb");
         } else {
